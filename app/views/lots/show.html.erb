@@ -1,0 +1,159 @@
+<%= link_to t('.back', :default => t("helpers.links.back")),
+            lots_path, :class => 'btn btn-inverse'  %>
+
+<div class="container">
+    <%= gmaps4rails(@json) %>
+</div>
+<div class="form-actions">
+  <h3>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h3>
+  <h4>This valuation is:
+    <%= link_to "Too Low", vote_lot_path(@lot, type: "up"), method: "post", :class => "btn btn-danger" %>
+    <%= link_to "Too High", vote_lot_path(@lot, type: "down"), method: "post", :class => "btn btn-success"  %>
+  </h4>
+  <h5>This property has: <em><%= pluralize @lot.reputation_for(:votes).to_i, "vote" %></em></h5>
+
+
+</div>
+<div class="row">
+  <div class="span12">
+    <h1><%=t '.title', :default => @lot.property_map_address %></h1>
+  </div>
+</div>
+<div class="row">
+    <div class="span2">
+      Owner:
+    </div>
+    <div class="span10 bold">
+      <%=t '.title', :default => @lot.owner %>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="span2">
+      Co-Owner:
+    </div>
+    <div class="span10 bold">
+      <%=t '.title', :default => @lot.co_owner %> 
+    </div>
+</div>
+<div class="row">
+    <div class="span2">
+      Managed by: 
+    </div>
+    <div class="span10 bold">
+      <%=t '.title', :default => @lot.in_care_of %> 
+    </div>
+</div>
+
+
+<hr>
+
+
+<div class="row">
+  <div class="span6">  
+    <div class="span2 bold">
+      <h6>Appraised Value</h6>
+    </div>
+    <div class="span3">
+      <h6><%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h6>
+    </div>
+  </div>
+
+  <div class="span6">  
+    <div class="span2 bold">
+      <% unless @lot.appeal_appraised == 0 %>
+      <h6>Appeal Value</h6>
+      <% end %>
+    </div>
+    <div class="span3">
+      <% unless @lot.appeal_appraised == 0 %>
+      <h6><%= number_to_currency(@lot.appeal_appraised, :unit => "$") %></h6>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span6">  
+    <div class="span2 bold">
+      Land Value
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.land_appraised, :unit => "$") %>
+    </div>
+  </div>
+
+  <div class="span6">  
+    <div class="span2 bold">
+      Building Value
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.building_appraised, :unit => "$") %>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="span6">  
+    <div class="span2 bold">
+      Tax District
+    </div>
+    <div class="span3">
+      <%= @lot.tax_district %>
+    </div>
+  </div>
+
+  <div class="span6">  
+    <div class="span2 bold">
+      Parcel ID
+    </div>
+    <div class="span3">
+      <%= @lot.parcel_id %>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="span6">  
+    <div class="span2 bold">
+      Zoning
+    </div>
+    <div class="span3">
+      <%= @lot.zoning %>
+    </div>
+  </div>
+
+  <div class="span6">  
+    <div class="span2 bold">
+      Tax Year
+    </div>
+    <div class="span3">
+      <%= @lot.tax_year %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span6">  
+    <div class="span2 bold">
+      Mailing Address
+    </div>
+    <div class="span3">
+      <%= @lot.mailing_map_address %>
+    </div>
+  </div>
+
+  <div class="span6">  
+    <div class="span2 bold">
+      Homestead
+    </div>
+    <div class="span3">
+      <%= @lot.homestead %>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  tax_district: MyString
+  owner_id: 1
+
+two:
+  tax_district: MyString
+  owner_id: 1

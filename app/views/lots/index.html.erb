@@ -1,0 +1,49 @@
+<div class="page-header">
+  <h1>Decatur Property Tax Digest</h1>
+</div>
+
+
+<div class="container">
+  
+  <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
+    <%= f.condition_fields do |c| %>
+      <%= render "condition_fields", f: c %>
+    <% end %>
+    <p><%= link_to_add_fields "Add Conditions", f, :condition %></p>
+    <div class="actions"><%= f.submit "Search" %></div>
+  <% end %>
+
+</div>
+
+<div class="row">
+  <div class="container">
+    <%= gmaps4rails(@json) %>
+  </div>
+</div>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link @search, :property_map_address, "Property Address" %></th>
+      <th><%= sort_link @search, :owner, "Owner Name" %></th>
+      <th><%= sort_link @search, :appraised_value, "Appraised Value" %></th>
+      <th>Zoning</th>
+      <th>Homestead</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @lots.each do |lot| %>
+      <tr>
+        <td><%= lot.property_map_address if lot.property_map_address.present? %></td>
+        <td><%= lot.owner if lot.owner.present? %></td>
+        <td><%= number_to_currency(lot.appraised_value, :unit => "$") %></td>
+        <td><%= lot.zoning %></td>
+        <td><%= lot.homestead %></td>
+        <td><%= link_to "Details", lot_path(lot), :class => "btn btn-info" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

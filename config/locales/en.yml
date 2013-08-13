@@ -1,0 +1,14 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  hello: "Hello world"
+  views:
+    pagination:
+      previous: "Previous"
+      next: "Next"
+  attributes:
+    model_name:
+      land_at_40: "Land Value"
+      building_at_40: "Building Value"
+    
