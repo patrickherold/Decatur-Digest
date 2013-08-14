@@ -6,6 +6,6 @@ module ApplicationHelper
     fields = f.send("#{type}_fields", new_object, child_index: id) do |builder|
       render(type.to_s + "_fields", f: builder)
     end
-    link_to(name, '#', class: "add_fields btn btn-success", data: {id: id, fields: fields.gsub("\n", "")})
+    link_to(name, '#', class: "add_fields btn btn-info btn-mini", data: {id: id, fields: fields.gsub("\n", "")})
   end
 end

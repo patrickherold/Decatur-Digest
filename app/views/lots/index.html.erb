@@ -1,25 +1,27 @@
-<div class="page-header">
-  <h1 class="graybackground">Help keep property taxes fair and transparent</h1>
-</div>
+<h1 class="graybackground">Help keep property taxes fair and transparent</h1>
 
 
-<div class="container">
-  
+<div class="container controls-row">
   <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
+  <div class="span2">
+    <%= f.submit "Search", :class => "btn btn-success btn-large" %>
+    <br><br>
+
+  </div>
+    <div class="span8">
     <%= f.condition_fields do |c| %>
       <%= render "condition_fields", f: c %>
     <% end %>
-    <p><%= link_to_add_fields "Add Conditions", f, :condition %></p>
-    <div class="actions"><%= f.submit "Search" %></div>
+    <%= link_to_add_fields "Add Conditions", f, :condition %>
+      <br><br>
+</div>
   <% end %>
 
 </div>
 
-<div class="row">
   <div class="container">
     <%= gmaps4rails(@json) %>
   </div>
-</div>
 
 
 

@@ -29,3 +29,7 @@
 	margin-bottom: 10px;
 	border-bottom: 1px dashed #ddd;
 }
+
+form#lot_search.lot_search div.span8 div.field a.remove_fields {
+	margin-top: -17px;
+}
