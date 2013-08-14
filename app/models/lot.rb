@@ -24,6 +24,15 @@ class Lot < ActiveRecord::Base
     taxable * 2.5 unless taxable.nil?
   end
   
+  def taxable_range_upper
+    appraised_appraised * 1.05 unless appraised_appraised.nil?
+  end
+  
+  def taxable_range_lower
+    appraised_appraised * 0.95 unless appraised_appraised.nil?
+  end
+  
+  
   def building_appraised
     building_value * 2.5 unless building_value.nil?
   end
@@ -37,7 +46,7 @@ class Lot < ActiveRecord::Base
   end
 
   def self.ransackable_attributes(auth_object = nil)
-      %w( property_map_address owner co_owner appraised_value land_value building_value taxable ) + _ransackers.keys
+      %w( property_map_address owner co_owner appraised_value land_value building_value taxable zoning ) + _ransackers.keys
   end
 
   def gmaps4rails_infowindow

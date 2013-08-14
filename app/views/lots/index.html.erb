@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>Decatur Property Tax Digest</h1>
+  <h1 class="graybackground">Help keep property taxes fair and transparent</h1>
 </div>
 
 
@@ -22,6 +22,10 @@
 </div>
 
 
+
+<%= paginate @properties %>
+
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -34,11 +38,11 @@
     </tr>
   </thead>
   <tbody>
-    <% @lots.each do |lot| %>
+    <% @properties.each do |lot| %>
       <tr>
         <td><%= lot.property_map_address if lot.property_map_address.present? %></td>
         <td><%= lot.owner if lot.owner.present? %></td>
-        <td><%= number_to_currency(lot.appraised_value, :unit => "$") %></td>
+        <td><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
         <td><%= lot.zoning %></td>
         <td><%= lot.homestead %></td>
         <td><%= link_to "Details", lot_path(lot), :class => "btn btn-info" %></td>
