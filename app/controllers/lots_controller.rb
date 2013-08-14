@@ -54,8 +54,6 @@ class LotsController < ApplicationController
       format.json { render json: @lot }
     end
   end
-
-  
 end
 
 
