@@ -9,6 +9,13 @@ class Lot < ActiveRecord::Base
 
   has_many :lot_votes
 
+  scope :commercial_property, {:conditions => {:zoning => "C3" }}
+
+  scope :residential_property, {:conditions => {:homestea => true }}
+
+
+
+
   def self.by_votes
     select('lots.*, coalesce(value, 0) as votes').
     joins('left join lot_votes on lot_id=lots.id').
@@ -51,7 +58,6 @@ class Lot < ActiveRecord::Base
     number_to_currency(appraised_appraised, :unit => "$").to_s
   end
   
-  
   def building_appraised
     building_value unless building_value.nil?
   end
@@ -75,6 +81,11 @@ class Lot < ActiveRecord::Base
   def lost_to_appeal
     lost_to_appeal = appraised_tax - total_tax
   end
+  
+  def total_digest_value
+    Lot.sum(:appraised_value)
+  end
+  
 
   def city_tax_ap
     if general_homestead.present?
@@ -344,7 +355,6 @@ class Lot < ActiveRecord::Base
     end
   end
   
-  
   def general_homestead
     if homestead == "H1F" || homestead == "LDF" || homestead == "H6DF" || homestead == "H6D" || homestead == "H0"
       city_tax_exemption = 20000
@@ -399,6 +409,11 @@ class Lot < ActiveRecord::Base
       dda_tax = 70000
     end
   end
+  
+  def residential_property
+    
+  end
+
 
 ##########################################################   Property Map Address not working, could be due to definitions or routes
   def self.ransackable_attributes(auth_object = nil)

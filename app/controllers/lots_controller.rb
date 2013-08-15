@@ -3,6 +3,9 @@ class LotsController < ApplicationController
   # GET /lots.json
   def index
     @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
+    @all_lots = Lot.all.sum(&:appraised_value)
+    @all_commericial = Lot.where(:zoning => "C3").sum(&:appraised_value)
+    @all_residential = @all_lots.to_i - @all_commercial.to_i
     
     @search = Lot.search(params[:q])
     @lots = @search.result.page(params[:page]).per(20)

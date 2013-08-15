@@ -1,6 +1,45 @@
 <div class="container">
+  <div class="span5">
+    <%= gmaps4rails(@json) %>
+  </div>
+
+  <div class="span6">
+    <h3>Property Tax Summary</h3>
+    <div class="span3">
+      Total Taxable Properties:
+    </div>
+    <div class="span2">
+      <%= Lot.find(:all).count %>
+    </div>
+  </div>
+
+  <div class="span6">
+    <div class="span3">
+      Total Digest Value:
+    </div>
+    <div class="span2">
+      <%= number_to_currency(@all_lots, :unit => "$") %>
+    </div>
+  </div>
   
-  <%= gmaps4rails(@json) %>
+  <div class="span6">
+    <div class="span3">
+      Commercial Digest Value:
+    </div>
+    <div class="span2">
+      <%= number_to_currency(@all_commericial, :unit => "$") %>
+    </div>
+  </div>
+  
+  <div class="span6">
+    <div class="span3">
+      Residential Digest Value:
+    </div>
+    <div class="span2">
+      <%= number_to_currency(@all_residential, :unit => "$") %>
+    </div>
+  </div>
+
 </div>
 
 
