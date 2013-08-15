@@ -63,9 +63,250 @@ class Lot < ActiveRecord::Base
   def appeal_appraised
     appeal_value unless appeal_value.nil?
   end
+
+  def city_tax
+    if general_homestead.present?
+      appraised_appraised - city_tax_exemption
+    elsif senior_65_school_homestead.present?
+      appraised_appraised - city_tax_exemption
+    elsif senior_62_school_homestead.present?
+      appraised_appraised - city_tax_exemption
+    elsif senior_62_low_income_school_homestead.present?
+      appraised_appraised - city_tax_exemption
+    elsif senior_70_school_homestead.present?
+      appraised_appraised - city_tax_exemption
+    elsif senior_80_school_homestead.present?
+      appraised_appraised - city_tax_exemption
+    end
+    appraised_appraised * 0.0102 * 0.5
+  end
+  
+  def school_tax
+    if general_homestead.present?
+      appraised_appraised - school_tax_exemption
+    elsif senior_65_school_homestead.present?
+      appraised_appraised - school_tax_exemption
+    elsif senior_62_school_homestead.present?
+      appraised_appraised - school_tax_exemption
+    elsif senior_62_low_income_school_homestead.present?
+      appraised_appraised - school_tax_exemption
+    elsif senior_70_school_homestead.present?
+      appraised_appraised - school_tax_exemption
+    elsif senior_80_school_homestead.present?
+      appraised_appraised - school_tax_exemption
+    end
+    appraised_appraised * 0.0209 * 0.5
+  end
+  
+  def capital_tax
+    if general_homestead.present?
+      appraised_appraised - capital_tax_exemption
+    elsif senior_65_school_homestead.present?
+      appraised_appraised - capital_tax_exemption
+    elsif senior_62_school_homestead.present?
+      appraised_appraised - capital_tax_exemption
+    elsif senior_62_low_income_school_homestead.present?
+      appraised_appraised - capital_tax_exemption
+    elsif senior_70_school_homestead.present?
+      appraised_appraised - capital_tax_exemption
+    elsif senior_80_school_homestead.present?
+      appraised_appraised - capital_tax_exemption
+    end
+    appraised_appraised * 0.0001 * 0.5
+  end
+  
+  def bond_tax
+    if general_homestead.present?
+      appraised_appraised - bond_tax_exemption
+    elsif senior_65_school_homestead.present?
+      appraised_appraised - bond_tax_exemption
+    elsif senior_62_school_homestead.present?
+      appraised_appraised - bond_tax_exemption
+    elsif senior_62_low_income_school_homestead.present?
+      appraised_appraised - bond_tax_exemption
+    elsif senior_70_school_homestead.present?
+      appraised_appraised - bond_tax_exemption
+    elsif senior_80_school_homestead.present?
+      appraised_appraised - bond_tax_exemption
+    end
+    appraised_appraised * 0.000142 * 0.5
+  end
+  
+  def dda_tax
+    if general_homestead.present?
+      appraised_appraised - dda_tax_exemption
+    elsif senior_65_school_homestead.present?
+      appraised_appraised - dda_tax_exemption
+    elsif senior_62_school_homestead.present?
+      appraised_appraised - dda_tax_exemption
+    elsif senior_62_low_income_school_homestead.present?
+      appraised_appraised - dda_tax_exemption
+    elsif senior_70_school_homestead.present?
+      appraised_appraised - dda_tax_exemption
+    elsif senior_80_school_homestead.present?
+      appraised_appraised - dda_tax_exemption
+    end
+    appraised_appraised * 0.00038 * 0.5
+  end
+  
+  def total_tax
+    city_tax + school_tax + capital_tax + bond_tax + dda_tax
+  end
+ 
+  def city_tax_exemption 
+    if general_homestead.present? 
+      20000
+    elsif senior_62_school_homestead.present?
+      70000
+    elsif senior_62_low_income_school_homestead.present?
+      70000
+    elsif senior_65_school_homestead.present?
+      0
+    elsif senior_70_school_homestead.present?
+      100000
+    elsif senior_80_school_homestead.present?
+      100000
+    else
+      0
+    end
+  end
+     
+  def school_tax_exemption 
+    if general_homestead.present? 
+      20000
+    elsif senior_62_school_homestead.present?
+      70000
+    elsif senior_62_low_income_school_homestead.present?
+      70000
+    elsif senior_65_school_homestead.present?
+      0
+    elsif senior_70_school_homestead.present?
+      100000
+    elsif senior_80_school_homestead.present?
+      100000
+    else
+      0
+    end
+  end
+  
+  def capital_tax_exemption 
+    if general_homestead.present? 
+      20000
+    elsif senior_62_school_homestead.present?
+      70000
+    elsif senior_62_low_income_school_homestead.present?
+      70000
+    elsif senior_65_school_homestead.present?
+      0
+    elsif senior_70_school_homestead.present?
+      100000
+    elsif senior_80_school_homestead.present?
+      100000
+    else
+      0
+    end
+  end
+  
+  def bond_tax_exemption 
+    if general_homestead.present? 
+      20000
+    elsif senior_62_school_homestead.present?
+      70000
+    elsif senior_62_low_income_school_homestead.present?
+      70000
+    elsif senior_65_school_homestead.present?
+      1000
+    elsif senior_70_school_homestead.present?
+      70000
+    elsif senior_80_school_homestead.present?
+      70000
+    else
+      0
+    end
+  end
+ 
+  def dda_tax_exemption 
+    if general_homestead.present? 
+      20000
+    elsif senior_62_school_homestead.present?
+      70000
+    elsif senior_62_low_income_school_homestead.present?
+      70000
+    elsif senior_65_school_homestead.present?
+      1000
+    elsif senior_70_school_homestead.present?
+      70000
+    elsif senior_80_school_homestead.present?
+      70000
+    else
+      0
+    end
+  end
+  
+  def no_homestead
+    if homestead.nil? || homestead.empty?
+    end
+  end
+  
+  
+  def general_homestead
+    if homestead == "H1F" || homestead == "LDF" || homestead == "H6DF" || homestead == "H6D" || homestead == "H0"
+      city_tax_exemption = 20000
+      school_tax = 0
+      capital_tax = 20000
+      dda_tax = 20000
+    end
+  end
+  
+  def senior_62_school_homestead
+    if homestead == "H5F"
+      city_tax_exemption = 70000
+      school_tax = 50000
+      capital_tax = 70000
+      dda_tax = 70000
+    end
+  end
+  
+  def senior_62_low_income_school_homestead
+    if homestead == "H6F"
+      city_tax_exemption = 70000
+      school_tax = 60000
+      capital_tax = 70000
+      dda_tax = 70000
+    end
+  end
+  
+  def senior_65_school_homestead
+    if homestead == "H1"
+      city_tax_exemption = 1000
+      school_tax = 0
+      capital_tax = 1000
+      dda_tax = 1000
+    end
+  end
+  
+  def senior_70_school_homestead
+    if homestead == "H6F" || homestead == "H5F" || homestead == "H1S" || homestead == "H6I" || homestead == "H6IF" || homestead == "H5S"
+      city_tax_exemption = 70000
+      school_tax = 100000
+      capital_tax = 70000
+      dda_tax = 70000
+    end
+  end
+  
+  
+  def senior_80_school_homestead
+    if homestead == "H5S"
+      city_tax_exemption = @lot.appraised_appraised
+      school_tax = 100000
+      capital_tax = 70000
+      dda_tax = 70000
+    end
+  end
+
 ##########################################################   Property Map Address not working, could be due to definitions or routes
   def self.ransackable_attributes(auth_object = nil)
-      %w( property_map_address owner co_owner appraised_value land_value building_value taxable zoning ) + _ransackers.keys
+      %w( property_map_address owner co_owner appraised_value land_value building_value homestead zoning ) + _ransackers.keys
   end
 
   def gmaps4rails_infowindow
@@ -115,6 +356,4 @@ class Lot < ActiveRecord::Base
       [mailing_street, mailing_city, mailing_state, mailing_zip].join(", ")
     end
   end
-  
-
 end

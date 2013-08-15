@@ -1,7 +1,6 @@
 <%= link_to t('.back', :default => t("helpers.links.back")),
             lots_path, :class => 'btn btn-inverse'  %>
 <br><br>
-
 <h1 class="graybackground"><%=t '.title', :default => @lot.property_map_address %></h1>
 
 <div id="pagewrapper">
@@ -15,19 +14,20 @@
     %>
   </div>
 <div class="span8 borderbottom">
-      <h3>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h3>
+      <h2>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h2>
       <% if user_signed_in? %>
         <h4>This valuation is:
-          <%= link_to "Too Low", vote_lot_path(@lot, type: "up"), method: "post", :class => "btn btn-danger" %>
-          <%= link_to "Too High", vote_lot_path(@lot, type: "down"), method: "post", :class => "btn btn-success"  %>
+          <%= link_to "Too Low", vote_lot_path(@lot, type: "up"), method: "post", :class => "btn btn-danger btn-mini" %>
+          <%= link_to "Just Right", vote_lot_path(@lot, type: "just_right"), method: "post", :class => "btn btn-inverse btn-mini" %>
+          <%= link_to "Too High", vote_lot_path(@lot, type: "down"), method: "post", :class => "btn btn-success btn-mini"  %>
         </h4>
         <b>Most people believe this valuation is:</b>
-        <% if @lot.reputation_for(:votes).to_s > "0" %>
-           <h5 class="btn btn-danger">Too Low.</h5>
+        <% if @lot.reputation_for(:votes) == 0 %>
+           <h5 class="btn btn-inverse btn-mini">Just right or no votes yet.</h5>
         <% elsif  @lot.reputation_for(:votes).to_s < "0" %>
-          <h5 class="btn btn-success">Too High.</h5>
-        <% else %>
-          <h5>Be the first to vote on this property value.</h5>
+          <h5 class="btn btn-success btn-mini">Too High.</h5>
+        <% elsif  @lot.reputation_for(:votes).to_s > "0" %>
+          <h5 class="btn btn-danger btn-mini">Too Low.</h5>
         <% end %>
       <% else %>
         <h4><%= link_to "Login in to Vote on this property value", user_omniauth_authorize_path(:twitter) %></h4>
@@ -150,32 +150,113 @@
       <%= @lot.homestead %>
     </div>
 </div>
+
+<hr>
+<h5>Tax Details</h5>
+<div class="row">
+    <div class="span3 bold">
+      City Taxes
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.city_tax, :unit => "$") %>
+    </div>
+  
+    <div class="span3 bold">
+      School Taxes
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.school_tax, :unit => "$") %>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span3 bold">
+      Capital Tax
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.capital_tax, :unit => "$") %>
+    </div>
+  
+    <div class="span3 bold">
+      Bond Tax
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.bond_tax, :unit => "$") %>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span3 bold">
+      Downtown Development Tax
+    </div>
+    <div class="span3">
+      <%= number_to_currency(@lot.dda_tax, :unit => "$") %>
+    </div>
+  
+    <div class="span3 bold">
+      Homestead
+    </div>
+    <div class="span3">
+      <% if @lot.general_homestead  %>
+        <b>General Homestead - H1 or H1F or H6DF</b>
+      <% elsif @lot.senior_62_school_homestead %>
+        <b>Over 62 & income under $25,000 - S1</b>
+      <% elsif @lot.senior_62_low_income_school_homestead %>
+        <b>Over 62 & income under $10,000 - H6F</b>
+      <% elsif @lot.senior_65_school_homestead %>
+        <b>Over 65 - H2</b>
+      <% elsif @lot.senior_70_school_homestead %>
+        <b>Over 70 - H6IF or H6F</b>
+      <% elsif @lot.senior_80_school_homestead %>
+        <b>Over 80 & Income under $40,000 - H6F</b>
+      <% else %>
+        <b>No Homestead</b>
+      <% end %>
+    </div>
+</div>
+
+<hr>
+<h5>Tax Details</h5>
+<div class="row">
+    <div class="span8 bold">
+      <b>Details about your homestead exemption:</b>
+      <p>
+        <% if @lot.general_homestead %>
+        <b>General Homestead - H1 or H1F or H6DF</b> homeowners whose primary residence is at this address qualify for a general homestead exemption.<br>Taxes eligible for homestead deduction: <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b><br>Taxes NOT eligible for homestead deduction: <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value - $20,000.
+
+        <% elsif @lot.senior_62_school_homestead %>
+        <b>Over 62 & income under $25,000 - S1</b> homeowners whose primary residence is at this address AND the owner is over 62 years of age AND the household income is under $25,000 qualify for a general homestead exemption. Taxes eligible for homestead deduction: <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b> Taxes NOT eligible for homestead deduction: <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value - City $70,000. - Schools $110,000
+
+        <% elsif @lot.senior_62_low_income_school_homestead %>
+        <b>Over 62 & income under $10,000 - H6F</b> homeowners whose primary residence is at this address AND the owner is over 62 years of age AND the household income is under $10,000 qualify for a general homestead exemption. Taxes eligible for homestead deduction: <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b> Taxes NOT eligible for homestead deduction: <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value - City $20,000. - Schools $60,000
+
+        <% elsif @lot.senior_65_school_homestead %>
+        <b>Over 65 Homestead - H2</b> homeowners whose primary residence is at this address AND the owner is over 65 years of age qualify for a general homestead exemption. Taxes eligible for homestead deduction: <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b> Taxes NOT eligible for homestead deduction: <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value - $1,000.
+
+        <% elsif @lot.senior_70_school_homestead %>
+        <b>Over 70 Homestead - H6IF or H6F</b> homeowners whose primary residence is at this address AND the owner is over 65 years of age qualify for a general homestead exemption. Taxes eligible for homestead deduction: <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax, City Schools of Decatur Tax</b> Taxes NOT eligible for homestead deduction: <b>City of Decatur Bond Tax</b>.<br><br>Total Deduction from Appraised Value - City $71,000. - Schools $110,000
+
+        <% elsif @lot.senior_80_school_homestead %>
+        <b>Over 80 & Income under $40,000 - H6F</b> homeowners whose primary residence is at this address AND the owner is over 80 years of age AND household income is less than $40,000 qualify for a general homestead exemption. Taxes eligible for homestead deduction: <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax, City Schools of Decatur Tax</b> Taxes NOT eligible for homestead deduction: <b>City of Decatur Bond Tax</b>.<br><br>Total Deduction from Appraised Value - City $71,000. - Schools 100%
+
+        <% elsif @lot.homestead.nil? %>
+        <b>NO HOMESTEAD EXEMPTIONS</b>
+        <% end %>
+    </div>
+  
+    <div class="span3 bold">
+      <h3>Total Annual Tax</h3>
+    </div>
+    <div class="span3">
+      <h3><%= number_to_currency(@lot.total_tax, :unit => "$") %></h3>
+    </div>
+</div>
+
+
 </div>
 </div>
 </div>
 <h2 class="graybackground">Other properties nearby</h2>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= sort_link @search, :property_map_address, "Property Address" %></th>
-      <th><%= sort_link @search, :owner, "Owner Name" %></th>
-      <th><%= sort_link @search, :appraised_value, "Appraised Value" %></th>
-      <th>Zoning</th>
-      <th>Homestead</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @properties.each do |lot| %>
-      <tr>
-        <td><%= lot.property_map_address if lot.property_map_address.present? %></td>
-        <td><%= lot.owner if lot.owner.present? %></td>
-        <td><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
-        <td><%= lot.zoning %></td>
-        <td><%= lot.homestead %></td>
-        <td><%= link_to "Details", lot_path(lot), :class => "btn btn-info" %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+

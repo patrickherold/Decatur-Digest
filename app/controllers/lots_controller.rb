@@ -26,7 +26,7 @@ class LotsController < ApplicationController
 
 
   def vote
-    value = params[:type] == "up" ? 1 : -1
+    value = params[:type] == "just_right" ? 0 : value = params[:type] == "up" ? 1 : -1
     @lot_votes = Lot.find(params[:id])
     @lot_votes.add_or_update_evaluation(:votes, value, current_user)
     redirect_to :back, notice: "Thank you for voting"
@@ -43,24 +43,12 @@ class LotsController < ApplicationController
     end
     
     @search = Lot.search(params[:q])
-    @lots = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
+    @properties = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
-    @properties = @lots
     
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @lot }
-    end
-  end
-
-  # GET /lots/new
-  # GET /lots/new.json
-  def new
-    @lot = Lot.new
-
-    respond_to do |format|
-      format.html # new.html.erb
       format.json { render json: @lot }
     end
   end
