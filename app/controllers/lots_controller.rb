@@ -4,14 +4,11 @@ class LotsController < ApplicationController
   def index
     @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
     
-
-    
     @search = Lot.search(params[:q])
     @lots = @search.result.page(params[:page]).per(20)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
     @properties = @lots.order('taxable desc')
-    
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title  "#{lot.owner}"
@@ -36,7 +33,7 @@ class LotsController < ApplicationController
 
   def show
     @lot = Lot.find(params[:id])
-    
+
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title   "#{lot.owner}"
       marker.json({ :id => lot.id })

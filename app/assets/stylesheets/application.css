@@ -33,3 +33,11 @@
 form#lot_search.lot_search div.span8 div.field a.remove_fields {
 	margin-top: -17px;
 }
+
+.red {
+	background-color: red;
+	padding: 5px;
+	color: white;
+	border: 1px solid #000;
+	font-weight: 100;
+}
