@@ -30,4 +30,10 @@ environments:
 defaults:
   migrate: false
 
-precompile_assets: true  # precompile assets when asset changes detected
+predicates:
+    cont: "contains"
+    not_cont: "not contains"
+    start: "starts with"
+    end: "ends with"
+    gt: "greater than"
+    lt: "less than"

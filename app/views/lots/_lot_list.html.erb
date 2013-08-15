@@ -6,8 +6,9 @@
     <tr>
       <th><%= sort_link @search, :property_map_address, "Property Address" %></th>
       <th><%= sort_link @search, :owner, "Owner Name" %></th>
+      <th><%= sort_link @search, :land_value, "Land Value" %></th>
       <th><%= sort_link @search, :appraised_value, "Appraised Value" %></th>
-      <th>Zoning</th>
+      <th><%= sort_link @search, :homestead, "Zoning" %></th>
       <th><%= sort_link @search, :homestead, "Homestead" %></th>
       <th></th>
     </tr>
@@ -17,6 +18,7 @@
       <tr>
         <td><%= lot.property_map_address if lot.property_map_address.present? %></td>
         <td><%= lot.owners_name if lot.owner.present? %></td>
+        <td><%= number_to_currency(lot.land_value, :unit => "$") %></td>
         <td><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
         <td><%= lot.zoning %></td>
         <td><%= lot.homestead %></td>
