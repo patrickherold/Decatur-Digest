@@ -39,6 +39,8 @@ gem 'schema_to_scaffold'
 
 gem 'activerecord-reputation-system'
 
+gem 'engineyard'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

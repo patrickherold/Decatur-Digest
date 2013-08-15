@@ -13,10 +13,8 @@ class LotsController < ApplicationController
     @properties = @lots.order('taxable desc')
     
 
-  
     @json = @lots.all.to_gmaps4rails do |lot, marker|
-      marker.title   "#{lot.owner}"
-      marker.sidebar "#{lot.taxable}"
+      marker.title  "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
 
@@ -41,7 +39,6 @@ class LotsController < ApplicationController
     
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title   "#{lot.owner}"
-      marker.sidebar "#{lot.taxable}"
       marker.json({ :id => lot.id })
     end
     

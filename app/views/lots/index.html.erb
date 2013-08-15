@@ -3,21 +3,21 @@
 
 <div class="container controls-row">
   <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
-  <div class="span2">
-    <%= f.submit "Search", :class => "btn btn-success btn-large" %>
-    <br><br>
-
-  </div>
     <div class="span8">
     <%= f.condition_fields do |c| %>
       <%= render "condition_fields", f: c %>
     <% end %>
-    <%= link_to_add_fields "Add Conditions", f, :condition %>
-      <br><br>
+   </div>
+   <div class="span2">
+   <%= link_to_add_fields "Add Conditions", f, :condition %>
+   </div>
+    <div class="span1">     
+    <%= f.submit "Search", :class => "btn btn-success btn-large" %>
+   </div>
 </div>
   <% end %>
 
-</div>
+
 
   <div class="container">
     <%= gmaps4rails(@json) %>
@@ -43,7 +43,7 @@
     <% @properties.each do |lot| %>
       <tr>
         <td><%= lot.property_map_address if lot.property_map_address.present? %></td>
-        <td><%= lot.owner if lot.owner.present? %></td>
+        <td><%= lot.owners_name if lot.owner.present? %></td>
         <td><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
         <td><%= lot.zoning %></td>
         <td><%= lot.homestead %></td>

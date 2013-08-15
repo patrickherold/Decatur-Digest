@@ -19,38 +19,57 @@ class Lot < ActiveRecord::Base
     read_attribute(:votes) || lot_votes.sum(:value)
   end
 
+  def owner_last_name
+    self.owner.split(' ')[0..0].join(' ')
+  end
+  
+  def owner_first_name
+    self.owner.split[1..11].join(" ")
+  end
+
+  def owners_name
+    owner_first_name << " " << owner_last_name
+  end
+
+  def co_owner_last_name
+    self.co_owner.split(' ')[0..0].join(' ')
+  end
+  
+  def co_owner_first_name
+    self.co_owner.split[1..11].join(" ")
+  end
+
+  def co_owners_name
+    co_owner_first_name << " " << co_owner_last_name
+  end
 
   def appraised_appraised
-    taxable * 2.5 unless taxable.nil?
+    appraised_value unless appraised_value.nil?
   end
   
-  def taxable_range_upper
-    appraised_appraised * 1.05 unless appraised_appraised.nil?
-  end
-  
-  def taxable_range_lower
-    appraised_appraised * 0.95 unless appraised_appraised.nil?
+  def appraised_currency
+    number_to_currency(appraised_appraised, :unit => "$").to_s
   end
   
   
   def building_appraised
-    building_value * 2.5 unless building_value.nil?
+    building_value unless building_value.nil?
   end
   
   def land_appraised
-    land_value * 2.5 unless land_value.nil?
+    land_value unless land_value.nil?
   end
   
   def appeal_appraised
-    appeal_value * 2.5 unless appeal_value.nil?
+    appeal_value unless appeal_value.nil?
   end
-
+##########################################################   Property Map Address not working, could be due to definitions or routes
   def self.ransackable_attributes(auth_object = nil)
       %w( property_map_address owner co_owner appraised_value land_value building_value taxable zoning ) + _ransackers.keys
   end
 
   def gmaps4rails_infowindow
-    "<h4>#{self.owner}</h4>" << "<h4>#{property_map_address}</h4>"
+    "<h4>#{self.owner}</h4>" << "#{property_map_address}"
   end
 
   def gmaps4rails_address

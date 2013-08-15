@@ -20,15 +20,6 @@ ActiveRecord::Schema.define(:version => 20130813221352) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "lot_votes", :force => true do |t|
-    t.integer  "lot_id"
-    t.integer  "user_id"
-    t.integer  "value"
-    t.integer  "my_value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "lots", :force => true do |t|
     t.string   "tax_district"
     t.datetime "created_at",                   :null => false

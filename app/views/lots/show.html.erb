@@ -38,7 +38,7 @@
       Owner:
     </div>
     <div class="span6 bold">
-      <%=t '.title', :default => @lot.owner %>
+      <%=t '.title', :default => @lot.owners_name %>
     </div>
 
   <% if @lot.co_owner.present? %>
@@ -46,7 +46,7 @@
       Co-Owner:
     </div>
     <div class="span6 bold">
-      <%=t '.title', :default => @lot.co_owner %> 
+      <%=t '.title', :default => @lot.co_owners_name %> 
     </div>
   <% end %>
   <% if @lot.in_care_of.present? %>
