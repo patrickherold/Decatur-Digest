@@ -1,5 +1,6 @@
 class Lot < ActiveRecord::Base
 
+  attr_accessible :latitude, :longitude, :mailing_latitude, :mailing_longitude, :customer_id, :municipal_id, :name
   geocoded_by :property_map_address   # can also be an IP address
   after_validation :geocode          # auto-fetch coordinates
   acts_as_gmappable
@@ -9,20 +10,29 @@ class Lot < ActiveRecord::Base
 
   has_many :lot_votes
 
-  scope :commercial_property, {:conditions => {:zoning => "C3" }}
-
-  scope :residential_property, {:conditions => {:homestea => true }}
-
-
-
   def self.by_votes
     select('lots.*, coalesce(value, 0) as votes').
     joins('left join lot_votes on lot_id=lots.id').
     order('votes desc')
   end
+  
+  scope :commercial_property,
+    :conditions => { :zoning => "C3"}
+    
+  scope :residential_property,
+    :conditions => { :homestead => %w[H1F LDF H6DF H6D H0 H5F H6F H1 H6F H5F H1S H6I H6IF H5S H5S] }
+    
 
   def votes
     read_attribute(:votes) || lot_votes.sum(:value)
+  end
+  
+  def residential_property
+    self.homestead.present?
+  end
+  
+  def commercial_property
+    self.zoning == "C3"
   end
 
   def owner_last_name
@@ -69,6 +79,10 @@ class Lot < ActiveRecord::Base
     appeal_value unless appeal_value.nil?
   end
   
+  def full_taxable
+    taxable * 2.5
+  end
+  
   def total_tax
     city_tax + school_tax + capital_tax + bond_tax + dda_tax
   end
@@ -80,8 +94,6 @@ class Lot < ActiveRecord::Base
   def lost_to_appeal
     lost_to_appeal = appraised_tax - total_tax
   end
-
-  
 
   def city_tax_ap
     if general_homestead.present?
@@ -131,7 +143,7 @@ class Lot < ActiveRecord::Base
     elsif senior_80_school_homestead.present?
       appraised_appraised - capital_tax_exemption
     end
-    appraised_appraised * 0.0001 * 0.5
+    appraised_appraised * 0.001 * 0.5
   end
   
   def bond_tax_ap
@@ -148,7 +160,7 @@ class Lot < ActiveRecord::Base
     elsif senior_80_school_homestead.present?
       appraised_appraised - bond_tax_exemption
     end
-    appraised_appraised * 0.000142 * 0.5
+    appraised_appraised * 0.00142 * 0.5
   end
   
   def dda_tax_ap
@@ -165,94 +177,94 @@ class Lot < ActiveRecord::Base
     elsif senior_80_school_homestead.present?
       appraised_appraised - dda_tax_exemption
     end
-    appraised_appraised * 0.00038 * 0.5
+    appraised_appraised * 0.0038 * 0.5
   end
 
 
 
   def city_tax
     if general_homestead.present?
-      appeal_value - city_tax_exemption
+      full_taxable - city_tax_exemption
     elsif senior_65_school_homestead.present?
-      appeal_value - city_tax_exemption
+      full_taxable - city_tax_exemption
     elsif senior_62_school_homestead.present?
-      appeal_value - city_tax_exemption
+      full_taxable - city_tax_exemption
     elsif senior_62_low_income_school_homestead.present?
-      appeal_value - city_tax_exemption
+      full_taxable - city_tax_exemption
     elsif senior_70_school_homestead.present?
-      appeal_value - city_tax_exemption
+      full_taxable - city_tax_exemption
     elsif senior_80_school_homestead.present?
-      appeal_value - city_tax_exemption
+      full_taxable - city_tax_exemption
     end
-    appeal_value * 0.0102 * 0.5
+    full_taxable * 0.0102 * 0.5
   end
   
   def school_tax
     if general_homestead.present?
-      appeal_value - school_tax_exemption
+      full_taxable - school_tax_exemption
     elsif senior_65_school_homestead.present?
-      appeal_value - school_tax_exemption
+      full_taxable - school_tax_exemption
     elsif senior_62_school_homestead.present?
-      appeal_value - school_tax_exemption
+      full_taxable - school_tax_exemption
     elsif senior_62_low_income_school_homestead.present?
-      appeal_value - school_tax_exemption
+      full_taxable - school_tax_exemption
     elsif senior_70_school_homestead.present?
-      appeal_value - school_tax_exemption
+      full_taxable - school_tax_exemption
     elsif senior_80_school_homestead.present?
-      appeal_value - school_tax_exemption
+      full_taxable - school_tax_exemption
     end
-    appeal_value * 0.0209 * 0.5
+    full_taxable * 0.0209 * 0.5
   end
   
   def capital_tax
     if general_homestead.present?
-      appeal_value - capital_tax_exemption
+      full_taxable - capital_tax_exemption
     elsif senior_65_school_homestead.present?
-      appeal_value - capital_tax_exemption
+      full_taxable - capital_tax_exemption
     elsif senior_62_school_homestead.present?
-      appeal_value - capital_tax_exemption
+      full_taxable - capital_tax_exemption
     elsif senior_62_low_income_school_homestead.present?
-      appeal_value - capital_tax_exemption
+      full_taxable - capital_tax_exemption
     elsif senior_70_school_homestead.present?
-      appeal_value - capital_tax_exemption
+      full_taxable - capital_tax_exemption
     elsif senior_80_school_homestead.present?
-      appeal_value - capital_tax_exemption
+      full_taxable - capital_tax_exemption
     end
-    appeal_value * 0.0001 * 0.5
+    full_taxable * 0.001 * 0.5
   end
   
   def bond_tax
     if general_homestead.present?
-      appeal_value - bond_tax_exemption
+      full_taxable - bond_tax_exemption
     elsif senior_65_school_homestead.present?
-      appeal_value - bond_tax_exemption
+      full_taxable - bond_tax_exemption
     elsif senior_62_school_homestead.present?
-      appeal_value - bond_tax_exemption
+      full_taxable - bond_tax_exemption
     elsif senior_62_low_income_school_homestead.present?
-      appeal_value - bond_tax_exemption
+      full_taxable - bond_tax_exemption
     elsif senior_70_school_homestead.present?
-      appeal_value - bond_tax_exemption
+      full_taxable - bond_tax_exemption
     elsif senior_80_school_homestead.present?
-      appeal_value - bond_tax_exemption
+      full_taxable - bond_tax_exemption
     end
-    appeal_value * 0.000142 * 0.5
+    full_taxable * 0.00142 * 0.5
   end
   
   def dda_tax
     if general_homestead.present?
-      appeal_value - dda_tax_exemption
+      full_taxable - dda_tax_exemption
     elsif senior_65_school_homestead.present?
-      appeal_value - dda_tax_exemption
+      full_taxable - dda_tax_exemption
     elsif senior_62_school_homestead.present?
-      appeal_value - dda_tax_exemption
+      full_taxable - dda_tax_exemption
     elsif senior_62_low_income_school_homestead.present?
-      appeal_value - dda_tax_exemption
+      full_taxable - dda_tax_exemption
     elsif senior_70_school_homestead.present?
-      appeal_value - dda_tax_exemption
+      full_taxable - dda_tax_exemption
     elsif senior_80_school_homestead.present?
-      appeal_value - dda_tax_exemption
+      full_taxable - dda_tax_exemption
     end
-    appeal_value * 0.00038 * 0.5
+    full_taxable * 0.0038 * 0.5
   end
 
  

@@ -4,8 +4,8 @@ class LotsController < ApplicationController
   def index
     @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
     @all_lots = Lot.all.sum(&:appraised_value)
-    @all_commericial = Lot.where(:zoning => "C3").sum(&:appraised_value)
-    @all_residential = @all_lots - @all_commercial.to_i
+    @all_commericial = Lot.commercial_property.sum(&:appraised_value)
+    @all_residential = Lot.residential_property.sum(&:appraised_value)
     
     @search = Lot.commercial_property.search(params[:q])
     @lots = @search.result.page(params[:page]).per(20)
