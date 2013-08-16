@@ -42,7 +42,7 @@ class LotsController < ApplicationController
       marker.json({ :id => lot.id })
     end
     
-    @search = Lot.search(params[:q])
+    @search = Lot.commercial_property.search(params[:q])
     @properties = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
