@@ -1,19 +1,23 @@
-<div class="container controls-row">
+<div class="controls-row searchtool">
+  
   <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
-    <div class="span8">
     <%= f.condition_fields do |c| %>
+      <div class="span12">
       <%= render "condition_fields", f: c %>
+      </div>
     <% end %>
-   </div>
-   <div class="span8">
-   <%= link_to_add_fields "Add Conditions", f, :condition %>
-   <br><br>
-    </div>
-    <div class="span2">     
-    <%= f.submit "Search", :class => "btn btn-success btn-large" %>
-    <br><br>
-   </div>
-
-
+    
+     <div class="span12">
+       <%= link_to_add_fields "Add Conditions", f, :condition %>
+     <br><br>
+     </div>
+       
+      <div class="span2">
+        <%= f.submit "Search", :class => "btn btn-success btn-large" %>
+        <br><br>
+      </div>
+      <div class="span9">
+        <p><em> 1) Choose the field to search. 2) Select the filter. 3) Enter the search value.<br>Use the search tool to filter property tax records. Search by name, value, greater than or less than.</em></p>
+      </div>
 </div>
-  <% end %>
+<% end %>

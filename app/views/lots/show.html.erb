@@ -1,9 +1,5 @@
-<%= render :partial => "/lots/search" %>
-
 <h1 class="graybackground"><%=t '.title', :default => @lot.property_map_address %></h1>
 
-<div id="pagewrapper">
-<div class="container">
   <div class="row">
   <div class="span4">
     <%= gmaps({
@@ -12,11 +8,12 @@
           })
     %>
   </div>
-<div class="span8 borderbottom">
+
+<div class="span7 borderbottom">
   <% if @lot.appeal_appraised > 10 %>
-    <h3 class="appeal">[APPEAL SUCCESSFUL] value set at: <%= number_to_currency(@lot.appeal_appraised, :unit => "$") %></h3>
+    <h4 class="appeal">[APPEAL SUCCESSFUL] value set at: <%= number_to_currency(@lot.appeal_appraised, :unit => "$") %></h4>
   <% else %>
-    <h3>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h3>
+    <h4>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h4>
   <% end %>
       <% if user_signed_in? %>
         <h4>This valuation is:
