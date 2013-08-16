@@ -1,5 +1,4 @@
 <div class="row">
-<%= debug(params) if Rails.env.development? %>
   <div class="span5">
     <%= gmaps4rails(@json) %>
   </div>
@@ -54,7 +53,7 @@
       Commercial Digest Lost to Appealed:
     </div>
     <div class="span2 textrigt">
-      <%= number_to_currency(@commericial_lost_to_appeal, :unit => "$") %>
+      <b><%= number_to_currency(@commericial_lost_to_appeal, :unit => "$") %></b>
     </div>
   </div>
   
@@ -90,7 +89,7 @@
   
   <div class="span7">
     <div class="span4">
-      <h5>Total Annual Commercial Tax Lost to Appeal:</h5>
+      <h5>Total Annual Tax Lost to Appeal:</h5>
     </div>
     <div class="span2 textrigt btn btn-danger">
       <%= number_to_currency(@total_commericial_tax_lost_to_appeal, :unit => "$") %>
