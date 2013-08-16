@@ -15,7 +15,6 @@ class Lot < ActiveRecord::Base
 
 
 
-
   def self.by_votes
     select('lots.*, coalesce(value, 0) as votes').
     joins('left join lot_votes on lot_id=lots.id').
@@ -81,10 +80,7 @@ class Lot < ActiveRecord::Base
   def lost_to_appeal
     lost_to_appeal = appraised_tax - total_tax
   end
-  
-  def total_digest_value
-    Lot.sum(:appraised_value)
-  end
+
   
 
   def city_tax_ap
