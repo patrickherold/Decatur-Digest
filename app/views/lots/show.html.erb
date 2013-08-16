@@ -1,3 +1,5 @@
+<%= render :partial => "/lots/search" %>
+
 <h1 class="graybackground"><%=t '.title', :default => @lot.property_map_address %></h1>
 
 <div id="pagewrapper">
@@ -5,7 +7,7 @@
   <div class="row">
   <div class="span4">
     <%= gmaps({
-           "map_options" => {"auto_zoom" => false, "zoom" => 18, "type" => "SATELLITE"  },
+           "map_options" => {"auto_zoom" => false, "zoom" => 18, "type" => "SATELLITE"},
            "markers"     => {"data" => @json }
           })
     %>
@@ -281,3 +283,5 @@
 <h2 class="graybackground">Other properties nearby</h2>
 
 
+
+<%= render :partial => "/lots/lot_list" %>

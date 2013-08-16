@@ -1,3 +1,5 @@
+<%= render :partial => "/lots/search" %>
+
 <div class="row">
   <div class="span5">
     <%= gmaps4rails(@json) %>
@@ -95,10 +97,8 @@
       <%= number_to_currency(@total_commericial_tax_lost_to_appeal, :unit => "$") %>
     </div>
   </div>
-  
-  
 </div>
 
-
+    <%= render :partial => "/lots/lot_list" %>
 
 
