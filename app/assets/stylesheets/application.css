@@ -16,6 +16,10 @@
 	border: 1px solid #ddd;
 }
 
+#digestpie {
+	width: 30%;
+}
+
 .graybackground {
 	background-color: #354654;
 	padding: 3px;

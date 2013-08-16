@@ -12,3 +12,12 @@ jQuery ->
     regexp = new RegExp($(this).data('id'), 'g')
     $(this).before($(this).data('fields').replace(regexp, time))
     event.preventDefault()
+
+    
+    Morris.Bar
+      element: 'lots_chart'
+      data: $('#lots_chart').data('lots')
+      xkey: 'zoning'
+      ykeys: ['appraised_value', 'appeal_value', 'taxable']
+      labels: ['Appraised Value', 'Appeal Value', 'Taxable']
+      preUnits: '$'

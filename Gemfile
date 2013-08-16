@@ -40,6 +40,7 @@ gem 'schema_to_scaffold'
 gem 'activerecord-reputation-system'
 
 gem 'engineyard'
+gem "highcharts-js-rails"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

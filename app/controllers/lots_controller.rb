@@ -8,6 +8,9 @@ class LotsController < ApplicationController
     @commericial_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
     @commericial_digest = Lot.commercial_property.sum(&:appraised_value)
     @commericial_taxable = (@commericial_appeal + @commericial_appraised)
+    @residential_taxable = (@all_lots - @commericial_taxable)
+    @commericial_city_taxes_collected = (@commericial_taxable * 0.01642)
+    @commericial_school_taxes_collected = (@commericial_taxable * 0.0209)
     @commericial_lost_to_appeal = (@commericial_digest - @commericial_taxable)
     @city_commericial_tax_lost_to_appeal = (@commericial_lost_to_appeal * 0.01642)
     @school_commericial_tax_lost_to_appeal = (@commericial_lost_to_appeal * 0.0209)
@@ -21,6 +24,32 @@ class LotsController < ApplicationController
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title  "#{lot.owner}"
       marker.json({ :id => lot.id })
+    end
+    
+    
+    @taxes_lost_chart = Highcharts.new do |chart|
+      chart.chart(renderTo: 'graph')
+      chart.title('Commercial Taxes Lost to Appeal')
+      chart.xAxis(categories: ['City Taxes lost on appeal', 'School Taxes lost on appeal', 'Total Taxes lost on appeal'])
+      chart.yAxis(title: 'Dollars', min: 0)
+      chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @school_commericial_tax_lost_to_appeal, @total_commericial_tax_lost_to_appeal])
+      chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+    end
+    
+    @taxes_by_zoning = Highcharts.new do |chart|
+      chart.chart(renderTo: 'graph2')
+      chart.title('Commercial Taxes Paid to...')
+      chart.xAxis(categories: ['City Taxes', 'School Taxes'])
+      chart.yAxis(title: 'Dollars', min: 0)
+      chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @commericial_school_taxes_collected])
+      chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+    end
+    
+    @taxes_by_type = Highcharts.new do |chart|
+      chart.chart(renderTo: 'graph3')
+      chart.title('Taxes by property type')
+      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['Commercial',@commericial_taxable], ['Residential',@residential_taxable]])
+      chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
     end
 
     respond_to do |format|

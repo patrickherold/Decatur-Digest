@@ -67,6 +67,8 @@ GEM
     geocoder (1.1.8)
     gmaps4rails (1.5.6)
     hashie (2.0.5)
+    highcharts-js-rails (1.0.0)
+      railties (>= 3.1, < 4.1)
     highline (1.6.19)
     hike (1.2.3)
     i18n (0.6.1)
@@ -181,6 +183,7 @@ DEPENDENCIES
   engineyard
   geocoder
   gmaps4rails
+  highcharts-js-rails
   jquery-rails
   kaminari
   less-rails
