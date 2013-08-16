@@ -74,7 +74,7 @@ class Lot < ActiveRecord::Base
   def appeal_appraised
     appeal_value unless appeal_value.nil?
   end
-    
+
   def full_taxable
     taxable * 2.5
   end
