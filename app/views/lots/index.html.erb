@@ -1,47 +1,104 @@
-<div class="container">
+<div class="row">
 <%= debug(params) if Rails.env.development? %>
   <div class="span5">
     <%= gmaps4rails(@json) %>
   </div>
-  <div class="span6">
+  <div class="span7">
     <h3>Property Tax Summary</h3>
-    <div class="span3">
+    <div class="span4">
       Total Taxable Properties:
     </div>
-    <div class="span2">
-      <%= Lot.find(:all).count %>
+    <div class="span2 textrigt">
+      <%= number_with_delimiter(Lot.find(:all).count, :delimiter => ",")  %>
     </div>
   </div>
 
-  <div class="span6">
-    <div class="span3">
-      Total Digest Value:
+  <div class="span7">
+    <div class="span4">
+      Total Digest Appraised Value:
     </div>
-    <div class="span2">
+    <div class="span2 textrigt">
       <%= number_to_currency(@all_lots, :unit => "$") %>
     </div>
   </div>
   
-  <div class="span6">
-    <div class="span3">
-      Commercial Digest Value:
+  <div class="span7">
+    <div class="span4">
+      Total Commercial Digest as Appraised:
     </div>
-    <div class="span2">
-      <%= number_to_currency(@all_commericial, :unit => "$") %>
+    <div class="span2 textrigt">
+      <%= number_to_currency(@commericial_digest, :unit => "$") %>
     </div>
   </div>
   
-  <div class="span6">
-    <div class="span3">
-      Residential Digest Value:
+  <div class="span7">
+    <div class="span4">
+      Commercial Digest Appraised Accepted:
     </div>
-    <div class="span2">
-      <%= number_to_currency(@all_residential, :unit => "$") %>
+    <div class="span2 textrigt">
+      <%= number_to_currency(@commericial_appraised, :unit => "$") %>
+    </div>
+  </div>
+  
+  <div class="span7">
+    <div class="span4">
+      Commercial Digest Appraised Appealed:
+    </div>
+    <div class="span2 textrigt">
+      <%= number_to_currency(@commericial_appeal, :unit => "$") %>
+    </div>
+  </div>
+  
+  <div class="span7">
+    <div class="span4">
+      Commercial Digest Lost to Appealed:
+    </div>
+    <div class="span2 textrigt">
+      <%= number_to_currency(@commericial_lost_to_appeal, :unit => "$") %>
+    </div>
+  </div>
+  
+  <div class="span7">
+    <div class="span4">
+      Commercial Digest Taxable Value:
+    </div>
+    <div class="span2 textrigt">
+      <%= number_to_currency(@commericial_taxable, :unit => "$") %>
+    </div>
+    <hr>
+  </div>
+
+
+  <div class="span7">
+    <div class="span4">
+      <h6>Annual City Taxes lost to appeal:</h6>
+    </div>
+    <div class="span2 textrigt btn btn-danger btn-mini">
+      <%= number_to_currency(@city_commericial_tax_lost_to_appeal, :unit => "$") %>
     </div>
   </div>
 
-</div>
 
+  <div class="span7">
+    <div class="span4">
+      <h6>Annual School Taxes lost to appeal:</h6>
+    </div>
+    <div class="span2 textrigt btn btn-danger btn-mini">
+      <%= number_to_currency(@school_commericial_tax_lost_to_appeal, :unit => "$") %>
+    </div>
+  </div>
+  
+  <div class="span7">
+    <div class="span4">
+      <h5>Total Annual Commercial Tax Lost to Appeal:</h5>
+    </div>
+    <div class="span2 textrigt btn btn-danger">
+      <%= number_to_currency(@total_commericial_tax_lost_to_appeal, :unit => "$") %>
+    </div>
+  </div>
+  
+  
+</div>
 
 
 

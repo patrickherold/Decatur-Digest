@@ -16,24 +16,16 @@ class Lot < ActiveRecord::Base
     order('votes desc')
   end
   
-  scope :commercial_property,
-    :conditions => { :zoning => "C3"}
+  scope :commercial_property, where("zoning = ?", 'C3')
     
-  scope :residential_property,
-    :conditions => { :homestead => %w[H1F LDF H6DF H6D H0 H5F H6F H1 H6F H5F H1S H6I H6IF H5S H5S] }
-    
+  scope :appeal_property, where("appeal_value >= ?", '1')
 
-  def votes
-    read_attribute(:votes) || lot_votes.sum(:value)
-  end
-  
-  def residential_property
-    self.homestead.present?
-  end
-  
-  def commercial_property
-    self.zoning == "C3"
-  end
+  scope :appraised_property, where("appeal_value < ?", '1')
+
+  scope :all_commericial_appeal, commercial_property.appeal_property
+
+  scope :all_commericial_appraised, commercial_property.appraised_property
+
 
   def owner_last_name
     self.owner.split(' ')[0..0].join(' ')
@@ -59,6 +51,10 @@ class Lot < ActiveRecord::Base
     co_owner_first_name << " " << co_owner_last_name
   end
 
+  def votes
+    read_attribute(:votes) || lot_votes.sum(:value)
+  end
+
   def appraised_appraised
     appraised_value unless appraised_value.nil?
   end
@@ -78,7 +74,7 @@ class Lot < ActiveRecord::Base
   def appeal_appraised
     appeal_value unless appeal_value.nil?
   end
-  
+    
   def full_taxable
     taxable * 2.5
   end
@@ -181,6 +177,25 @@ class Lot < ActiveRecord::Base
   end
 
 
+  def city_tax_rate
+    0.0102
+  end
+
+  def school_tax_rate
+    0.0209
+  end
+
+  def capital_tax_rate
+    0.001
+  end
+
+  def bond_tax_rate
+    0.00142
+  end
+
+  def dda_tax_rate
+    0.0038
+  end
 
   def city_tax
     if general_homestead.present?

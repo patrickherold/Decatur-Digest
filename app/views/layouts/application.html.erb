@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Property Tax Explorer</title>
   <!--[if lt IE 9]>
@@ -44,20 +44,18 @@
     </div>
   </div>
 </div>
-<div class="container">
-    <div class="container">
-      <% if notice.present? %>
-        <div class="alert alert-success">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <%= notice %>
-        </div>
-      <% end %>
-    </div>
+<div class="row">
+  <div class="container">
+    <% if notice.present? %>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%= notice %>
+      </div>
+    <% end %>
     <%= render :partial => "search" %>
-
     <%= yield %>
-
     <%= render :partial => "lot_list" %>
+  </div>
 </div>
 <%= yield :scripts %>
 <script>
