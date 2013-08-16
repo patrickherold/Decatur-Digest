@@ -11,7 +11,11 @@
     %>
   </div>
 <div class="span8 borderbottom">
-      <h2>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h2>
+  <% if @lot.appeal_appraised > 10 %>
+    <h3 class="appeal">[APPEAL SUCCESSFUL] value set at: <%= number_to_currency(@lot.appeal_appraised, :unit => "$") %></h3>
+  <% else %>
+    <h3>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h3>
+  <% end %>
       <% if user_signed_in? %>
         <h4>This valuation is:
           <%= link_to "Too Low", vote_lot_path(@lot, type: "up"), method: "post", :class => "btn btn-danger btn-mini" %>
