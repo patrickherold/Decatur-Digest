@@ -15,12 +15,20 @@ body {
 	background-image: url('/assets/decaturmapbackground.jpg');
 }
 
-h1 { margin-top: 0px !important; font-size: 1.9em !important; text-align: right; padding-right: 15px !important;}
+div.container ol.breadcrumb li a:hover {
+  background-color: #084557 !important;
+  color: #FFFFFF !important;
+	text-decoration: none !important;
+}
+
+
+h1 { margin-top: 0px !important; font-size: 1.9em !important; text-align: right; padding: 0px 15px !important;}
 
 .page {
 	background: white;
 	border: 1px solid #ddd;
 	margin-bottom: 60px;
+	padding: 10px;
 }
 
 .searchtool {
@@ -29,12 +37,33 @@ h1 { margin-top: 0px !important; font-size: 1.9em !important; text-align: right;
 	padding-top: 10px;
 }
 
+.searchpadding {
+	padding: 10px;
+}
+
+.showmap {
+	height: 600px;
+}
+
 .graybackground {
-	background-color: #354654;
-	padding: 3px;
-	color: white;
-	border: 1px solid #000;
 	font-weight: 100;
+	font-size: 1.5em;
+}
+
+div.container ol.breadcrumb li.active {
+  color: white;
+	background-color: #084557;
+  text-align: right;
+  width: 92%;
+	padding: 10px 15px;
+}
+
+.breadcrumb > li + li:before {
+  content: "" !important;
+}
+
+div.container ol.breadcrumb li a {
+	padding: 10px;
 }
 
 .borderbottom {
@@ -53,9 +82,13 @@ form#lot_search.lot_search div.span8 div.field a.remove_fields {
 	color: white;
 	border: 1px solid #7a5250;
 	font-weight: 100;
-	width: 96%;
+
 }
 
-.textrigt {
+.textright {
 	text-align: right;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  height: 30px !important;
 }

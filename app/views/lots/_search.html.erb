@@ -1,23 +1,32 @@
-<div class="controls-row searchtool">
-  
-  <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
-    <%= f.condition_fields do |c| %>
-      <div class="span12">
-      <%= render "condition_fields", f: c %>
-      </div>
+<div class="panel panel-success" id="accordion">
+  <div class="panel-heading panel-title">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+    <h3>Search and sort to explore tax digest</h3>
+    <p>Click to open and close sort list</p>
+    </a>
+  </div>
+  <% if params[:q].present? %>
+  <div id="collapseTwo" class="panel-collapse collapse in">
+  <% else %>
+  <div id="collapseTwo" class="panel-collapse collapse">
+  <% end %>
+  <div class="panel-body panel-primary searchpadding">
+      <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
+        <div class="row">
+          <div class="col-lg-10">
+            <%= f.condition_fields do |c| %>
+              <%= render "condition_fields", f: c %>
+            <% end %>
+            <%= link_to_add_fields "Add Conditions", f, :condition %>
+          </div>
+          <div class="col-lg-2">
+            <%= f.submit "Search", :class => "btn btn-success btn-large" %>
+          </div>
+        </div>
+        <div class="col-lg-12 textright">
+        <p><b>1) Choose the field to search. 2) Select the filter. 3) Enter the search value.</b><br><em>Use the search tool to filter property tax records. Search by name, value, greater than or less than.</em></p>
+        </div>
     <% end %>
-    
-     <div class="span12">
-       <%= link_to_add_fields "Add Conditions", f, :condition %>
-     <br><br>
-     </div>
-       
-      <div class="span2">
-        <%= f.submit "Search", :class => "btn btn-success btn-large" %>
-        <br><br>
-      </div>
-      <div class="span9">
-        <p><em> 1) Choose the field to search. 2) Select the filter. 3) Enter the search value.<br>Use the search tool to filter property tax records. Search by name, value, greater than or less than.</em></p>
-      </div>
+  </div>
+  </div>
 </div>
-<% end %>

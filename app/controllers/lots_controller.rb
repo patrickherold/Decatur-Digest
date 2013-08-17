@@ -70,6 +70,19 @@ class LotsController < ApplicationController
 
   def show
     @lot = Lot.find(params[:id])
+    @all_lots = Lot.all.sum(&:appraised_value)
+    @lot_appeal = Lot.all_commericial_appeal.sum(&:appeal_value)
+    @lot_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
+    @lot_digest = Lot.commercial_property.sum(&:appraised_value)
+    @lot_taxable = (@lot_appeal + @lot_appraised)
+    @residential_taxable = (@all_lots - @lot_taxable)
+    @lot_city_taxes_collected = (@lot_taxable * 0.01642)
+    @lot_school_taxes_collected = (@lot_taxable * 0.0209)
+    @lot_lost_to_appeal = (@lot_digest - @lot_taxable)
+    @city_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.01642)
+    @school_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.0209)
+    @total_lot_tax_lost_to_appeal = (@city_lot_tax_lost_to_appeal + @school_lot_tax_lost_to_appeal)
+
 
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title   "#{lot.owner}"
