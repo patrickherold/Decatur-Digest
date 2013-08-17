@@ -43,7 +43,19 @@
          </div>
        <% end %>
       </div>
-    </div>
+ 
+
+    <div class="panel-group" id="accordion">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseProperty">
+              <h6>Property Details</h6>
+            </a>
+          </h3>
+        </div>
+        <div id="collapseProperty" class="panel-collapse collapse">
+          <div class="panel-body">
 
       <div class="col-lg-2">
       <h4>Owner:</h4>
@@ -146,20 +158,19 @@
 <div class="col-lg-6 textright">
 <%= @lot.mailing_map_address %>
 </div>
+    </div>
+  </div>
+</div>
 
-<hr>
-
-<div class="col-lg-8">
-<div class="panel-group" id="accordion">
   <div class="panel">
     <div class="panel-heading">
       <h3 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          <h5>Tax Details</h5>
+          <h6>Tax Details</h6>
         </a>
       </h3>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse in">
+    <div id="collapseOne" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="col-lg-5 bold">
         <b>City Taxes</b>
@@ -195,16 +206,15 @@
         <div class="col-lg-2 textright">
         <%= number_to_currency(@lot.dda_tax, :unit => "$") %>
         </div>
-        
       </div>
     </div>
   </div>
-  <hr>
+
   <div class="panel">
     <div class="panel-heading">
       <h3 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-          Homestead Details
+          <h6>Homestead Details</h6>
         </a>
       </h3>
     </div>
@@ -259,32 +269,33 @@
       </div>
     </div>
   </div>
+
   <div class="panel">
     <div class="panel-heading">
       <h3 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-          Tax Analysis
+          <h6>Tax Analysis</h6>
         </a>
       </h3>
     </div>
-    <div id="collapseThree" class="panel-collapse collapse">
+    <div id="collapseThree" class="panel-collapse collapse in">
       <div class="panel-body">
-        <div class="col-lg-6 bold">
+        <div class="col-lg-7 bold">
         <h5>Total Annual Tax based on Appeal Value</h5>
         </div>
-        <div class="col-lg-6 textright">
+        <div class="col-lg-5 textright">
         <h5><%= number_to_currency(@lot.total_tax, :unit => "$") %></h5>
         </div>
-        <div class="col-lg-6 bold">
-        <h6>Total Annual Tax if based on Appraised Value</h6>
+        <div class="col-lg-7 bold">
+        <h5>Total Annual Tax if based on Appraised Value</h5>
         </div>
-        <div class="col-lg-6 textright">
-        <h6><%= number_to_currency(@lot.appraised_tax, :unit => "$") %></h6>
+        <div class="col-lg-5 textright">
+        <h5><%= number_to_currency(@lot.appraised_tax, :unit => "$") %></h5>
         </div>
-       <div class="col-lg-6 bold">
+       <div class="col-lg-7 bold">
         <h5 class="red">Annual Tax Revenue Lost to Appeal</h5>
         </div>
-        <div class="col-lg-6 textright">
+        <div class="col-lg-5 textright">
         <h5 class="red"><%= number_to_currency(@lot.lost_to_appeal, :unit => "$") %></h5>
         </div>
       </div>
@@ -294,8 +305,5 @@
 </div>
 </div>
 
-<h2 class="graybackground">Other properties nearby</h2>
-
-
-
+<hr>
 <%= render :partial => "/lots/lot_list" %>
