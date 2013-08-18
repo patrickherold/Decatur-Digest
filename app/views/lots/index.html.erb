@@ -1,5 +1,20 @@
-<%= render :partial => "/lots/search" %>
-<% unless params[:q].present? %>
+<% if params[:q].present? %>
+<style>
+.gmaps4rails_map {
+  width: 100%;
+  height: 250px;
+}
+.map_container {
+  width: 100%;
+}
+</style>
+<div class="row">
+  <div class="col-lg-12">
+    <%= gmaps4rails(@json) %>
+  </div>
+</div>
+<% else %>
+
 <div class="row">
   <div class="col-lg-4">
     <%= gmaps4rails(@json) %>
@@ -116,7 +131,5 @@
 </div>
 <% end %>
 <hr>
-  
-
 <%= render :partial => "/lots/lot_list" %>
 

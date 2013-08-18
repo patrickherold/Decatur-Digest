@@ -6,16 +6,22 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran
   attr_accessible :email, :name
-  
-  has_many :comments
+
+  has_many :portfolios, :dependent => :destroy
+  has_many :lots, :through => :portfolios
   
   has_many :evaluations, class_name: "RSEvaluation", as: :source
+
+  accepts_nested_attributes_for :lots, :reject_if => lambda { |a| a[:lot].blank? }, :allow_destroy => true
+  
   
   validates_presence_of :username
   validates_uniqueness_of :username
   
+  monetize :income_cents
+
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.provider = auth.provider
@@ -54,6 +60,4 @@ class User < ActiveRecord::Base
   def total_votes
     LotVote.joins(:lot).where(lots: {user_id: self.id}).sum('value')
   end
-
-
 end

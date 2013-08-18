@@ -1,4 +1,7 @@
 class LotsController < ApplicationController
+  
+  before_filter :authenticate_user!, :except => [:index]
+  
   # GET /lots
   # GET /lots.json
   def index
@@ -15,7 +18,11 @@ class LotsController < ApplicationController
     @city_commericial_tax_lost_to_appeal = (@commericial_lost_to_appeal * 0.01642)
     @school_commericial_tax_lost_to_appeal = (@commericial_lost_to_appeal * 0.0209)
     @total_commericial_tax_lost_to_appeal = (@city_commericial_tax_lost_to_appeal + @school_commericial_tax_lost_to_appeal)
-    @search = Lot.commercial_property.search(params[:q])
+    if user_signed_in?
+      @search = Lot.search(params[:q])
+    else
+      @search = Lot.commercial_property.search(params[:q])
+    end
     @lots = @search.result.page(params[:page]).per(20)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
@@ -70,6 +77,7 @@ class LotsController < ApplicationController
 
   def show
     @lot = Lot.find(params[:id])
+
     @all_lots = Lot.all.sum(&:appraised_value)
     @lot_appeal = Lot.all_commericial_appeal.sum(&:appeal_value)
     @lot_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
@@ -83,13 +91,15 @@ class LotsController < ApplicationController
     @school_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.0209)
     @total_lot_tax_lost_to_appeal = (@city_lot_tax_lost_to_appeal + @school_lot_tax_lost_to_appeal)
 
-
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title   "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
-    
-    @search = Lot.commercial_property.search(params[:q])
+    if user_signed_in?
+      @search = Lot.search(params[:q])
+    else
+      @search = Lot.commercial_property.search(params[:q])
+    end
     @properties = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130813221352) do
+ActiveRecord::Schema.define(:version => 20130818162455) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -64,6 +64,19 @@ ActiveRecord::Schema.define(:version => 20130813221352) do
     t.integer  "customer_id"
     t.integer  "municipal_id"
     t.boolean  "gmaps"
+    t.string   "slug"
+  end
+
+  add_index "lots", ["slug"], :name => "index_lots_on_slug"
+
+  create_table "portfolios", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "lot_id"
+    t.string   "follow_type"
+    t.string   "lot_relationship"
+    t.string   "lot_residency"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "rs_evaluations", :force => true do |t|
@@ -112,10 +125,10 @@ ActiveRecord::Schema.define(:version => 20130813221352) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -127,6 +140,11 @@ ActiveRecord::Schema.define(:version => 20130813221352) do
     t.string   "provider"
     t.string   "uid"
     t.string   "username"
+    t.datetime "birthdate"
+    t.boolean  "disabled_veteran"
+    t.integer  "income"
+    t.integer  "income_cents",           :default => 0,     :null => false
+    t.string   "income_currency",        :default => "USD", :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

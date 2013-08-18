@@ -2,6 +2,13 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  time:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d, %Y"
+      long: "%B %d, %Y"
+      login_date: "%b %e %Y @ %l:%M %p"
+      birthdate: "%B %Y"
   hello: "Hello world"
   views:
     pagination:
@@ -9,6 +16,24 @@ en:
       next: "Next"
   attributes:
     model_name:
+      property_map_address: "Address"
       land_at_40: "Land Value"
       building_at_40: "Building Value"
-    
+  simple_form:
+      labels:
+        user:
+          username: 'User name'
+          password: 'Password'
+          income_cents: 'Annual Income'
+      hints:
+        user:
+          username: 'User name to sign in.'
+          password: 'Pick a good one, please.'
+          birthdate: 'Provide your birth day and month to calculate homestead exemptions.'
+          income_cents: 'This is used to calculate an accurate homestead exemption.'
+      placeholders:
+        user:
+          username: 'Your username'
+          password: ''
+          income_cents: '50000'
+          

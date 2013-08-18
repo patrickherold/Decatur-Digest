@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'devise'
 gem "omniauth"
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 
 
 
@@ -40,7 +41,10 @@ gem 'schema_to_scaffold'
 gem 'activerecord-reputation-system'
 
 gem 'engineyard'
-gem "highcharts-js-rails"
+gem 'highcharts-js-rails'
+gem 'simple_form'
+gem 'money-rails'
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

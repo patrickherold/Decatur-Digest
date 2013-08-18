@@ -34,12 +34,12 @@
         <ul class="nav navbar-nav">
           <li><%= link_to "List All Properties", "/lots/" %></li>
             <% if user_signed_in? %>
-              <li><%= link_to "#{current_user.email}", current_user.email %></li>
-              <li><%= link_to 'Edit profile', edit_user_registration_path %> </li>
+              <li><%= link_to "#{current_user.email}", edit_user_registration_path %></li>
+              
               <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
             <% else %>
               <li><%= link_to "Sign up", new_user_registration_path %> </li>
-              <li><%= link_to "Login in with Twitter", user_omniauth_authorize_path(:twitter) %></li>
+              <li><%= link_to "Login in with Facebook", user_omniauth_authorize_path(:facebook) %></li>
               <li><%= link_to "Login", new_user_session_path %></li>
             <% end %>
         </ul>
@@ -72,6 +72,14 @@
   ga('send', 'pageview');
 
 </script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=533821743358189";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>
 

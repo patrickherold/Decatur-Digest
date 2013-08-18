@@ -1,12 +1,7 @@
 
 
 <div class="panel panel-success" id="accordion">
-  <div class="panel-heading panel-title">
-    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-      <h3>Property List (sortable)</h3>
-      <p>Click to open and close sort list</p>
-    </a>
-  </div>
+  <%= render :partial => "/lots/search" %>
   <div id="collapseOne" class="panel-collapse collapse in">
   <div class="panel-body panel-primary searchpadding">
     <%= paginate @properties %>
@@ -37,7 +32,7 @@
             <% end %>
             <td class="hidden-phone"><%= lot.zoning %></td>
             <td class="hidden-phone"><%= lot.homestead %></td>
-            <td><%= link_to "Details", lot_path(lot), :class => "btn btn-info btn-mini" %></td>
+            <td><%= link_to "Details", lot_path(lot.id), :class => "btn btn-info btn-mini" %></td>
           </tr>
         <% end %>
       </tbody>

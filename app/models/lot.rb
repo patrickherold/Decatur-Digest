@@ -1,12 +1,20 @@
 class Lot < ActiveRecord::Base
 
-  attr_accessible :latitude, :longitude, :mailing_latitude, :mailing_longitude, :customer_id, :municipal_id, :name
+  attr_accessible :latitude, :longitude, :mailing_latitude, :mailing_longitude, :customer_id, :municipal_id, :name, :property_map_address, :property_street_name
   geocoded_by :property_map_address   # can also be an IP address
   after_validation :geocode          # auto-fetch coordinates
   acts_as_gmappable
   has_reputation :votes, source: :user, aggregated_by: :sum
+  has_many :portfolios
+  has_many :users, :through => :portfolios
+
 
   UNRANSACKABLE_ATTRIBUTES = ["id", "tax_district", "created_at", "modified_at", "updated_at", "tax_year", "customer_id", "municipal_id", "tax_paid", "tax_dispute"]
+  def self.ransackable_attributes(auth_object = nil)
+      %w( property_map_address owner co_owner appraised_value land_value building_value appeal_value homestead zoning ) + _ransackers.keys
+  end
+
+
 
   has_many :lot_votes
 
@@ -438,10 +446,6 @@ class Lot < ActiveRecord::Base
   end
 
 
-##########################################################   Property Map Address not working, could be due to definitions or routes
-  def self.ransackable_attributes(auth_object = nil)
-      %w( property_map_address owner co_owner appraised_value land_value building_value appeal_value homestead zoning ) + _ransackers.keys
-  end
 
   def gmaps4rails_infowindow
     "<h4>#{self.owner}</h4>" << "#{property_map_address}"

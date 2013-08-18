@@ -89,6 +89,18 @@ form#lot_search.lot_search div.span8 div.field a.remove_fields {
 	text-align: right;
 }
 
+.textleft {
+	text-align: left;
+}
+
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   height: 30px !important;
 }
+
+.floatright {
+	float: right;
+	margin-top: -50px;
+}
+
+/* ----- SimpleForm Styles ----- */
+
