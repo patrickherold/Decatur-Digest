@@ -7,7 +7,7 @@ class LotsController < ApplicationController
   def index
     @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
     @all_lots = Lot.all.sum(&:appraised_value)
-    @commericial_appeal = Lot.all_commericial_appeal.sum(&:appeal_value)
+    @commericial_appeal = Lot.all_commericial_appeal.sum(&:full_appeal)
     @commericial_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
     @commericial_digest = Lot.commercial_property.sum(&:appraised_value)
     @commericial_taxable = (@commericial_appeal + @commericial_appraised)

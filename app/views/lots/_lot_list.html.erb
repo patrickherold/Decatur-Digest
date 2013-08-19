@@ -26,9 +26,9 @@
             <td class="hidden-phone"><%= number_to_currency(lot.land_value, :unit => "$") %></td>
             <td class="hidden-phone"><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
             <% if lot.appeal_value.to_i > 1 %>
-              <td class="hidden-phone"><div class="btn btn-danger hidden-phone"><%= number_to_currency(lot.appeal_value, :unit => "$") %></div></td>
+              <td class="hidden-phone"><div class="btn btn-danger hidden-phone"><%= number_to_currency(lot.full_appeal, :unit => "$") %></div></td>
             <% else %>
-              <td class="hidden-phone"><%= number_to_currency(lot.appeal_value, :unit => "$") %></td>
+              <td class="hidden-phone"><%= number_to_currency(lot.full_appeal, :unit => "$") %></td>
             <% end %>
             <td class="hidden-phone"><%= lot.zoning %></td>
             <td class="hidden-phone"><%= lot.homestead %></td>
