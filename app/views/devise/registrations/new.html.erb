@@ -7,11 +7,7 @@
     <%= f.input :name, :autofocus => true %>
 
     <%= f.input :email, :required => true %>
-    <%= f.input :birthdate, as: :date, start_year: Date.today.year - 100,
-                                  end_year: Date.today.year - 5, discard_day: true,
-                                  order: [:month, :year] %>
-    <%= f.input :income_cents, as: :currency %>
-    <%= f.input :disabled_veteran %>
+
     <% if f.object.password_required? %>
     <%= f.input :password, :required => true %>
     <%= f.input :password_confirmation, :required => true %>
