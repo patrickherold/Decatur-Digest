@@ -8,14 +8,5 @@ class ApplicationController < ActionController::Base
     if request.env['omniauth.origin']
        request.env['omniauth.origin']
     end
-  end
-  
-  def mobile_device?
-    if session[:mobile_param]
-      session[:mobile_param] == "1"
-    else
-      request.user_agent =~ /Mobile|webOS/
-    end
-  end
-  
+  end  
 end

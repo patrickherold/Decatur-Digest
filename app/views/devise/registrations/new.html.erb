@@ -1,15 +1,28 @@
-<h2>Sign Up</h2>
-  <%= simple_form_for @user, :html => { :class => 'form-horizontal' } do |f| %>
-    <%= f.error_notification %>
-    <%= f.input :name %>
-    <%= f.input :email %>
+<h2>Sign up</h2>
+
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, :autofocus => true %>
+        <%= f.input :fb_first_name %>
+            <%= f.input :fb_middle_name %>
+                <%= f.input :fb_last_name %>
+    <%= f.input :email, :required => true %>
     <%= f.input :birthdate, as: :date, start_year: Date.today.year - 100,
                                   end_year: Date.today.year - 5, discard_day: true,
                                   order: [:month, :year] %>
     <%= f.input :income_cents, as: :currency %>
     <%= f.input :disabled_veteran %>
-    <%= f.error :base %>
-    <%= f.button :submit, :class => "btn-success" %>
+    <% if f.object.password_required? %>
+    <%= f.input :password, :required => true %>
+    <%= f.input :password_confirmation, :required => true %>
+    <% end %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => "btn-success btn-lg" %>
+  </div>
 <% end %>
 
 <%= render "devise/shared/links" %>

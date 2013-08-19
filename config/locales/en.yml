@@ -25,6 +25,11 @@ en:
           username: 'User name'
           password: 'Password'
           income_cents: 'Annual Income'
+          encrypted_password: 'Password'
+          fb_first_name: 'Fist Name'
+          fb_middle_name: 'Middle Name'
+          fb_last_name: 'Last Name'
+          
       hints:
         user:
           username: 'User name to sign in.'

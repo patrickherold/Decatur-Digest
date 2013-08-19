@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130818162455) do
+ActiveRecord::Schema.define(:version => 20130819150651) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -145,6 +145,21 @@ ActiveRecord::Schema.define(:version => 20130818162455) do
     t.integer  "income"
     t.integer  "income_cents",           :default => 0,     :null => false
     t.string   "income_currency",        :default => "USD", :null => false
+    t.string   "fb_name"
+    t.string   "fb_first_name"
+    t.string   "fb_last_name"
+    t.string   "fb_middle_name"
+    t.string   "fb_gener"
+    t.string   "fb_locale"
+    t.string   "fb_link"
+    t.string   "fb_username"
+    t.string   "fb_timezone"
+    t.string   "fb_bio"
+    t.string   "fb_birthday"
+    t.string   "fb_cover"
+    t.string   "fb_email"
+    t.string   "fb_users_hometown"
+    t.string   "fb_picture"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

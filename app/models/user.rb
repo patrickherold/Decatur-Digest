@@ -3,19 +3,18 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :omniauth_providers => [:facebook]
+  
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran
-  attr_accessible :email, :name
-
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran, :name, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_username, :fb_gener, :fb_picture, :fb_locale, :fb_timezone, :fb_link, :fb_bio, :fb_cover, :fb_users_hometown
+ 
   has_many :portfolios, :dependent => :destroy
   has_many :lots, :through => :portfolios
   
   has_many :evaluations, class_name: "RSEvaluation", as: :source
 
   accepts_nested_attributes_for :lots, :reject_if => lambda { |a| a[:lot].blank? }, :allow_destroy => true
-  
   
   validates_presence_of :username
   validates_uniqueness_of :username
@@ -26,7 +25,10 @@ class User < ActiveRecord::Base
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.provider = auth.provider
       user.uid = auth.uid
-      user.username = auth.info.nickname
+      user.username = auth.info.username
+      user.name = auth.info.name
+      user.email = auth.info.email
+
     end
   end
 
