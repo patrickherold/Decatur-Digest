@@ -83,19 +83,26 @@ class LotsController < ApplicationController
     if @lot_appeal < @lot_appraised
       @lot_taxable =  @lot_appeal
     else
-      @lot_taxable =  @lot_appraised
+      @lot_taxable =  @lot.appraised_value
     end
     @lot_city_taxes_collected = (@lot_taxable * 0.01642)
     @lot_school_taxes_collected = (@lot_taxable * 0.0209)
     @lot_total_taxes_collected = (@lot_taxable * 0.03732)
     @lot_lost_to_appeal = (@lot.appraised_appraised - @lot_taxable)
-    @city_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.01642)
-    @school_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.0209)
-
+    
     @total_lot_tax_appraised = (@lot_appraised * 0.03732)
     @total_lot_tax_appeal = (@lot_taxable * 0.03732)
     
-    @total_lot_tax_lost_to_appeal = (@total_lot_tax_appraised - @total_lot_tax_appeal)
+    if @lot_appeal >= 10
+      @city_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.01642)
+      @school_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.0209)
+      @total_lot_tax_lost_to_appeal = (@total_lot_tax_appraised.to_i - @total_lot_tax_appeal.to_i)
+    else
+      @city_lot_tax_lost_to_appeal = 0
+      @school_lot_tax_lost_to_appeal = 0
+      @total_lot_tax_lost_to_appeal = 0
+    end
+    
 
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title   "#{lot.owner}"
