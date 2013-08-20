@@ -64,17 +64,14 @@
          </h4>
          <b>Most people believe this valuation is:</b>
          <% if @lot.reputation_for(:votes) == 0 %>
-            <h5 class="btn btn-inverse btn-mini">Just right or no votes yet.</h5>
+            <h5 class="btn btn-info btn-mini">Just right or no votes yet.</h5>
          <% elsif  @lot.reputation_for(:votes).to_s < "0" %>
            <h5 class="btn btn-success btn-mini">Too High.</h5>
          <% elsif  @lot.reputation_for(:votes).to_s > "0" %>
            <h5 class="btn btn-danger btn-mini">Too Low.</h5>
          <% end %>
          <% else %>
-         <h5>Login to vote on this property value.</5>
-         <div class="btn btn-warning">
-         <%= link_to "Login", user_omniauth_authorize_path(:facebook) %>
-         </div>
+         <h3>Login to vote on this property value.</h3>
        <% end %>
       </div>
  
