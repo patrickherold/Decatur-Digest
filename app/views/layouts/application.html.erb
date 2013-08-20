@@ -9,11 +9,15 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <%= stylesheet_link_tag "gmaps4rails" %>
+  <%= stylesheet_link_tag "bootstrap", media: "all"  %>
   <%= yield :head %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
   a.btn {
     color: white !important;
+  }
+  ul.nav li a {
+    line-height: 30px;
   }
   </style>
 
@@ -35,11 +39,9 @@
           <li><%= link_to "List All Properties", "/lots/" %></li>
             <% if user_signed_in? %>
               <li><%= link_to "#{current_user.email}", edit_user_registration_path %></li>
-              
               <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
             <% else %>
-              <li><%= link_to "Login in with Facebook", user_omniauth_authorize_path(:facebook) %></li>
-
+              <li><%= link_to image_tag("/assets/LoginWithFacebook.png", :width => "150px"), user_omniauth_authorize_path(:facebook) %></li>
             <% end %>
         </ul>
       </div><!--/.nav-collapse -->
