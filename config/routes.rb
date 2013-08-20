@@ -7,7 +7,6 @@ DecaturDigest::Application.routes.draw do
   resources :lots do
     collection { post :search, to: 'lots#index' }
     member { post :vote }
-    resources :portfolio
   end
   resources :users
 
