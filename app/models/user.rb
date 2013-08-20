@@ -26,7 +26,14 @@ class User < ActiveRecord::Base
       user.provider = auth.provider
       user.uid = auth.uid
       user.name = auth.info.name
+      user.username = auth.info.nickname
+      user.fb_picture = auth.info.image
+      user.fb_gener = auth.info.gender
       user.email = auth.info.email
+      user.fb_users_hometown = auth.info.hometown
+      user.fb_locale = auth.info.locale
+      user.fb_bio = auth.info.bio
+      user.fb_link = auth.info.link
     end
   end
 
