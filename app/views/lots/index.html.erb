@@ -102,24 +102,24 @@
           </div>
           <hr>
 
-          <div class="col-lg-8">
+          <div class="col-lg-10">
             <h6>Annual City Taxes Pending Appeal:</h6>
           </div>
-          <div class="col-lg-4 textright btn btn-danger btn-mini">
+          <div class="col-lg-2 textright btn btn-danger btn-xs">
             <%= number_to_currency(@city_commericial_tax_lost_to_appeal, :unit => "$") %>
           </div>
 
-          <div class="col-lg-8">
+          <div class="col-lg-10">
             <h6>Annual School Taxes Pending Appeal:</h6>
           </div>
-          <div class="col-lg-4 textright btn btn-danger btn-mini">
+          <div class="col-lg-2 textright btn btn-danger btn-xs">
             <%= number_to_currency(@school_commericial_tax_lost_to_appeal, :unit => "$") %>
           </div>
 
-          <div class="col-lg-8">
+          <div class="col-lg-10">
             <h5>Total Annual Tax Pending Appeal:</h5>
           </div>
-          <div class="col-lg-4 textright btn btn-danger">
+          <div class="col-lg-2 textright btn btn-danger">
             <%= number_to_currency(@total_commericial_tax_lost_to_appeal, :unit => "$") %>
           </div>
         </div>

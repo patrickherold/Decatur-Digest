@@ -58,17 +58,17 @@
        <% end %>
        <% if user_signed_in? %>
          <h4>This valuation is:
-           <%= link_to "Too High", vote_lot_path(@lot, type: "down"), method: "post", :class => "btn btn-success btn-mini"  %>
-           <%= link_to "Just Right", vote_lot_path(@lot, type: "just_right"), method: "post", :class => "btn btn-inverse btn-mini" %>
-           <%= link_to "Too Low", vote_lot_path(@lot, type: "up"), method: "post", :class => "btn btn-danger btn-mini" %>
+           <%= link_to "Too High", vote_lot_path(@lot, type: "down"), method: "post", :class => "btn btn-success btn-xs"  %>
+           <%= link_to "Just Right", vote_lot_path(@lot, type: "just_right"), method: "post", :class => "btn btn-info btn-xs" %>
+           <%= link_to "Too Low", vote_lot_path(@lot, type: "up"), method: "post", :class => "btn btn-danger btn-xs" %>
          </h4>
          <b>Most people believe this valuation is:</b>
          <% if @lot.reputation_for(:votes) == 0 %>
-            <h5 class="btn btn-info btn-mini">Just right or no votes yet.</h5>
+            <h5 class="btn btn-info btn-xs">Just right or no votes yet.</h5>
          <% elsif  @lot.reputation_for(:votes).to_s < "0" %>
-           <h5 class="btn btn-success btn-mini">Too High.</h5>
+           <h5 class="btn btn-success btn-xs">Too High.</h5>
          <% elsif  @lot.reputation_for(:votes).to_s > "0" %>
-           <h5 class="btn btn-danger btn-mini">Too Low.</h5>
+           <h5 class="btn btn-danger btn-xs">Too Low.</h5>
          <% end %>
          <% else %>
          <h3>Login to vote on this property value.</h3>
@@ -132,7 +132,7 @@
 <b>Appeal Value</b>
 </div>
 <div class="col-lg-10 textright">
-<div class="btn btn-danger btn-mini"><%= number_to_currency(@lot.full_appeal, :unit => "$") %></div>
+<div class="btn btn-danger btn-xs"><%= number_to_currency(@lot.full_appeal, :unit => "$") %></div>
 </div>
 </div>
 <% end %>
