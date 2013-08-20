@@ -32,7 +32,7 @@
             <% end %>
             <td class="hidden-phone"><%= lot.zoning %></td>
             <td class="hidden-phone"><%= lot.homestead %></td>
-            <td><%= link_to "Details", lot_path(lot.id), :class => "btn btn-info btn-mini" %></td>
+            <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-mini" %></td>
           </tr>
         <% end %>
       </tbody>
