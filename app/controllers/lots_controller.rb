@@ -1,6 +1,6 @@
 class LotsController < ApplicationController
   
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user!, :except => [:index]
   
   # GET /lots
   # GET /lots.json
