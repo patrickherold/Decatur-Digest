@@ -2269,14 +2269,14 @@ fieldset[disabled] .btn-link:focus {
 }
 
 .btn-sm,
-.btn-xs, .btn-mini {
+.btn-xs {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
 }
 
-.btn-xs, .btn-mini {
+.btn-xs {
   padding: 1px 5px;
 }
 

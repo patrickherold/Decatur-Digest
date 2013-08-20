@@ -3,7 +3,25 @@
   <li class="active graybackground"><%=t '.title', :default => @lot.property_map_address, :class => "blue" %></li>
 </ol>
 
+<style>
+.map_container {
+  height: 300px;
+}
 
+.showmap {
+  height: 320px;
+}
+
+#map {
+  height: 285px;
+}
+
+.mapcontainer {
+  width: 90%;
+  margin-left: 10px;
+}
+
+</style>
 
 <div class="body-content">
   <div class="row">
@@ -14,12 +32,27 @@
         "markers"     => {"data" => @json }
       }) %>
       </div>
+      
+
+      <div class="mapcontainer">
+        <div class="row">
+          <%= @taxes_by_type %>
+          <div id="graph3" style="width: 100%; height: 350px;"></div>
+          </div>
+        <div class="row">
+            <%= @taxes_lost_chart %>
+          <div id="graph" style="width: 100%; height: 200px;"></div>
+        </div>
+        </div>
+      
+      
+      
     </div>
     
     <div class="col-lg-8">
       <div class="well">
        <% if @lot.appeal_appraised > 10 %>
-         <h4 class="appeal">[APPEAL SUCCESSFUL] value set at: <%= number_to_currency(@lot.full_appeal, :unit => "$") %></h4>
+         <h4 class="appeal">[APPEAL SUCCESSFUL] value set at: <b><%= number_to_currency(@lot.full_appeal, :unit => "$") %></b></h4>
        <% else %>
          <h4>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h4>
        <% end %>
@@ -55,109 +88,111 @@
             </a>
           </h3>
         </div>
-        <div id="collapseProperty" class="panel-collapse collapse">
+        <div id="collapseProperty" class="panel-collapse collapse in">
           <div class="panel-body">
-
-      <div class="col-lg-2">
+<div class="row">
+      <div class="col-lg-4">
       <h4>Owner:</h4>
       </div>
-      <div class="col-lg-6  textright">
+      <div class="col-lg-8  textright">
       <h4><%=t '.title', :default => @lot.owners_name %></h4>
       </div>
+</div>
 
       <% if @lot.co_owner.present? %>
-      <div class="col-lg-2">
+<div class="row">
+      <div class="col-lg-4">
       Co-Owner:
       </div>
-      <div class="col-lg-6 bold">
+      <div class="col-lg-8 bold">
       <%=t '.title', :default => @lot.co_owners_name %> 
+      </div>
       </div>
       <% end %>
       <% if @lot.in_care_of.present? %>
-      <div class="col-lg-2">
+<div class="row">
+      <div class="col-lg-4">
       Managed by: 
       </div>
-      <div class="col-lg-6 bold">
+      <div class="col-lg-8 bold">
       <%=t '.title', :default => @lot.in_care_of %> 
+      </div>
       </div>
       <% end %>
 
 
-
-<div class="col-lg-2 bold">
+<div class="row">
+<div class="col-lg-4 bold">
 <b>Appraised Value</b>
 </div>
-<div class="col-lg-2 textright">
+<div class="col-lg-8 textright">
 <b><%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></b>
 </div>
-
-<div class="col-lg-2 bold">
-<% if @lot.appeal_appraised.present? %>
-<b>Appeal Value</b>
-<% end %>
 </div>
-<div class="col-lg-2 textright">
 <% if @lot.full_appeal.present? %>
-<div class="btn btn-danger btn-mini"><%= number_to_currency(@lot.full_appeal, :unit => "$") %></div>
-<% end %>
-</div>
-
-
-
+<div class="row">
 <div class="col-lg-2 bold">
-<b>Land Value</b>
+<b>Appeal Value</b>
+</div>
+<div class="col-lg-10 textright">
+<div class="btn btn-danger btn-mini"><%= number_to_currency(@lot.full_appeal, :unit => "$") %></div>
+</div>
+</div>
+<% end %>
+
+<div class="row">
+<div class="col-lg-2 bold">
+Land Value
 </div>
 <div class="col-lg-2 textright">
 <%= number_to_currency(@lot.land_appraised, :unit => "$") %>
 </div>
 
-
 <div class="col-lg-2 bold">
-<b>Building Value</b>
+Building Value
 </div>
 <div class="col-lg-2 textright">
 <%= number_to_currency(@lot.building_appraised, :unit => "$") %>
 </div>
 
-
-
-
 <div class="col-lg-2 bold">
-<b>Tax District</b>
+Tax District
 </div>
 <div class="col-lg-2 textright">
 <%= @lot.tax_district %>
 </div>
-
-<div class="col-lg-2 bold">
-<b>Parcel ID</b>
-</div>
-<div class="col-lg-2 textright">
-<%= @lot.parcel_id %>
 </div>
 
-
-
+<div class="row">
 <div class="col-lg-2 bold">
-<b>Zoning</b>
+Zoning
 </div>
 <div class="col-lg-2 textright">
 <%= @lot.zoning %>
 </div>
 
 <div class="col-lg-2 bold">
-<b>Tax Year</b>
+Tax Year
 </div>
 <div class="col-lg-2 textright">
 <%= @lot.tax_year %>
 </div>
 
-
 <div class="col-lg-2 bold">
-<b>Mailing Address</b>
+Parcel ID
 </div>
-<div class="col-lg-6 textright">
+<div class="col-lg-2 textright">
+<%= @lot.parcel_id %>
+</div>
+</div>
+
+<div class="row">
+<div class="col-lg-4 bold">
+Mailing Address
+</div>
+<div class="col-lg-8 textright">
 <%= @lot.mailing_map_address %>
+</div>
 </div>
     </div>
   </div>
@@ -173,6 +208,7 @@
     </div>
     <div id="collapseOne" class="panel-collapse collapse">
       <div class="panel-body">
+        <div class="row">
         <div class="col-lg-5 bold">
         <b>City Taxes</b>
         </div>
@@ -187,6 +223,9 @@
         <div class="col-lg-2 textright">
         <%= number_to_currency(@lot.school_tax, :unit => "$") %>
         </div>
+        </div>
+
+        <div class="row">
         <div class="col-lg-5 bold">
         <b>Capital Tax</b>
         </div>
@@ -200,12 +239,15 @@
         <div class="col-lg-2 textright">
         <%= number_to_currency(@lot.bond_tax, :unit => "$") %>
         </div>
-
+        </div>
+        
+        <div class="row">
         <div class="col-lg-5 bold">
         <b>Downtown Development Tax</b>
         </div>
         <div class="col-lg-2 textright">
         <%= number_to_currency(@lot.dda_tax, :unit => "$") %>
+        </div>
         </div>
       </div>
     </div>
@@ -285,19 +327,19 @@
         <h5>Total Annual Tax based on Appeal Value</h5>
         </div>
         <div class="col-lg-5 textright">
-        <h5><%= number_to_currency(@lot.total_tax, :unit => "$") %></h5>
+        <h5><%= number_to_currency(@total_lot_tax_appeal, :unit => "$") %></h5>
         </div>
         <div class="col-lg-7 bold">
         <h5>Total Annual Tax if based on Appraised Value</h5>
         </div>
         <div class="col-lg-5 textright">
-        <h5><%= number_to_currency(@lot.appraised_tax, :unit => "$") %></h5>
+        <h5><%= number_to_currency(@total_lot_tax_appraised, :unit => "$") %></h5>
         </div>
        <div class="col-lg-7 bold">
-        <h5 class="red">Annual Tax Revenue Lost to Appeal</h5>
+        <h5 class="red">Annual Tax Revenue Lost pending Appeal</h5>
         </div>
         <div class="col-lg-5 textright">
-        <h5 class="red"><%= number_to_currency(@lot.lost_to_appeal, :unit => "$") %></h5>
+        <h5 class="red bold"><%= number_to_currency(@total_lot_tax_lost_to_appeal, :unit => "$") %></h5>
         </div>
         <div class="col-lg-2 textright"></div>
         <div class="col-lg-5 textright">

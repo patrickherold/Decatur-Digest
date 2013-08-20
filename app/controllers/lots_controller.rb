@@ -1,6 +1,6 @@
 class LotsController < ApplicationController
   
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index, :show]
   
   # GET /lots
   # GET /lots.json
@@ -78,18 +78,24 @@ class LotsController < ApplicationController
   def show
     @lot = Lot.find(params[:id])
 
-    @all_lots = Lot.all.sum(&:appraised_value)
-    @lot_appeal = Lot.all_commericial_appeal.sum(&:appeal_value)
-    @lot_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
-    @lot_digest = Lot.commercial_property.sum(&:appraised_value)
-    @lot_taxable = (@lot_appeal + @lot_appraised)
-    @residential_taxable = (@all_lots - @lot_taxable)
+    @lot_appeal = @lot.full_appeal
+    @lot_appraised = @lot.appraised_value
+    if @lot_appeal < @lot_appraised
+      @lot_taxable =  @lot_appeal
+    else
+      @lot_taxable =  @lot_appraised
+    end
     @lot_city_taxes_collected = (@lot_taxable * 0.01642)
     @lot_school_taxes_collected = (@lot_taxable * 0.0209)
-    @lot_lost_to_appeal = (@lot_digest - @lot_taxable)
+    @lot_total_taxes_collected = (@lot_taxable * 0.03732)
+    @lot_lost_to_appeal = (@lot.appraised_appraised - @lot_taxable)
     @city_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.01642)
     @school_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.0209)
-    @total_lot_tax_lost_to_appeal = (@city_lot_tax_lost_to_appeal + @school_lot_tax_lost_to_appeal)
+
+    @total_lot_tax_appraised = (@lot_appraised * 0.03732)
+    @total_lot_tax_appeal = (@lot_taxable * 0.03732)
+    
+    @total_lot_tax_lost_to_appeal = (@total_lot_tax_appraised - @total_lot_tax_appeal)
 
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title   "#{lot.owner}"
@@ -103,6 +109,23 @@ class LotsController < ApplicationController
     @properties = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
+
+    @taxes_by_type = Highcharts.new do |chart|
+      chart.chart(renderTo: 'graph3')
+      chart.title('')
+      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['City Taxes',@lot_city_taxes_collected], ['School Taxes',@lot_school_taxes_collected]])
+      chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
+    end
+
+    @taxes_lost_chart = Highcharts.new do |chart|
+      chart.chart(renderTo: 'graph')
+      chart.title('')
+      chart.xAxis(categories: ['City Taxes lost on appeal', 'School Taxes lost on appeal', 'Total Taxes lost on appeal'])
+      chart.yAxis(title: 'Dollars', min: 0)
+      chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_lot_tax_lost_to_appeal, @school_lot_tax_lost_to_appeal, @total_lot_tax_lost_to_appeal])
+      chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+    end
+
 
     respond_to do |format|
       format.html # show.html.erb
