@@ -53,71 +53,71 @@
       <div class="panel-body">
         <div class="col-lg-12">
           <div class="col-lg-4">
-            Total Taxable Properties:
+            Total Properties:
           </div>
-          <div class="col-lg-8  textright">
+          <div class="col-lg-8  textright bold">
             <%= number_with_delimiter(Lot.find(:all).count, :delimiter => ",")  %>
           </div>
 
           <div class="col-lg-4">
             Total Digest Appraised Value:
           </div>
-          <div class="col-lg-8 textright">
+          <div class="col-lg-8 textright bold">
             <%= number_to_currency(@all_lots, :unit => "$") %>
           </div>
 
           <div class="col-lg-8">
             Total Commercial Digest as Appraised:
           </div>
-          <div class="col-lg-4 textright">
+          <div class="col-lg-4 textright bold">
             <%= number_to_currency(@commericial_digest, :unit => "$") %>
           </div>
 
           <div class="col-lg-8">
-            Commercial Digest Appraisal Accepted:
+            Commercial Appraisals Accepted:
           </div>
-          <div class="col-lg-4 textright">
+          <div class="col-lg-4 textright bold">
             <%= number_to_currency(@commericial_appraised, :unit => "$") %>
           </div>
 
           <div class="col-lg-8">
-            Commercial Digest Appraisal Appealed:
+            Commercial Appraisals Appealed:
           </div>
-          <div class="col-lg-4 textright">
+          <div class="col-lg-4 textright bold">
             <%= number_to_currency(@commericial_appeal, :unit => "$") %>
           </div>
 
           <div class="col-lg-8">
-            Commercial Digest Lost to Appeal:
+            Commercial Digest Under Appeal:
           </div>
-          <div class="col-lg-4 textright">
+          <div class="col-lg-4 textright bold">
             <b><%= number_to_currency(@commericial_lost_to_appeal, :unit => "$") %></b>
           </div>
 
           <div class="col-lg-8">
             Commercial Digest Taxable Value:
           </div>
-          <div class="col-lg-4 textright">
+          <div class="col-lg-4 textright bold">
             <%= number_to_currency(@commericial_taxable, :unit => "$") %>
           </div>
           <hr>
 
           <div class="col-lg-8">
-            <h6>Annual City Taxes Lost to Appeal:</h6>
+            <h6>Annual City Taxes Pending Appeal:</h6>
           </div>
           <div class="col-lg-4 textright btn btn-danger btn-mini">
             <%= number_to_currency(@city_commericial_tax_lost_to_appeal, :unit => "$") %>
           </div>
 
           <div class="col-lg-8">
-            <h6>Annual School Taxes Lost to Appeal:</h6>
+            <h6>Annual School Taxes Pending Appeal:</h6>
           </div>
           <div class="col-lg-4 textright btn btn-danger btn-mini">
             <%= number_to_currency(@school_commericial_tax_lost_to_appeal, :unit => "$") %>
           </div>
 
           <div class="col-lg-8">
-            <h5>Total Annual Tax Lost to Appeal:</h5>
+            <h5>Total Annual Tax Pending Appeal:</h5>
           </div>
           <div class="col-lg-4 textright btn btn-danger">
             <%= number_to_currency(@total_commericial_tax_lost_to_appeal, :unit => "$") %>

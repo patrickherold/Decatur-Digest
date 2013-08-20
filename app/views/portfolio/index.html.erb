@@ -1,0 +1,11 @@
+<h1>Portfolio</h1>
+
+<div id="portfolios">
+  <% @portfolio.each do |portfolio| %>
+    <div class="portfolio">
+      <%= simple_format portfolio.user_id.to_s %>
+    </div>
+  <% end %>
+</div>
+
+<p><%= link_to "Add to my portfolio", [:new, @portfolio, :portfolio] %></p>

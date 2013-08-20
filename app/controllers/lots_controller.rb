@@ -104,10 +104,19 @@ class LotsController < ApplicationController
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
     
+    @user_id = current_user.id
+    @lot_id = @lot
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @lot }
     end
+  end
+  
+  def update
+    @portfolio = Lot.portfolio.build if user_signed_in?
+    @user_id = current_user.id
+    @lot_id = @lot.id
   end
 end
 

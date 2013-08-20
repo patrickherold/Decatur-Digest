@@ -1,0 +1,10 @@
+<h4>Add to my portfolio</h4>
+<%= form_for(@lot) do |f| %>
+  <div class="field">
+    <%= options_for_select([['I OWN this property', 'Owner'], ['I RENT this property', 'Rental'], ['I am a NEIGHBOR of this property', 'Neighbor'], ['Other', 'Other'], ], 2) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+

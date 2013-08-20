@@ -7,10 +7,9 @@ DecaturDigest::Application.routes.draw do
   resources :lots do
     collection { post :search, to: 'lots#index' }
     member { post :vote }
+    resources :portfolio
   end
-  resources :comments
   resources :users
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

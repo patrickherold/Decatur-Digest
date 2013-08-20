@@ -13,7 +13,24 @@
         "map_options" => {"auto_zoom" => false, "zoom" => 18, "type" => "SATELLITE"},
         "markers"     => {"data" => @json }
       }) %>
-        </div>
+      </div>
+      <hr>
+      <div class="add_to_portfolio">
+        <h4>Add to my portfolio</h4>
+        <%= form_for(@lot) do |f| %>
+          <div class="field">
+            <%= radio_button_tag(:follow_type, "Owner") %>
+            <%= label_tag(:follow_type_owner, "I OWN this property") %>
+            <%= radio_button_tag(:follow_type, "Rental") %>
+            <%= label_tag(:follow_type_owner, "I RENT this property") %>
+            <%= radio_button_tag(:follow_type, "Other") %>
+            <%= label_tag(:follow_type_owner, "Other") %>
+          </div>
+          <div class="actions">
+            <%= f.submit "Add to my portfolio", :class => "btn btn-success" %>
+          </div>
+        <% end %>
+      </div>
     </div>
     
     <div class="col-lg-8">
