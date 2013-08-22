@@ -46,6 +46,7 @@ GEM
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
+    easystats (0.5.0)
     engineyard (2.2.1)
       engineyard-cloud-client (~> 1.0.12)
       engineyard-serverside-adapter (= 2.0.7)
@@ -199,6 +200,7 @@ DEPENDENCIES
   activerecord-reputation-system
   coffee-rails (~> 3.2.1)
   devise
+  easystats
   engineyard
   geocoder
   gmaps4rails

@@ -15,7 +15,6 @@ class Lot < ActiveRecord::Base
   end
 
 
-
   has_many :lot_votes
 
   def self.by_votes
@@ -435,7 +434,6 @@ class Lot < ActiveRecord::Base
     end
   end
   
-  
   def senior_80_school_homestead
     if homestead == "H5S"
       city_tax_exemption = @lot.appraised_appraised
@@ -444,12 +442,6 @@ class Lot < ActiveRecord::Base
       dda_tax = 70000
     end
   end
-  
-  def residential_property
-    
-  end
-
-
 
   def gmaps4rails_infowindow
     "<h4>#{self.owner}</h4>" << "#{property_map_address}"

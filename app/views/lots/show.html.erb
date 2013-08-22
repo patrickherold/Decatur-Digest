@@ -52,7 +52,7 @@
     <div class="col-lg-8">
       <div class="well">
        <% if @lot.appeal_appraised > 10 %>
-         <h4 class="appeal">[APPEAL SUCCESSFUL] value set at: <b><%= number_to_currency(@lot.full_appeal, :unit => "$") %></b></h4>
+         <h4 class="appeal">[APPEAL PENDING] value set at: <b><%= number_to_currency(@lot.full_appeal, :unit => "$") %></b></h4>
        <% else %>
          <h4>This property is valued at: <%= number_to_currency(@lot.appraised_appraised, :unit => "$") %></h4>
        <% end %>
@@ -85,7 +85,7 @@
             </a>
           </h3>
         </div>
-        <div id="collapseProperty" class="panel-collapse collapse in">
+        <div id="collapseProperty" class="panel-collapse in">
           <div class="panel-body">
 <div class="row">
       <div class="col-lg-4">
@@ -340,7 +340,7 @@ Mailing Address
         </div>
         <div class="col-lg-2 textright"></div>
         <div class="col-lg-5 textright">
-        <div class="fb-comments" data-href="http://propertytaxexplorer.com" data-width="auto"></div>
+        <div class="fb-comments" data-href="http://propertytaxexplorer.com/lots/<%= @lot.id %>" data-width="auto"></div>
         </div>
       </div>
     </div>    

@@ -43,6 +43,7 @@ gem 'engineyard'
 gem 'highcharts-js-rails'
 gem 'simple_form'
 gem 'money-rails'
+gem "easystats"
 
 
 # To use ActiveModel has_secure_password
