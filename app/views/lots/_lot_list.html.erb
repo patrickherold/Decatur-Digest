@@ -9,29 +9,29 @@
       <thead>
         <tr>
           <th>Property Address</th>
-          <th class="hidden-phone"><%= sort_link @search, :owner, "Owner Name" %></th>
-          <th class="hidden-phone"><%= sort_link @search, :land_value, "Land Value" %></th>
-          <th class="hidden-phone"><%= sort_link @search, :appraised_value, "Appraised Value" %></th>
-          <th class="hidden-phone"><%= sort_link @search, :appeal_value, "Appeal Value" %></th>
-          <th class="hidden-phone"><%= sort_link @search, :zoning, "Zoning" %></th>
-          <th class="hidden-phone"><%= sort_link @search, :homestead, "Homestead" %></th>
+          <th class="hidden-xs"><%= sort_link @search, :owner, "Owner Name" %></th>
+          <th class="hidden-xs"><%= sort_link @search, :land_value, "Land Value" %></th>
+          <th class="hidden-xs"><%= sort_link @search, :appraised_value, "Appraised Value" %></th>
+          <th class="visible"><%= sort_link @search, :appeal_value, "Appeal Value" %></th>
+          <th class="visible-lg"><%= sort_link @search, :zoning, "Zoning" %></th>
+          <th class="visible-lg"><%= sort_link @search, :homestead, "Homestead" %></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <% @properties.each do |lot| %>
             <tr>
-            <td><%= lot.property_street if lot.property_map_address.present? %></td>
-            <td class="hidden-phone"><%= lot.owners_name if lot.owner.present? %></td>
-            <td class="hidden-phone"><%= number_to_currency(lot.land_value, :unit => "$") %></td>
-            <td class="hidden-phone"><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
+            <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
+            <td class="hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
+            <td class="hidden-xs"><%= number_to_currency(lot.land_value, :unit => "$") %></td>
+            <td class="hidden-xs"><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
             <% if lot.appeal_value.to_i > 1 %>
-              <td class="hidden-phone"><div class="btn btn-danger hidden-phone btn-xs"><%= number_to_currency(lot.full_appeal, :unit => "$") %></div></td>
+              <td class="visible"><div class="btn btn-danger hidden-phone btn-xs"><%= number_to_currency(lot.full_appeal, :unit => "$") %></div></td>
             <% else %>
-              <td class="hidden-phone"><%= number_to_currency(lot.full_appeal, :unit => "$") %></td>
+              <td class="visible-xs"><%= number_to_currency(lot.full_appeal, :unit => "$") %></td>
             <% end %>
-            <td class="hidden-phone"><%= lot.zoning %></td>
-            <td class="hidden-phone"><%= lot.homestead %></td>
+            <td class="visible-lg"><%= lot.zoning %></td>
+            <td class="visible-lg"><%= lot.homestead %></td>
             <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %></td>
           </tr>
         <% end %>

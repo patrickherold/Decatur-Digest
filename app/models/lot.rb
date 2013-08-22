@@ -459,6 +459,11 @@ class Lot < ActiveRecord::Base
     "#{self.property_map_address}" 
   end
 
+
+  def property_street_and_number
+    [property_street_number, property_street_name_prefix, property_street_name, property_street_type].join(" ")
+  end
+
   def property_street
     if property_street_type_postfix.present?
       [property_street_sub_number, property_street_number, property_street_name_prefix, property_street_name, property_street_type, property_street_type_postfix].join(" ")
