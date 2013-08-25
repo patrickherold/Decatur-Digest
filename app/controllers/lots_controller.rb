@@ -1,12 +1,12 @@
 class LotsController < ApplicationController
-  
+
   before_filter :authenticate_user!, :except => [:index]
-  
+
   # GET /lots
   # GET /lots.json
   def index
-    @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
-    @all_lots = Lot.all.sum(&:appraised_value)
+    # @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
+    @all_lots = Lot.sum('appraised_value') #all.sum(&:appraised_value)
     @commericial_appeal = Lot.all_commericial_appeal.sum(&:full_appeal)
     @commericial_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
     @commericial_digest = Lot.commercial_property.sum(&:appraised_value)
@@ -29,11 +29,10 @@ class LotsController < ApplicationController
     @properties = @lots.order('appeal_value desc')
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
-      marker.title  "#{lot.owner}"
+      marker.title "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
-    
-    
+
     @taxes_lost_chart = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph')
       chart.title('Commercial Taxes Lost to Appeal')
@@ -42,7 +41,7 @@ class LotsController < ApplicationController
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @school_commericial_tax_lost_to_appeal, @total_commericial_tax_lost_to_appeal])
       chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
     end
-    
+
     @taxes_by_zoning = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph2')
       chart.title('Commercial Taxes Paid to...')
@@ -51,11 +50,11 @@ class LotsController < ApplicationController
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @commericial_school_taxes_collected])
       chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
     end
-    
+
     @taxes_by_type = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph3')
       chart.title('Taxes by property type')
-      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['Commercial',@commericial_taxable], ['Residential',@residential_taxable]])
+      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['Commercial', @commericial_taxable], ['Residential', @residential_taxable]])
       chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
     end
 
@@ -74,25 +73,24 @@ class LotsController < ApplicationController
   end
 
 
-
   def show
     @lot = Lot.find(params[:id])
 
     @lot_appeal = @lot.full_appeal
     @lot_appraised = @lot.appraised_value
     if @lot_appeal < @lot_appraised
-      @lot_taxable =  @lot_appeal
+      @lot_taxable = @lot_appeal
     else
-      @lot_taxable =  @lot.appraised_value
+      @lot_taxable = @lot.appraised_value
     end
     @lot_city_taxes_collected = (@lot_taxable * 0.01642)
     @lot_school_taxes_collected = (@lot_taxable * 0.0209)
     @lot_total_taxes_collected = (@lot_taxable * 0.03732)
     @lot_lost_to_appeal = (@lot.appraised_appraised - @lot_taxable)
-    
+
     @total_lot_tax_appraised = (@lot_appraised * 0.03732)
     @total_lot_tax_appeal = (@lot_taxable * 0.03732)
-    
+
     if @lot_appeal >= 10
       @city_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.01642)
       @school_lot_tax_lost_to_appeal = (@lot_lost_to_appeal * 0.0209)
@@ -102,10 +100,10 @@ class LotsController < ApplicationController
       @school_lot_tax_lost_to_appeal = 0
       @total_lot_tax_lost_to_appeal = 0
     end
-    
+
 
     @json = @lot.to_gmaps4rails do |lot, marker|
-      marker.title   "#{lot.owner}"
+      marker.title "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
     if user_signed_in?
@@ -120,7 +118,7 @@ class LotsController < ApplicationController
     @taxes_by_type = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph3')
       chart.title('')
-      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['City Taxes',@lot_city_taxes_collected], ['School Taxes',@lot_school_taxes_collected]])
+      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['City Taxes', @lot_city_taxes_collected], ['School Taxes', @lot_school_taxes_collected]])
       chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
     end
 
