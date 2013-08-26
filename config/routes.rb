@@ -10,6 +10,8 @@ DecaturDigest::Application.routes.draw do
   end
   resources :users
 
+  get '/login' => 'users#login_dev', :as => :development_login
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

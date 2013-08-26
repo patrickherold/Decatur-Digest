@@ -80,4 +80,13 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def login_dev
+    user = User.find_by_id(params[:id])
+    unless Rails.env == 'development' && user
+      redirect_to '/'
+      return
+    end
+    sign_in_and_redirect user
+  end
 end
