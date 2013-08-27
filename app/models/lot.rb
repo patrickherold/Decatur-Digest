@@ -26,6 +26,8 @@ class Lot < ActiveRecord::Base
 
   scope :commercial_property, where("zoning = ?", 'C3')
 
+  scope :same_zoning, where("zoning = ?", '?')
+
   scope :appeal_property, where("appeal_value >= ?", '1')
 
   scope :appraised_property, where("appeal_value < ?", '1')
@@ -37,10 +39,19 @@ class Lot < ActiveRecord::Base
   scope :simlar_land_value, lambda { |base, percent|
     where(:land_value => (base * (1 - percent))..(base * (1 + percent)))
   }
+  
+  scope :simlar_building_value, lambda { |base, percent|
+    where(:building_value => (base * (1 - percent))..(base * (1 + percent)))
+  }
 
   def land_value_deviation(percentage)
     (Lot.simlar_land_value(land_value, percentage).mean(:land_value) - land_value).abs
   end
+
+  def building_value_deviation(percentage)
+    (Lot.simlar_building_value(building_value, percentage).mean(:building_value) - building_value).abs
+  end
+
 
   def owner_last_name
     self.owner.split(' ')[0..0].join(' ')

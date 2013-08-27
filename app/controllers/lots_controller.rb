@@ -100,7 +100,7 @@ class LotsController < ApplicationController
       @school_lot_tax_lost_to_appeal = 0
       @total_lot_tax_lost_to_appeal = 0
     end
-
+    
 
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"
@@ -130,7 +130,6 @@ class LotsController < ApplicationController
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_lot_tax_lost_to_appeal, @school_lot_tax_lost_to_appeal, @total_lot_tax_lost_to_appeal])
       chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
     end
-
 
     respond_to do |format|
       format.html # show.html.erb

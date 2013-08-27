@@ -96,7 +96,7 @@
             <div class="col-lg-4">
               Co-Owner:
             </div>
-            <div class="col-lg-8 bold">
+            <div class="col-lg-8 textright">
               <%= t '.title', :default => @lot.co_owners_name %>
             </div>
           </div>
@@ -106,13 +106,13 @@
             <div class="col-lg-4">
               Managed by:
             </div>
-            <div class="col-lg-8 bold">
+            <div class="col-lg-8 textright">
               <%= t '.title', :default => @lot.in_care_of %>
             </div>
           </div>
       <% end %>
 
-
+<hr>
       <div class="row">
         <div class="col-lg-4 bold">
           <b>Appraised Value</b>
@@ -123,28 +123,62 @@
       </div>
       <% if @lot.full_appeal.present? %>
           <div class="row">
-            <div class="col-lg-2 bold">
+            <div class="col-lg-4 bold">
               <b>Appeal Value</b>
             </div>
-            <div class="col-lg-10 textright">
+            <div class="col-lg-8 textright">
               <div class="btn btn-danger btn-xs"><%= number_to_currency(@lot.full_appeal, :unit => "$") %></div>
             </div>
           </div>
       <% end %>
+      <hr>
       <div class="row">
-        <div class="col-lg-6 bold">
-          <b>Land Value Deviation (5%)</b>
+
+        <div class="col-lg-9 bold">
+          <b>Building Value compared to similar land values</b>
         </div>
-        <div class="col-lg-6 textright">
+        <div class="col-lg-3 textright">
+          <b>
+            <% deviation = @lot.building_value_deviation(0.05) %>
+            <%= number_to_currency(deviation, :unit => "$") %>
+
+            <% building_deviation_of_similar_land_values = Lot.same_zoning.simlar_land_value(0.05).standard_deviation %>
+            <% if building_deviation_of_similar_land_values < deviation %>
+            <span class="label label-danger">
+              <%= (deviation / building_deviation_of_similar_land_values).round(2) %>% %
+            </span>
+            <% else %>
+            <span class="label label-success">
+              <%= (deviation / building_deviation_of_similar_land_values).round(2) %>% %
+            </span>
+            <% end %>
+          </b>
+        </div>
+        
+        <div class="col-lg-9 bold">
+          <b>Land Value compared to similar building values</b>
+        </div>
+        <div class="col-lg-3 textright">
           <b>
             <% deviation = @lot.land_value_deviation(0.05) %>
             <%= number_to_currency(deviation, :unit => "$") %>
-            <span class="label label-danger"><%= (100.0 * deviation / @lot.land_value).round(2) %>%</span>
+
+            <% land_deviation_of_similar_building_values = Lot.same_zoning.simlar_building_value(0.05).standard_deviation %>
+            <% if building_deviation_of_similar_land_values < deviation %>
+            <span class="label label-danger">
+              <%= (deviation / land_deviation_of_similar_building_values).round(2) %>% %
+            </span>
+            <% else %>
+            <span class="label label-success">
+              <%= (deviation / land_deviation_of_similar_building_values).round(2) %>% %
+            </span>
+            <% end %>
           </b>
         </div>
+        
       </div>
 
-      <br/>
+      <hr>
 
       <div class="row">
         <div class="col-lg-2 bold">
