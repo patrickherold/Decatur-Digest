@@ -32,7 +32,7 @@ module ModelStats
     end
 
     def standard_deviation(attr, options = {})
-      all(options).collect(&attr).standard_deviation
+      all(options).collect(&attr).standard_deviation || 0
     end
 
     def variance(attr, options = {})

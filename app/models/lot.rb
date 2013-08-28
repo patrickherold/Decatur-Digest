@@ -26,7 +26,7 @@ class Lot < ActiveRecord::Base
 
   scope :commercial_property, where("zoning = ?", 'C3')
 
-  scope :same_zoning, where("zoning = ?", '?')
+  scope :same_zoning, lambda { |z| where("zoning = ?", z) }
 
   scope :appeal_property, where("appeal_value >= ?", '1')
 
@@ -39,7 +39,7 @@ class Lot < ActiveRecord::Base
   scope :simlar_land_value, lambda { |base, percent|
     where(:land_value => (base * (1 - percent))..(base * (1 + percent)))
   }
-  
+
   scope :simlar_building_value, lambda { |base, percent|
     where(:building_value => (base * (1 - percent))..(base * (1 + percent)))
   }

@@ -112,7 +112,7 @@
           </div>
       <% end %>
 
-<hr>
+      <hr>
       <div class="row">
         <div class="col-lg-4 bold">
           <b>Appraised Value</b>
@@ -142,40 +142,38 @@
             <% deviation = @lot.building_value_deviation(0.05) %>
             <%= number_to_currency(deviation, :unit => "$") %>
 
-            <% building_deviation_of_similar_land_values = Lot.same_zoning.simlar_land_value(0.05).standard_deviation %>
+            <% building_deviation_of_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, 0.05).standard_deviation(:building_value) %>
             <% if building_deviation_of_similar_land_values < deviation %>
             <span class="label label-danger">
-              <%= (deviation / building_deviation_of_similar_land_values).round(2) %>% %
+              <%= building_deviation_of_similar_land_values == 0 ? 0.0 : (deviation / building_deviation_of_similar_land_values).round(2) %>%
             </span>
             <% else %>
             <span class="label label-success">
-              <%= (deviation / building_deviation_of_similar_land_values).round(2) %>% %
+              <%= building_deviation_of_similar_land_values == 0 ? 0.0 : (deviation / building_deviation_of_similar_land_values).round(2) %>%
             </span>
             <% end %>
           </b>
         </div>
-        
+
         <div class="col-lg-9 bold">
           <b>Land Value compared to similar building values</b>
         </div>
         <div class="col-lg-3 textright">
-          <b>
-            <% deviation = @lot.land_value_deviation(0.05) %>
-            <%= number_to_currency(deviation, :unit => "$") %>
+          <% deviation = @lot.land_value_deviation(0.05) %>
+          <%= number_to_currency(deviation, :unit => "$") %>
 
-            <% land_deviation_of_similar_building_values = Lot.same_zoning.simlar_building_value(0.05).standard_deviation %>
-            <% if building_deviation_of_similar_land_values < deviation %>
+          <% land_deviation_of_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, 0.05).standard_deviation(:land_value) %>
+          <% if building_deviation_of_similar_land_values < deviation %>
             <span class="label label-danger">
-              <%= (deviation / land_deviation_of_similar_building_values).round(2) %>% %
+              <%= land_deviation_of_similar_building_values == 0 ? 0.0 : (deviation / land_deviation_of_similar_building_values).round(2) %>%
             </span>
-            <% else %>
+          <% else %>
             <span class="label label-success">
-              <%= (deviation / land_deviation_of_similar_building_values).round(2) %>% %
+              <%= land_deviation_of_similar_building_values == 0 ? 0.0 : (deviation / land_deviation_of_similar_building_values).round(2) %>%
             </span>
-            <% end %>
-          </b>
+          <% end %>
         </div>
-        
+
       </div>
 
       <hr>
