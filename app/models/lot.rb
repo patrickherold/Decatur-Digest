@@ -36,8 +36,8 @@ class Lot < ActiveRecord::Base
 
   scope :all_commericial_appraised, commercial_property.appraised_property
 
-  scope :simlar_land_value, lambda { |base, percent|
-    where(:land_value => (base * (1 - percent))..(base * (1 + percent)))
+  scope :simlar_land_value, lambda { |base, amount|
+    where(:land_value => (base - (amount))..(base + (amount)))
   }
 
   scope :simlar_building_value, lambda { |base, percent|
@@ -51,8 +51,7 @@ class Lot < ActiveRecord::Base
   def building_value_deviation(percentage)
     (Lot.simlar_building_value(building_value, percentage).mean(:building_value) - building_value).abs
   end
-
-
+  
   def owner_last_name
     self.owner.split(' ')[0..0].join(' ')
   end
