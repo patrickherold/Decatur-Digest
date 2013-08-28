@@ -51,7 +51,7 @@ class Lot < ActiveRecord::Base
   def building_value_deviation(percentage)
     (Lot.simlar_building_value(building_value, percentage).mean(:building_value) - building_value).abs
   end
-  
+
   def owner_last_name
     self.owner.split(' ')[0..0].join(' ')
   end
@@ -512,6 +512,18 @@ class Lot < ActiveRecord::Base
     else
       [mailing_street, mailing_city, mailing_state, mailing_zip].join(", ")
     end
+  end
+
+  def same_zoning_lots_with_similar_land_value(similar_land_value)
+    Lot.same_zoning(zoning).simlar_land_value(land_value, similar_land_value)
+  end
+
+  def same_zoning_lots_with_similar_building_value(similar_building_value)
+    Lot.same_zoning(zoning).simlar_building_value(building_value, similar_building_value)
+  end
+
+  def building_land_value_ratio
+    building_value / land_value
   end
 
 end

@@ -135,74 +135,44 @@
       <div class="row">
 
         <div class="col-lg-9 bold">
-          <b>Similar lots have an average building value of:</b>
+          Similar lots have an average building value of:
+        </div>
+        <div class="col-lg-3 textright bold">
+          <% building_average_value_from_similar_land_values = @lot.same_zoning_lots_with_similar_land_value(@lot.land_value * 0.1).average(:building_value) %>
+          <% ratio = @lot.building_value / building_average_value_from_similar_land_values %>
+          <span class="label label-success"><%= number_to_currency(building_average_value_from_similar_land_values, :unit => "$") %></span>
+        </div>
+        <br/><br/>
+
+        <div class="col-lg-12 bold">
+          This building value is
+             <span class="label label-<%= ratio < 0.5 || ratio > 1.5 ? 'danger' : ratio < 0.75 || ratio > 1.25 ? 'warning' : 'success' %>">
+               <%= (ratio * 100).round(2) %>%
+             </span>
+          &nbsp;of comparable buildings.
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-lg-9 bold">
+          Similar buildings have an average lot value of:
         </div>
         <div class="col-lg-3 textright">
-          <b>
-            
-            <% building_average_value_from_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, (@lot.land_value * 0.1)).average(:building_value) %>
-
-            <% if ((building_average_value_from_similar_land_values / @lot.building_value)*100).round(2) > 100 %>
-            <span class="label label-danger">
-              <%= number_to_currency(building_average_value_from_similar_land_values, :unit => "$") %>
-            </span>
-            <% else %>
-            <span class="label label-success">
-              <%= number_to_currency(building_average_value_from_similar_land_values, :unit => "$") %>
-            </span>
-            <% end %>
-          </b>
+          <% lot_average_value_from_similar_building_values = @lot.same_zoning_lots_with_similar_building_value(@lot.land_value * 0.1).average(:land_value) %>
+          <% ratio = @lot.land_value / lot_average_value_from_similar_building_values %>
+          <span class="label label-success"><%= number_to_currency(lot_average_value_from_similar_building_values, :unit => "$") %></span>
         </div>
-        <br><br>
-        <% building_average_value_from_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, (@lot.land_value * 0.1)).average(:building_value) %>
+        <br/><br/>
+
         <div class="col-lg-12 bold">
-           <b>This building value is <% if ((building_average_value_from_similar_land_values - @lot.building_value )*100).round(2)  > 100 %>
-             <span class="label label-danger">
-               <%= ((@lot.building_value / building_average_value_from_similar_land_values)*100).round(2) %> % 
-             </span>
-             <% else %>
-             <span class="label label-success">
-               <%= ((@lot.building_value / building_average_value_from_similar_land_values)*100).round(2) %> % 
-             </span> 
-             <% end %>  of comparable buildings.</b>
-         </div>
-        
+          This lot value is
+          <span class="label label-<%= ratio < 0.5 || ratio > 1.5 ? 'danger' : ratio < 0.75 || ratio > 1.25 ? 'warning' : 'success' %>">
+               <%= (ratio * 100).round(2) %>%
+           </span>
+          &nbsp;of comparable lots.
         </div>
-<hr>
-        <div class="row">
-
-           <div class="col-lg-9 bold">
-             <b>Similar buildings have an average lot value of:</b>
-           </div>
-           <div class="col-lg-3 textright">
-             <b>
-
-               <% lot_average_value_from_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, (@lot.land_value * 0.1)).average(:land_value) %>
-
-               <% if ((lot_average_value_from_similar_building_values / @lot.land_value )*100).round(2)  > 100 %>
-               <span class="label label-danger">
-                 <%= number_to_currency(lot_average_value_from_similar_building_values, :unit => "$") %>
-               </span>
-               <% else %>
-               <span class="label label-success">
-                 <%= number_to_currency(lot_average_value_from_similar_building_values, :unit => "$") %>
-               </span>
-               <% end %>
-             </b>
-           </div>
-           <br><br>
-           <% lot_average_value_from_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, (@lot.land_value * 0.1)).average(:land_value) %>
-           <div class="col-lg-12 bold">
-              <b>This lot value is <% if ((lot_average_value_from_similar_building_values - @lot.land_value )*100).round(2)  > 100 %>
-                <span class="label label-danger">
-                  <%= ((@lot.land_value / lot_average_value_from_similar_building_values)*100).round(2) %> % 
-                </span>
-                <% else %>
-                <span class="label label-success">
-                  <%= ((@lot.land_value / lot_average_value_from_similar_building_values)*100).round(2) %> % 
-                </span> 
-                <% end %>  of comparable lots.</b>
-            </div>
       </div>
 
       <hr>
@@ -351,16 +321,17 @@
         <% else %>
             <b>No Homestead</b>
         <% end %>
-        <br><br>
+        <br/><br/>
         <b>Details about your homestead exemption:</b>
 
         <p>
           <% if @lot.general_homestead %>
               <b>General Homestead - H1 or H1F or H6DF</b> homeowners whose primary residence is at this address qualify
-              for a general homestead exemption.<br>Taxes eligible for homestead deduction:
-              <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b><br>Taxes
+              for a general homestead exemption.<br/>Taxes eligible for homestead deduction:
+              <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b><br/>Taxes
               NOT eligible for homestead deduction:
-              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value
+              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br/><br/>Total Deduction from Appraised
+              Value
               - $20,000.
 
           <% elsif @lot.senior_62_school_homestead %>
@@ -369,7 +340,8 @@
               exemption. Taxes eligible for homestead deduction:
               <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b>
               Taxes NOT eligible for homestead deduction:
-              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value
+              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br/><br/>Total Deduction from Appraised
+              Value
               - City $70,000. - Schools $110,000
 
           <% elsif @lot.senior_62_low_income_school_homestead %>
@@ -378,7 +350,8 @@
               exemption. Taxes eligible for homestead deduction:
               <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b>
               Taxes NOT eligible for homestead deduction:
-              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value
+              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br/><br/>Total Deduction from Appraised
+              Value
               - City $20,000. - Schools $60,000
 
           <% elsif @lot.senior_65_school_homestead %>
@@ -386,7 +359,8 @@
               65 years of age qualify for a general homestead exemption. Taxes eligible for homestead deduction:
               <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax</b>
               Taxes NOT eligible for homestead deduction:
-              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br><br>Total Deduction from Appraised Value
+              <b>City of Decatur Bond Tax, City Schools of Decatur Tax</b>.<br/><br/>Total Deduction from Appraised
+              Value
               - $1,000.
 
           <% elsif @lot.senior_70_school_homestead %>
@@ -394,7 +368,7 @@
               is over 65 years of age qualify for a general homestead exemption. Taxes eligible for homestead deduction:
               <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax,
                 City Schools of Decatur Tax</b> Taxes NOT eligible for homestead deduction:
-              <b>City of Decatur Bond Tax</b>.<br><br>Total Deduction from Appraised Value - City $71,000. - Schools
+              <b>City of Decatur Bond Tax</b>.<br/><br/>Total Deduction from Appraised Value - City $71,000. - Schools
               $110,000
 
           <% elsif @lot.senior_80_school_homestead %>
@@ -403,7 +377,7 @@
               exemption. Taxes eligible for homestead deduction:
               <b>City of Decatur General Fund, City of Decatur Capital Tax, City of Decatur Downtown Development Tax,
                 City Schools of Decatur Tax</b> Taxes NOT eligible for homestead deduction:
-              <b>City of Decatur Bond Tax</b>.<br><br>Total Deduction from Appraised Value - City $71,000. - Schools
+              <b>City of Decatur Bond Tax</b>.<br/><br/>Total Deduction from Appraised Value - City $71,000. - Schools
               100%
 
           <% elsif @lot.homestead.nil? %>

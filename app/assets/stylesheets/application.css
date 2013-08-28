@@ -434,3 +434,7 @@ input[type="checkbox"]:focus {
 .dev-login {
     padding: 15px 20px;
 }
+
+.bold {
+    font-weight: bold!important;
+}

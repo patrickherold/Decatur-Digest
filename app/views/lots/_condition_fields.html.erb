@@ -1,10 +1,10 @@
 <div class="field">
   <%= f.attribute_fields do |a| %>
-    <%= a.attribute_select %>
+      <%= a.attribute_select %>
   <% end %>
-  <%= f.predicate_select only: [:cont, :not_cont, :eq, :gt, :lt ] %>
+  <%= f.predicate_select only: [:cont, :not_cont, :eq, :gt, :lt] %>
   <%= f.value_fields do |v| %>
-    <%= v.text_field :value, :placeholder => "Enter search term"%>
+      <%= v.text_field :value, :placeholder => "Enter search term" %>
   <% end %>
   <%= link_to "remove", '#', class: "remove_fields btn btn-danger btn-xs" %>
 </div>
