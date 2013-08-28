@@ -135,35 +135,14 @@
       <div class="row">
 
         <div class="col-lg-9 bold">
-          <b>Building Value compared other buildings on similar land:</b>
-        </div>
-        <div class="col-lg-3 textright">
-          <b>
-            
-            <% building_average_value_from_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, 3000).average(:building_value) %>
-
-            <% if building_average_value_from_similar_land_values > @lot.building_value %>
-            <span class="label label-danger">
-              <%= ((@lot.building_value / building_average_value_from_similar_land_values)*100).round(2) %> %
-            </span>
-            <% else %>
-            <span class="label label-success">
-              <%= ((@lot.building_value / building_average_value_from_similar_land_values)*100).round(2) %> %
-            </span>
-            <% end %>
-          </b>
-        </div>
-        
-        <br><br>
-        <div class="col-lg-9 bold">
           <b>Similar lots have an average building value of:</b>
         </div>
         <div class="col-lg-3 textright">
           <b>
             
-            <% building_average_value_from_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, 3000).average(:building_value) %>
+            <% building_average_value_from_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, (@lot.land_value * 0.1)).average(:building_value) %>
 
-            <% if building_average_value_from_similar_land_values > @lot.building_value %>
+            <% if ((building_average_value_from_similar_land_values / @lot.building_value)*100).round(2) > 100 %>
             <span class="label label-danger">
               <%= number_to_currency(building_average_value_from_similar_land_values, :unit => "$") %>
             </span>
@@ -174,40 +153,33 @@
             <% end %>
           </b>
         </div>
+        <br><br>
+        <% building_average_value_from_similar_land_values = Lot.same_zoning(@lot.zoning).simlar_land_value(@lot.land_value, (@lot.land_value * 0.1)).average(:building_value) %>
+        <div class="col-lg-12 bold">
+           <b>This building value is <% if ((building_average_value_from_similar_land_values - @lot.building_value )*100).round(2)  > 100 %>
+             <span class="label label-danger">
+               <%= ((@lot.building_value / building_average_value_from_similar_land_values)*100).round(2) %> % 
+             </span>
+             <% else %>
+             <span class="label label-success">
+               <%= ((@lot.building_value / building_average_value_from_similar_land_values)*100).round(2) %> % 
+             </span> 
+             <% end %>  of comparable buildings.</b>
+         </div>
         
         </div>
 <hr>
         <div class="row">
-          <div class="col-lg-9 bold">
-             <b>Lot Value compared other lots with similar building:</b>
-           </div>
-           <div class="col-lg-3 textright">
-             <b>
 
-               <% lot_average_value_from_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, 3000).average(:land_value) %>
-
-               <% if lot_average_value_from_similar_building_values > @lot.land_value %>
-               <span class="label label-danger">
-                 <%= ((@lot.land_value / lot_average_value_from_similar_building_values)*100).round(2) %> %
-               </span>
-               <% else %>
-               <span class="label label-success">
-                 <%= ((@lot.land_value / lot_average_value_from_similar_building_values)*100).round(2) %> %
-               </span>
-               <% end %>
-             </b>
-           </div>
-
-           <br><br>
            <div class="col-lg-9 bold">
              <b>Similar buildings have an average lot value of:</b>
            </div>
            <div class="col-lg-3 textright">
              <b>
 
-               <% lot_average_value_from_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, 3000).average(:land_value) %>
+               <% lot_average_value_from_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, (@lot.land_value * 0.1)).average(:land_value) %>
 
-               <% if lot_average_value_from_similar_building_values > @lot.land_value %>
+               <% if ((lot_average_value_from_similar_building_values / @lot.land_value )*100).round(2)  > 100 %>
                <span class="label label-danger">
                  <%= number_to_currency(lot_average_value_from_similar_building_values, :unit => "$") %>
                </span>
@@ -218,6 +190,19 @@
                <% end %>
              </b>
            </div>
+           <br><br>
+           <% lot_average_value_from_similar_building_values = Lot.same_zoning(@lot.zoning).simlar_building_value(@lot.building_value, (@lot.land_value * 0.1)).average(:land_value) %>
+           <div class="col-lg-12 bold">
+              <b>This lot value is <% if ((lot_average_value_from_similar_building_values - @lot.land_value )*100).round(2)  > 100 %>
+                <span class="label label-danger">
+                  <%= ((@lot.land_value / lot_average_value_from_similar_building_values)*100).round(2) %> % 
+                </span>
+                <% else %>
+                <span class="label label-success">
+                  <%= ((@lot.land_value / lot_average_value_from_similar_building_values)*100).round(2) %> % 
+                </span> 
+                <% end %>  of comparable lots.</b>
+            </div>
       </div>
 
       <hr>

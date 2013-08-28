@@ -40,8 +40,8 @@ class Lot < ActiveRecord::Base
     where(:land_value => (base - (amount))..(base + (amount)))
   }
 
-  scope :simlar_building_value, lambda { |base, percent|
-    where(:building_value => (base * (1 - percent))..(base * (1 + percent)))
+  scope :simlar_building_value, lambda { |base, amount|
+    where(:building_value => (base - (amount))..(base + (amount)))
   }
 
   def land_value_deviation(percentage)
