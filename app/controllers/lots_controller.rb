@@ -120,6 +120,7 @@ class LotsController < ApplicationController
       chart.title('')
       chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['City Taxes', @lot_city_taxes_collected], ['School Taxes', @lot_school_taxes_collected]])
       chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
+      chart.credits(0)
     end
 
     @taxes_lost_chart = Highcharts.new do |chart|
@@ -129,8 +130,9 @@ class LotsController < ApplicationController
       chart.yAxis(title: 'Dollars', min: 0)
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_lot_tax_lost_to_appeal, @school_lot_tax_lost_to_appeal, @total_lot_tax_lost_to_appeal])
       chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+      chart.credits(0)
     end
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @lot }

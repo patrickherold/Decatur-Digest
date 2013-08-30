@@ -526,4 +526,8 @@ class Lot < ActiveRecord::Base
     building_value / land_value
   end
 
+  def self.building_average_value_from_similar_land_values
+    self.same_zoning_lots_with_similar_land_value(self.land_value * 0.15).average(:building_value)
+  end
+
 end
