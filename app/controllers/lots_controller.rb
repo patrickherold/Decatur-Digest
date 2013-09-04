@@ -26,12 +26,14 @@ class LotsController < ApplicationController
     @lots = @search.result.page(params[:page]).per(20)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
-    @properties = @lots.order('appeal_value desc')
+    @properties = @lots.order('appraised_value desc')
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
+    
+    
 
     @taxes_lost_chart = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph')
@@ -101,6 +103,11 @@ class LotsController < ApplicationController
       @total_lot_tax_lost_to_appeal = 0
     end
     
+    if @lot.reputation_for(:votes) < 0
+      @lot_vote = @lot.reputation_for(:votes) * -1
+    else 
+      @lot_vote = @lot.reputation_for(:votes)
+    end
 
     @json = @lot.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"

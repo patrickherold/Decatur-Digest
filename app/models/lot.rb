@@ -23,6 +23,28 @@ class Lot < ActiveRecord::Base
         joins('left join lot_votes on lot_id=lots.id').
         order('votes desc')
   end
+  
+  state_machine initial: :open do
+    event :add_property_to_workflow do
+      transition :open => :under_review
+    end
+
+    event :remove_property__from_workflow do
+      transition :under_review => :open
+    end
+
+    event :review_complete do
+      transition :under_review => :complete
+    end
+
+    event :audit_property do
+      transition :under_review => :pending_audit
+    end
+
+    event :audit_complete do
+      transition :pending_audit => :audit_completed
+    end
+  end
 
   scope :commercial_property, where("zoning = ?", 'C3')
 

@@ -1,71 +1,63 @@
 <%- model_class = User -%>
 <div class="page-header">
-  <h2><%= @user.name %></h2>
+  <h2><%= @user.name %> <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_user_path(@user), :class => 'btn btn-warning btn-xs' %></h2>
 </div>
-<div class="row">
-  <div class="span2">
+
+<div class="container">
+  <div class="col-lg-2">
     Email Address:
   </div>
   
-  <div class="span9">
+  <div class="col-lg-9">
     <%= @user.email %>
   </div>
-  <div class="span2">
+  <div class="col-lg-2">
     Username:
   </div>
-  <div class="span9">
+  <div class="col-lg-9">
     <%= @user.username %>
   </div>
-  <div class="span2">
+  <div class="col-lg-2">
     Birthdate:
   </div>
-  <div class="span9">
+  <div class="col-lg-9">
     <% if  @user.birthdate? %>
     <%= I18n.l(@user.birthdate, :format=>:birthdate) %>
+    <% else %>
+    n/a
     <% end %>
   </div>
-  <div class="span2">
+  <div class="col-lg-2">
     Disability Status:
   </div>
-  <div class="span9">
+  <div class="col-lg-9">
     <% if  @user.disabled_veteran? %>
       Disabled Veteran
     <% else %>
-      none
+      n/a
     <% end %>
   </div>
-  <div class="span2">
+  <div class="col-lg-2">
     Household Income:
   </div>
-  <div class="span9">
+  <div class="col-lg-9">
     <%= @user.income %>
   </div>
-  <div class="span2">
+  <div class="col-lg-2">
     Last Sign In:
   </div>
-  <div class="span9">
+  <div class="col-lg-9">
     <%= I18n.l(@user.last_sign_in_at, :format=>:login_date) %>
   </div>
-  <div class="span11">
+  <div class="col-lg-11">
     You've signed in: <b><%= @user.sign_in_count %></b> time(s)
   </div>
-
-
-
-
-
-</div>
-
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              users_path, :class => 'btn btn-inverse'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_user_path(@user), :class => 'btn btn-warning' %>
 </div>
 
 
 <hr>
-<h3>Properties in my portfolio:</h3>
+<h3>Properties I've voted on:</h3>
 
   <div id="collapseOne" class="panel-collapse collapse in">
   <div class="panel-body panel-primary searchpadding">
@@ -73,18 +65,18 @@
       <thead>
         <tr>
           <th>Property Address</th>
-          <th>Property Residency</th>
-          <th>Property Status</th>
+          <th>Property Value</th>
+          <th>Property Votes</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <% for portfolio in @user.portfolios do %>
+        <% for vote in @my_lot_votes do %>
          <tr>
-          <td><%= portfolio.lot.property_map_address %></td>
-          <td><%= portfolio.lot_residency %></td>
-          <td><%= portfolio.follow_type %></td>
-          <td><%= link_to "Details", lot_path(portfolio.lot), :class => "btn btn-info btn-xs" %></td>
+          <td><%= vote.property_map_address %></td>
+          <td><%= number_to_currency vote.taxable, :unit => "$", :precision => 0 %></td>
+          <td><%= number_with_precision vote.reputation_for(:votes), :precision => 0 %></td>
+          <td><%= link_to "Details", lot_path(vote), :class => "btn btn-info btn-xs" %></td>
          </tr>
         <% end %>
       </tbody>

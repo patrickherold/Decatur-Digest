@@ -15,6 +15,9 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
 
+    @my_lot_votes = Lot.evaluated_by(:votes, @user)
+
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }

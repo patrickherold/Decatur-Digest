@@ -2,7 +2,8 @@
   <%= f.attribute_fields do |a| %>
       <%= a.attribute_select %>
   <% end %>
-  <%= f.predicate_select only: [:cont, :not_cont, :eq, :gt, :lt] %>
+  <%= f.predicate_select only: [:cont, :not_cont, :eq, :gt, :lt], :compounds => false %>
+  
   <%= f.value_fields do |v| %>
       <%= v.text_field :value, :placeholder => "Enter search term" %>
   <% end %>

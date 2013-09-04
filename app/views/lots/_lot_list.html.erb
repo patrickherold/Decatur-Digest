@@ -9,7 +9,7 @@
           <th>Property Address</th>
           <th class="hidden-xs"><%= sort_link @search, :owner, "Owner Name" %></th>
           <th class="hidden-xs"><%= sort_link @search, :land_value, "Land Value" %></th>
-          <th class="hidden-xs"><%= sort_link @search, :appraised_value, "Appraised Value" %></th>
+          <th class="hidden-xs"><%= sort_link @search, :appraised_value, "Appraised" %></th>
           <th class="visible"><%= sort_link @search, :appeal_value, "Appeal Value" %></th>
           <th class="visible-lg"><%= sort_link @search, :zoning, "Zoning" %></th>
           <th class="visible-lg"><%= sort_link @search, :homestead, "Homestead" %></th>
@@ -23,7 +23,7 @@
               <td class="hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
               <td class="hidden-xs"><%= number_to_currency(lot.land_value, :unit => "$") %></td>
               <td class="hidden-xs"><%= number_to_currency(lot.appraised_appraised, :unit => "$") %></td>
-              <% if lot.appeal_value.to_i > 1 %>
+              <% if lot.appeal_value.to_i > 10 %>
                   <td class="visible">
                     <div class="btn btn-danger btn-xs"><%= number_to_currency(lot.full_appeal, :unit => "$") %></div>
                   </td>
@@ -32,7 +32,14 @@
               <% end %>
               <td class="visible-lg"><%= lot.zoning %></td>
               <td class="visible-lg"><%= lot.homestead %></td>
-              <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %></td>
+              
+              <% if number_with_precision lot.reputation_for(:votes) >= 1 %>
+                <td><%= link_to "#{number_with_precision lot.reputation_for(:votes), :precision => 0 } Vote(s)", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-warning btn-xs" %></td>
+                <% elsif number_with_precision lot.reputation_for(:votes) >= 5 %>
+                  <td><%= link_to "#{number_with_precision lot.reputation_for(:votes), :precision => 0 } Vote(s)", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-danger btn-xs" %></td>
+              <% else %>
+                <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %></td>
+              <% end %>
             </tr>
         <% end %>
         </tbody>

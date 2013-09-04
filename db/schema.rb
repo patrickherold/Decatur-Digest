@@ -11,14 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130819150651) do
+ActiveRecord::Schema.define(:version => 20130904174443) do
 
   create_table "comments", :force => true do |t|
-    t.string   "content"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "commentable_id",   :default => 0
+    t.string   "commentable_type", :default => ""
+    t.string   "title",            :default => ""
+    t.text     "body"
+    t.string   "subject",          :default => ""
+    t.integer  "user_id",          :default => 0,  :null => false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "lots", :force => true do |t|
     t.string   "tax_district"
@@ -64,12 +74,11 @@ ActiveRecord::Schema.define(:version => 20130819150651) do
     t.integer  "customer_id"
     t.integer  "municipal_id"
     t.boolean  "gmaps"
-    t.string   "slug"
+    t.string   "state"
+    t.datetime "timestamps"
   end
 
-  add_index "lots", ["slug"], :name => "index_lots_on_slug"
-
-  create_table "portfolios", :force => true do |t|
+  create_table "portfolio", :force => true do |t|
     t.integer  "user_id"
     t.integer  "lot_id"
     t.string   "follow_type"
@@ -77,6 +86,11 @@ ActiveRecord::Schema.define(:version => 20130819150651) do
     t.string   "lot_residency"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+  end
+
+  create_table "portfolios", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "rs_evaluations", :force => true do |t|
