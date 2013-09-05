@@ -40,7 +40,7 @@ a:focus {
   padding-bottom: 0;
 }
 .text-primary {
-  color: #594f8d;
+  color: #4f638d;
 }
 .text-info {
   color: #5dcff3;
@@ -1184,8 +1184,8 @@ fieldset[disabled] .btn-twitter.active {
 }
 .btn-primary {
   color: #fff !important;
-  background-color: #594f8d;
-  border-color: #594f8d;
+  background-color: #4f638d;
+  border-color: #4f638d;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -1216,8 +1216,8 @@ fieldset[disabled] .btn-primary:hover,
 fieldset[disabled] .btn-primary:focus,
 fieldset[disabled] .btn-primary:active,
 fieldset[disabled] .btn-primary.active {
-  background-color: #594f8d;
-  border-color: #594f8d;
+  background-color: #4f638d;
+  border-color: #4f638d;
 }
 .btn-success {
   color: #fff !important;
@@ -1988,7 +1988,7 @@ fieldset[disabled] .btn-gplus.active {
   color: #8b93a6;
 }
 .bg-primary {
-  background-color: #594f8d;
+  background-color: #4f638d;
   color: #dbd8e9;
 }
 .bg-primary.lt,
@@ -2005,7 +2005,7 @@ fieldset[disabled] .btn-gplus.active {
 }
 .bg-primary.dker,
 .bg-primary .dker {
-  background-color: #4b4276;
+  background-color: #4f638d;
 }
 .bg-primary a {
   color: #eae9f2;

@@ -37,7 +37,7 @@ class LotsController < ApplicationController
 
     @taxes_lost_chart = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph')
-      chart.title('Commercial Taxes Lost to Appeal')
+      chart.title('Commercial Taxes Suspended during Appeal')
       chart.xAxis(categories: ['City Taxes lost on appeal', 'School Taxes lost on appeal', 'Total Taxes lost on appeal'])
       chart.yAxis(title: 'Dollars', min: 0)
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @school_commericial_tax_lost_to_appeal, @total_commericial_tax_lost_to_appeal])

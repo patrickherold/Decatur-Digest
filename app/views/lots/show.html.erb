@@ -1,8 +1,9 @@
-<ol class="breadcrumb">
-  <li class="graybackground"><a href="/" class="title">HOME</a></li>
-  <li class="active graybackground"><%= t '.title', :default => @lot.property_map_address, :class => "blue" %></li>
-</ol>
-
+<h1>
+<span class="label label-primary">
+  <%= t '.title', :default => @lot.property_map_address, :class => "blue" %>
+</span>
+</h1>
+<br>
 <style>
     .map_container {
         height: 300px;
@@ -44,6 +45,9 @@
     </div>
   </div>
   <% end %>
+    <div class="fb-comments" data-href="http://propertytaxexplorer.com/lots/<%= @lot.id %>" data-width="400px"></div>
+  
+  <hr>
 </div>
 
 <div class="col-lg-8">
@@ -78,21 +82,10 @@
 
 <hr>
 
-<div class="col-lg-12 textright">
-  <div class="fb-comments" data-href="http://propertytaxexplorer.com/lots/<%= @lot.id %>" data-width="auto"></div>
-</div>
 
-<hr>
 
 <div class="panel-group" id="accordion">
 <div class="panel">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseProperty">
-        <h6>Property Details</h6>
-      </a>
-    </h3>
-  </div>
   <div id="collapseProperty" class="panel-collapse in">
     <div class="panel-body">
       <div class="row">

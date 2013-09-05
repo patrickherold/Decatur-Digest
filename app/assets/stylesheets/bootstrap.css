@@ -3956,7 +3956,7 @@ a.list-group-item:focus {
   border-bottom-color: #dddddd;
 }
 .panel-primary {
-  border-color: #428bca;
+  border-color: #244d6a;
 }
 .panel-primary > .panel-heading {
   color: #ffffff;
@@ -3970,12 +3970,12 @@ a.list-group-item:focus {
   border-bottom-color: #428bca;
 }
 .panel-success {
-  border-color: #d6e9c6;
+  border-color: #cedfeb;
 }
 .panel-success > .panel-heading {
-  color: #468847;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
+  color: #244d6a;
+  background-color: #d8e7f0;
+  border-color: #c6dde9;
 }
 .panel-success > .panel-heading + .panel-collapse .panel-body {
   border-top-color: #d6e9c6;
