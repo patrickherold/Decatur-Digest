@@ -1,6 +1,6 @@
 DecaturDigest::Application.routes.draw do
   root :to => "application#index"
-  
+    
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},
                      controllers: {omniauth_callbacks: "omniauth_callbacks"}
 
@@ -11,6 +11,11 @@ DecaturDigest::Application.routes.draw do
   resources :users
 
   get '/login' => 'users#login_dev', :as => :development_login
+
+
+
+  get "static_pages/about"
+  get "static_pages/contact"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

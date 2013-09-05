@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
   def show
   end
   
+  def about
+    generic
+  end
+  
+  def contact
+    generic
+  end
 
   def after_sign_up_path_for(resource)
   return request.env['omniauth.origin'] || session[:return_to] 
