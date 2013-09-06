@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <title>liteGov | Keeping it simple and clear</title>
-  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="LiteGove" content="property tax records" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -55,11 +55,6 @@
                     </a>
                   </li>
                   <li>
-                    <a href="/static_pages/support/">
-                      <span>Contact Support</span>
-                    </a>
-                  </li>
-                  <li>
                   <%= link_to "Logout", destroy_user_session_path, method: :delete %>
                   </li>
               <% else %>
@@ -67,12 +62,12 @@
                 <span><%= link_to image_tag("/assets/LoginWithFacebook.png", :width => "150px"), user_omniauth_authorize_path(:facebook) %></span>
                 </li>
               <li>
-                <a href="/static_pages//about">
+                <a href="/static_pages/about">
                   <span>About liteGov</span>
                 </a>
               </li>
               <li>
-                <a href="/static_pages//contact">
+                <a href="/static_pages/contact">
                   <span>Contact liteGov</span>
                 </a>
               </li>
@@ -107,12 +102,7 @@
 	<script src="assets/jquery.min.js"></script>
   <!-- Bootstrap -->
   <script src="assets/bootstrap.js"></script>
-  <!-- Sparkline Chart -->
-  <script src="assets/charts/sparkline/jquery.sparkline.min.js"></script>
-  <!-- App -->
-  <script src="assets/app.js"></script>
-  <script src="assets/app.plugin.js"></script>
-  <script src="assets/app.data.js"></script>  
+ 
 
 
   <%= yield :scripts %>

@@ -1,9 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show]
+  before_filter :authenticate_user!, :except => [:show, :new]
 
   def index
-    @users = User.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

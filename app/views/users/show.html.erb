@@ -1,3 +1,4 @@
+<% if user_signed_in? && (@user.user_id == current_user.id ) %>
 <%- model_class = User -%>
 <div class="page-header">
   <h2><%= @user.name %> <%= link_to t('.edit', :default => t("helpers.links.edit")),
@@ -83,4 +84,6 @@
     </table>
   </div>
   </div>
-
+<% else %>
+<img src="/assets/Road-Closed.jpg" class="img-responsive">
+<% end %>

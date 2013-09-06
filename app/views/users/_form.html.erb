@@ -6,8 +6,8 @@
                                 end_year: Date.today.year - 5, discard_day: true,
                                 order: [:month, :year] %>
   <%= f.input :income_cents, as: :currency %>
-  <%= f.input :disabled_veteran %>
   <%= f.error :base %>
+  <br><br>
   <%= f.button :submit, :class => "btn-success" %>
 <% end %>
 <hr>
