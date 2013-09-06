@@ -5,8 +5,6 @@ class Lot < ActiveRecord::Base
   after_validation :geocode # auto-fetch coordinates
   acts_as_gmappable
   has_reputation :votes, source: :user, aggregated_by: :sum
-  has_many :portfolios
-  has_many :users, :through => :portfolios
 
   UNRANSACKABLE_ATTRIBUTES = ["id", "tax_district", "created_at", "modified_at", "updated_at", "tax_year", "customer_id", "municipal_id", "tax_paid", "tax_dispute"]
 

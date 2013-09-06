@@ -45,7 +45,6 @@ gem 'money-rails'
 gem "easystats"
 gem 'statsmix'
 gem 'ey_config'
-gem 'state_machine'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
