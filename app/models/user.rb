@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran, :name, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_username, :fb_gener, :fb_picture, :fb_locale, :fb_timezone, :fb_link, :fb_bio, :fb_cover, :fb_users_hometown
  
-  has_many :portfolios, :dependent => :destroy
+  has_one :portfolios, :dependent => :destroy
   has_many :lots, :through => :portfolios
   
   has_many :evaluations, class_name: "RSEvaluation", as: :source

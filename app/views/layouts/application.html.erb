@@ -13,9 +13,9 @@
 
   <%= yield :head %>
   <!--[if lt IE 9]>
-    <script src="assets/ie/respond.min.js" cache="false"></script>
-    <script src="assets/ie/html5.js" cache="false"></script>
-    <script src="assets/ie/fix.js" cache="false"></script>
+    <script src="/assets/ie/respond.min.js" cache="false"></script>
+    <script src="/assets/ie/html5.js" cache="false"></script>
+    <script src="/assets/ie/fix.js" cache="false"></script>
   <![endif]-->
 </head>
 <body>
@@ -45,15 +45,17 @@
                   <li>
                   <%= link_to "My Account", "/users/#{current_user.id}" %>
                   <li>
+                    <!--
                     <a href="/workflows/">
                       <span>My Workflows</span>
                     </a>
                   </li>
                   <li>
-                    <a href="/portfolio/">
+                    <a href="/portfolios/">
                       <span>My Portfolio</span>
                     </a>
                   </li>
+                  -->
                   <li>
                   <%= link_to "Logout", destroy_user_session_path, method: :delete %>
                   </li>
@@ -99,9 +101,9 @@
     </section>
     <!-- /.vbox -->
   </section>
-	<script src="assets/jquery.min.js"></script>
+	<script src="/assets/jquery.min.js"></script>
   <!-- Bootstrap -->
-  <script src="assets/bootstrap.js"></script>
+  <script src="/assets/bootstrap.js"></script>
  
 
 

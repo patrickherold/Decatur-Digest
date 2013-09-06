@@ -1,4 +1,5 @@
 DecaturDigest::Application.routes.draw do
+  
   root :to => "application#index"
     
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},
@@ -9,9 +10,10 @@ DecaturDigest::Application.routes.draw do
     member { post :vote }
   end
   resources :users
+  resources :portfolios
 
   get '/login' => 'users#login_dev', :as => :development_login
-
+  
   get "static_pages/about"
   get "static_pages/contact"
 

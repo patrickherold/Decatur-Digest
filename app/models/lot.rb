@@ -8,8 +8,6 @@ class Lot < ActiveRecord::Base
   has_many :portfolios
   has_many :users, :through => :portfolios
 
-  include ModelStats
-
   UNRANSACKABLE_ATTRIBUTES = ["id", "tax_district", "created_at", "modified_at", "updated_at", "tax_year", "customer_id", "municipal_id", "tax_paid", "tax_dispute"]
 
   def self.ransackable_attributes(auth_object = nil)
@@ -22,28 +20,6 @@ class Lot < ActiveRecord::Base
     select('lots.*, coalesce(value, 0) as votes').
         joins('left join lot_votes on lot_id=lots.id').
         order('votes desc')
-  end
-  
-  state_machine initial: :open do
-    event :add_property_to_workflow do
-      transition :open => :under_review
-    end
-
-    event :remove_property__from_workflow do
-      transition :under_review => :open
-    end
-
-    event :review_complete do
-      transition :under_review => :complete
-    end
-
-    event :audit_property do
-      transition :under_review => :pending_audit
-    end
-
-    event :audit_complete do
-      transition :pending_audit => :audit_completed
-    end
   end
 
   scope :commercial_property, where("zoning = ?", 'C3')

@@ -12,9 +12,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-
     @my_lot_votes = Lot.evaluated_by(:votes, @user)
-
 
     respond_to do |format|
       format.html # show.html.erb
