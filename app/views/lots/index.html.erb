@@ -34,8 +34,10 @@
         </div>
       </div>
     </div>
+<% end %>
     <hr>
     <%= render :partial => "/lots/lot_list" %>
+<% unless params[:q].present? %>
     <hr>
     <div class="row">
       <div class="col-lg-12">

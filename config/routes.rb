@@ -12,8 +12,6 @@ DecaturDigest::Application.routes.draw do
 
   get '/login' => 'users#login_dev', :as => :development_login
 
-
-
   get "static_pages/about"
   get "static_pages/contact"
 
