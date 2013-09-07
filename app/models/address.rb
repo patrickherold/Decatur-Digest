@@ -8,13 +8,9 @@ class Address < ActiveRecord::Base
   
   acts_as_gmappable
 
-
-
   def gmaps4rails_infowindow
     "<h4>#{@owner.owner}</h4>" << "<h4>#{map_address}</h4>"
   end
-
-
 
   def gmaps4rails_address
     "#{self.map_address}" 
