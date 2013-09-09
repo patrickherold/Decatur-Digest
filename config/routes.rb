@@ -10,7 +10,6 @@ DecaturDigest::Application.routes.draw do
     member { post :vote }
   end
   resources :users
-  resources :portfolios
 
   get '/login' => 'users#login_dev', :as => :development_login
   
