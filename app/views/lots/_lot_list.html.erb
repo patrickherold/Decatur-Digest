@@ -1,5 +1,7 @@
 <div class="panel panel-success" id="accordion">
+  <% unless request.user_agent =~ /Mobile|Blackberry|Android|webOS/ %>
   <%= render :partial => "/lots/search" %>
+  <% end %>
   <div id="collapseOne" class="panel-collapse collapse in">
     <div class="panel-body panel-primary searchpadding">
       <%= paginate @properties %>

@@ -449,3 +449,12 @@ input[type="checkbox"]:focus {
 .bold {
     font-weight: bold!important;
 }
+
+.floatright1 {
+	float: right;
+	margin-top: -36px;
+}
+
+.searchfuntion {
+	width: 830px;
+}

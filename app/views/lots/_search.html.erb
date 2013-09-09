@@ -2,10 +2,12 @@
   <%= search_form_for @search, url: search_lots_path, method: :post do |f| %>
       <div class="row">
         <div class="col-lg-10">
+          <div class="searchfuntion">
           <%= f.condition_fields do |c| %>
               <%= render "condition_fields", f: c %>
           <% end %>
           <%= link_to_add_fields "Add Conditions", f, :condition %>
+          </div>
         </div>
         <div class="col-lg-2">
           <%= f.submit "Search", :class => "btn btn-success btn-lg" %>
