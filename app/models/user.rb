@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   
   has_many :evaluations, class_name: "RSEvaluation", as: :source
 
-  accepts_nested_attributes_for :lots, :reject_if => lambda { |a| a[:lot].blank? }, :allow_destroy => true
+  #accepts_nested_attributes_for :lots, :reject_if => lambda { |a| a[:lot].blank? }, :allow_destroy => true
   
   validates_presence_of :username
   validates_uniqueness_of :username
