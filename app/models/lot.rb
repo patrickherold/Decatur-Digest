@@ -9,7 +9,7 @@ class Lot < ActiveRecord::Base
   UNRANSACKABLE_ATTRIBUTES = ["id", "tax_district", "created_at", "modified_at", "updated_at", "tax_year", "customer_id", "municipal_id", "tax_paid", "tax_dispute"]
 
   def self.ransackable_attributes(auth_object = nil)
-    %w( parcel_id property_map_address owner co_owner appraised_value land_value building_value appeal_value homestead zoning ) + _ransackers.keys
+    %w( parcel_id property_street_number property_street_name owner co_owner appraised_value land_value building_value appeal_value homestead zoning ) + _ransackers.keys
   end
 
   has_many :lot_votes
@@ -479,7 +479,7 @@ class Lot < ActiveRecord::Base
   end
 
   def property_map_address
-    [property_street, property_city, property_state, property_zip].join(", ")
+    [property_street_number, property_street, property_city, property_state, property_zip].join(", ")
   end
 
   def property_full_address
