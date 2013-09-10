@@ -6,7 +6,7 @@ DecaturDigest::Application.routes.draw do
                      controllers: {omniauth_callbacks: "omniauth_callbacks"}
 
   resources :lots do
-    collection { post :search, to: 'lots#index' }
+    collection { post :search, to: 'lots' }
     member { post :vote }
   end
   resources :users
