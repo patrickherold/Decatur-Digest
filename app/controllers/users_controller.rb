@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show, :new]
+  before_filter :authenticate_user!, :except => [:show, :new, :login_dev]
+  before_filter { @main_nav = :account }
 
   def index
     respond_to do |format|

@@ -9,6 +9,12 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran, :name, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_username, :fb_gener, :fb_picture, :fb_locale, :fb_timezone, :fb_link, :fb_bio, :fb_cover, :fb_users_hometown
   
   has_many :evaluations, class_name: "RSEvaluation", as: :source
+  has_many :workflows
+  has_and_belongs_to_many :managed_workflows,
+                          :join_table => 'managers_workflows',
+                          :foreign_key => 'workflow_id',
+                          :association_foreign_key => 'user_id',
+                          :class_name => 'Workflow'
 
   #accepts_nested_attributes_for :lots, :reject_if => lambda { |a| a[:lot].blank? }, :allow_destroy => true
   

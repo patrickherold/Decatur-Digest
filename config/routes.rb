@@ -1,5 +1,15 @@
 DecaturDigest::Application.routes.draw do
   
+  get "workflow/my", :as => :my_workflows
+  get "workflow/managed", :as => :managed_workflows
+  match "workflow/new", :as => :new_workflow
+  match "/workflow/edit/:id" => "workflow#edit", :as => :edit_workflow
+  get "/workflow/view/:id" => "workflow#view", :as => :workflow
+  delete "/workflow/delete/:id" => "workflow#delete", :as => :delete_workflow
+  match "/workflow/lot/:id" => "workflow#lot", :as => :workflows_lot
+  get 'workflow/add/:workflow/:lot' => "workflow#add", :as => :add_to_workflow
+  get 'workflow/remove/:workflow/:lot' => "workflow#remove", :as => :remove_from_workflow
+
   root :to => "application#index"
     
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},
@@ -11,7 +21,7 @@ DecaturDigest::Application.routes.draw do
   end
   resources :users
 
-  get '/login' => 'users#login_dev', :as => :development_login
+  get '/dev-login' => 'users#login_dev', :as => :development_login
   
   get "static_pages/about"
   get "static_pages/contact"

@@ -1,6 +1,6 @@
 <div class="panel panel-success" id="accordion">
   <% unless request.user_agent =~ /Mobile|Blackberry|Android|webOS/ %>
-  <%= render :partial => "/lots/search" %>
+      <%= render :partial => "/lots/search" %>
   <% end %>
   <div id="collapseOne" class="panel-collapse collapse in">
     <div class="panel-body panel-primary searchpadding">
@@ -15,7 +15,7 @@
           <th class="hidden-xs"><%= sort_link @search, :appeal_value, "Appeal Value" %></th>
           <th class="visible-lg"><%= sort_link @search, :zoning, "Zoning" %></th>
           <th class="visible-lg"><%= sort_link @search, :homestead, "Homestead" %></th>
-          <th></th>
+          <th style="width: 160px"></th>
         </tr>
         </thead>
         <tbody>
@@ -34,14 +34,17 @@
               <% end %>
               <td class="visible-lg"><%= lot.zoning %></td>
               <td class="visible-lg"><%= lot.homestead %></td>
-              
-              <% if number_with_precision lot.reputation_for(:votes) >= 1 %>
-                <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-warning btn-xs" %></td>
+
+              <td>
+                <% if number_with_precision lot.reputation_for(:votes) >= 1 %>
+                    <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-warning btn-xs" %>
                 <% elsif number_with_precision lot.reputation_for(:votes) >= 5 %>
-                  <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-danger btn-xs" %></td>
-              <% else %>
-                <td><%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %></td>
-              <% end %>
+                    <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-danger btn-xs" %>
+                <% else %>
+                    <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %>
+                <% end %>
+                <%= link_to "Workflows", workflows_lot_path(lot), :class => "btn btn-primary btn-xs", :target => '_blank' %>
+              </td>
             </tr>
         <% end %>
         </tbody>
@@ -50,4 +53,3 @@
   </div>
 </div>
 </div>
-

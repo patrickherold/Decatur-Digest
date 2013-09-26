@@ -1,0 +1,47 @@
+// Place all the styles related to the workflow controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.data-form {
+  width: 100%;
+  .key, .value {
+    //vertical-align: middle;
+    padding: 5px 0px;
+  }
+  .key {
+    width: 150px;
+    &.important {
+      font-weight: bold;
+    }
+  }
+  .value {
+    input, textarea {
+      width: 100% !important;
+      height: auto !important;
+    }
+  }
+}
+
+.field_with_errors {
+  input {
+    background: lightpink;
+    border: 1px solid red;
+  }
+}
+
+.top-right-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.workflows-column {
+  width: 200px;
+  float: left;
+  margin-bottom: 10px;
+  label {
+    font-weight: normal;
+    margin: 0px 0px;
+    cursor: pointer;
+  }
+}

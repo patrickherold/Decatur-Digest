@@ -1,0 +1,40 @@
+<%= form_for :workflow do |f| %>
+    <table class="data-form">
+      <tr>
+        <td class="key important">Owner</td>
+        <td class="value"><%= @workflow.user.name %></td>
+      </tr>
+      <tr>
+        <td class="key important">Name</td>
+        <td class="value">
+            <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Description</td>
+        <td class="value">
+          <%= f.text_area :description, :rows => 5 %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Managers</td>
+        <td class="value">
+          <%= f.select :manager_ids, options_from_collection_for_select(User.all.reject {|u| u == current_user }, :id, :name, @workflow.manager_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
+        </td>
+      </tr>
+      <!--
+      <tr>
+        <td class="key">Properties</td>
+        <td class="value">
+          <%= f.select :lot_ids, options_from_collection_for_select(Lot.all, :id, :property_street, @workflow.lot_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
+        </td>
+      </tr>
+      -->
+      <tr>
+        <td></td>
+        <td>
+          <%= f.submit 'Save Workflow', :class => 'btn btn-success' %>
+        </td>
+      </tr>
+    </table>
+<% end %>

@@ -1,6 +1,7 @@
 class LotsController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:index]
+  before_filter { @main_nav = :lots }
 
   # GET /lots
   # GET /lots.json

@@ -11,24 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130904200253) do
+ActiveRecord::Schema.define(:version => 20130926112348) do
 
   create_table "comments", :force => true do |t|
-    t.integer  "commentable_id",   :default => 0
-    t.string   "commentable_type", :default => ""
-    t.string   "title",            :default => ""
-    t.text     "body"
-    t.string   "subject",          :default => ""
-    t.integer  "user_id",          :default => 0,  :null => false
-    t.integer  "parent_id"
-    t.integer  "lft"
-    t.integer  "rgt"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.string   "content"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
-
-  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
-  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "lots", :force => true do |t|
     t.string   "tax_district"
@@ -74,17 +64,31 @@ ActiveRecord::Schema.define(:version => 20130904200253) do
     t.integer  "customer_id"
     t.integer  "municipal_id"
     t.boolean  "gmaps"
-    t.string   "state"
-    t.datetime "timestamps"
+  end
+
+  create_table "lots_workflows", :id => false, :force => true do |t|
+    t.integer "lot_id"
+    t.integer "workflow_id"
+  end
+
+  create_table "managers_workflows", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "workflow_id"
+  end
+
+  create_table "portfolio", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "lot_id"
+    t.string   "follow_type"
+    t.string   "lot_relationship"
+    t.string   "lot_residency"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "portfolios", :force => true do |t|
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "user_id"
-    t.text     "follow_type"
-    t.text     "lot_relationship"
-    t.text     "lot_residency"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "rs_evaluations", :force => true do |t|
@@ -172,5 +176,13 @@ ActiveRecord::Schema.define(:version => 20130904200253) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "workflows", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "user_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
 end
