@@ -481,7 +481,7 @@ class Lot < ActiveRecord::Base
   end
 
   def property_map_address
-    [property_street_number, property_street, property_city, property_state, property_zip].join(", ")
+    [property_street, property_city, property_state, property_zip].join(", ")
   end
 
   def property_full_address

@@ -1,5 +1,5 @@
 <%- model_class = User -%>
 <div class="page-header">
-  <h1 class="textleft"><%= @user.name %></h1>
+  <h1 class="textleft"><img src="<%= @user.fb_picture %>">  <%= @user.name %></h1>
 </div>
 <%= render :partial => 'form' %>

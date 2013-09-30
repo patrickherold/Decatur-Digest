@@ -1,7 +1,8 @@
 <% if user_signed_in? && (@user.id == current_user.id ) %>
 
 <div class="page-header">
-  <h2><%= @user.name %> <%= link_to t('.edit', :default => t("helpers.links.edit")),
+  
+  <h2><img src="<%= @user.fb_picture %>">  <%= @user.name %> <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_user_path(@user), :class => 'btn btn-warning btn-xs' %></h2>
 </div>
 
@@ -29,22 +30,7 @@
     n/a
     <% end %>
   </div>
-  <div class="col-lg-2">
-    Disability Status:
-  </div>
-  <div class="col-lg-9">
-    <% if  @user.disabled_veteran? %>
-      Disabled Veteran
-    <% else %>
-      n/a
-    <% end %>
-  </div>
-  <div class="col-lg-2">
-    Household Income:
-  </div>
-  <div class="col-lg-9">
-    <%= humanized_money_with_symbol @user.income %>
-  </div>
+
   <div class="col-lg-2">
     Last Sign In:
   </div>

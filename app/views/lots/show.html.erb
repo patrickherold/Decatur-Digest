@@ -1,9 +1,17 @@
-<h1>
-<span class="label label-primary">
-  <%= t '.title', :default => @lot.property_map_address, :class => "blue" %>
-</span>
-</h1>
-
+<div class="row">
+  <div class="col-lg-8">
+    <h1>
+      <span class="label label-primary">
+        <%= t '.title', :default => @lot.property_map_address, :class => "blue" %>
+      </span>
+    </h1>
+  </div>
+  <div class="col-lg-4">
+    <div class="textright">
+      <a href="<%= add_lots_to_workflow_path(@lot) %>" class="add-to-workflow btn btn-success">Add this property to a Workflow</a>
+    </div>
+  </div>
+</div>
 <br>
 <style>
     .map_container {
@@ -52,7 +60,6 @@
 </div>
 
 <div class="col-lg-8">
-
   <% if @lot.appeal_appraised > 10 %>
       <h4 class="appeal">[APPEAL PENDING] value set at: <b><%= number_to_currency(@lot.full_appeal, :unit => "$") %></b>
       </h4>
@@ -82,8 +89,6 @@
   <% end %>
 
 <hr>
-
-
 
 <div class="panel-group" id="accordion">
 <div class="panel">
