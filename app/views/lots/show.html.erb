@@ -8,7 +8,9 @@
   </div>
   <div class="col-lg-4">
     <div class="textright">
+      <% if user_signed_in? %>
       <a href="<%= add_lots_to_workflow_path(@lot) %>" class="add-to-workflow btn btn-success">Add this property to a Workflow</a>
+      <% end %>
     </div>
   </div>
 </div>
