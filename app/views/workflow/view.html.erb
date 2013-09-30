@@ -6,11 +6,13 @@
   <thead>
   <tr>
     <th>Property Address</th>
-    <th>Owner Name</th>
-    <th>Appraised</th>
-    <th>Appeal Value</th>
-    <th>Zoning</th>
-    <th>Status</th>
+    <th class="hidden-sm hidden-xs">Owner Name</th>
+    <th class="visible">Appraised</th>
+    <th class="visible-md visible-lg">Appeal Value</th>
+    <th class="visible-lg">Zoning</th>
+    <th class="visible-lg">Homestead</th>
+    <th class="hidden-xs">Lot Details</th>
+    <th>Workflow Status</th>
     <th></th>
   </tr>
   </thead>
@@ -19,16 +21,27 @@
       <% status = @workflow.status_by_lot(lot) %>
       <tr>
         <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
-        <td><%= lot.owners_name if lot.owner.present? %></td>
-        <td><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
+        <td class="hidden-sm hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
+        <td class="visible"><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
         <% if lot.appeal_value.to_i > 10 %>
-            <td>
+            <td class="visible-md visible-lg">
               <div class="btn btn-danger btn-xs"><%= number_to_currency(lot.full_appeal, :unit => "$", :precision => 0) %></div>
             </td>
         <% else %>
-            <td><%= number_to_currency(lot.full_appeal, :unit => "$", :precision => 0) %></td>
+            <td class="visible-md visible-lg"><%= number_to_currency(lot.full_appeal, :unit => "$", :precision => 0) %></td>
         <% end %>
-        <td><%= lot.zoning %></td>
+        <td class="visible-lg"><%= lot.zoning %></td>
+        <td class="visible-lg"><%= lot.homestead %></td>
+        <td>
+          <% if number_with_precision lot.reputation_for(:votes) >= 1 %>
+              <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-warning btn-xs" %>
+          <% elsif number_with_precision lot.reputation_for(:votes) >= 5 %>
+              <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-danger btn-xs" %>
+          <% else %>
+              <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %>
+          <% end %>
+        </td>
+        
         <td class="workflow-status">
           <% if !status || status[:status] == 'pending' %>
               <span class="status-label label label-default">pending</span>
@@ -131,7 +144,6 @@
           </div>
         </td>
         <td>
-          <%= link_to 'View', lot_path(lot), :class => 'btn btn-info btn-xs' %>
           <%= link_to 'Remove from workflow', remove_from_workflow_path(@workflow, lot), :confirm => 'Are you sure?', :class => 'btn btn-danger btn-xs' %>
         </td>
       </tr>
@@ -140,9 +152,9 @@
 </table>
 
 <% if @workflow.user == current_user %>
-    <%= link_to 'Edit', edit_workflow_path(@workflow), :class => 'btn btn-warning' %>
+    <%= link_to 'Edit Workflow Details', edit_workflow_path(@workflow), :class => 'btn btn-warning' %>
     &nbsp;
-    <%= link_to 'Delete', delete_workflow_path(@workflow), :class => 'btn btn-danger' %>
+    <%= link_to 'Delete Workflow', delete_workflow_path(@workflow), :class => 'btn btn-danger' %>
 <% end %>
 
 <script>
