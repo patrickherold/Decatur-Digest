@@ -15,12 +15,13 @@
         <td><%= workflow.name %></td>
         <td><%= workflow.description %></td>
         <td>
-          <% workflow.lots.each { |lot| %>
+          <% workflow.lots.first(3).each { |lot| %>
               <div><%= link_to lot.property_street, lot_path(lot) %></div>
           <% } %>
+          <%= link_to '...more', workflow_path(workflow) %>
         </td>
         <td>
-          <%= link_to 'Details', workflow_path(workflow), :class => 'btn btn-info btn-xs' %>
+          <%= link_to 'Work now', workflow_path(workflow), :class => 'btn btn-info btn-xs' %>
           <% unless @managed %>
               <%= link_to 'Edit', edit_workflow_path(workflow), :class => 'btn btn-warning btn-xs' %>
               <%= link_to 'Delete', delete_workflow_path(workflow), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-danger btn-xs' %>

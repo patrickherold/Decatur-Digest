@@ -10,12 +10,14 @@
         <tr>
           <th>Property Address</th>
           <th class="hidden-xs"><%= sort_link @search, :owner, "Owner Name" %></th>
-          <th class="hidden-xs"><%= sort_link @search, :land_value, "Land Value" %></th>
           <th class="visible"><%= sort_link @search, :appraised_value, "Appraised" %></th>
           <th class="hidden-xs"><%= sort_link @search, :appeal_value, "Appeal Value" %></th>
           <th class="visible-lg"><%= sort_link @search, :zoning, "Zoning" %></th>
           <th class="visible-lg"><%= sort_link @search, :homestead, "Homestead" %></th>
-          <th style="width: 160px"></th>
+          <th class="hidden-xs">Lot Details</th>
+          <% if user_signed_in? %>
+          <th class="hidden-xs">Workflows</th>
+          <% end %>
         </tr>
         </thead>
         <tbody>
@@ -23,7 +25,6 @@
             <tr>
               <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
               <td class="hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
-              <td class="hidden-xs"><%= number_to_currency(lot.land_value, :unit => "$", :precision => 0) %></td>
               <td class="visible"><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
               <% if lot.appeal_value.to_i > 10 %>
                   <td class="hidden-xs">
@@ -43,8 +44,12 @@
                 <% else %>
                     <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %>
                 <% end %>
+              </td>
+              <% if user_signed_in? %>
+              <td>
                 <%= link_to "Workflows", add_lots_to_workflow_path(lot), :class => "btn btn-primary btn-xs", :target => '_blank' %>
               </td>
+              <% end %>
             </tr>
         <% end %>
         </tbody>

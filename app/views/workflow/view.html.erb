@@ -7,7 +7,6 @@
   <tr>
     <th>Property Address</th>
     <th>Owner Name</th>
-    <th>Land Value</th>
     <th>Appraised</th>
     <th>Appeal Value</th>
     <th>Zoning</th>
@@ -21,7 +20,6 @@
       <tr>
         <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
         <td><%= lot.owners_name if lot.owner.present? %></td>
-        <td><%= number_to_currency(lot.land_value, :unit => "$", :precision => 0) %></td>
         <td><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
         <% if lot.appeal_value.to_i > 10 %>
             <td>
@@ -32,12 +30,14 @@
         <% end %>
         <td><%= lot.zoning %></td>
         <td class="workflow-status">
-          <% if !status || status[:status] == 'undefined' %>
-              <span class="status-label label label-default">undefined</span>
+          <% if !status || status[:status] == 'pending' %>
+              <span class="status-label label label-default">pending</span>
           <% elsif status[:status] == 'ok' %>
-              <span class="status-label label label-success">ok</span>
+              <span class="label label-success">ok</span>
           <% elsif status[:status] == 'problem' %>
-              <span class="status-label label label-danger">problem</span>
+              <span class="label label-warning">problem</span>
+          <% elsif status[:status] == 'escalate' %>
+              <span class="label label-danger">problem</span>
           <% end %>
           <div class="status-popover" style="display: none">
             <h3>Property Inspection Status</h3>
@@ -50,11 +50,13 @@
                         Status
                       </td>
                       <td>
-                        <% if status[:status] == 'undefined' %>
+                        <% if status[:status] == 'pending' %>
                             <span class="label label-default">undefined</span>
                         <% elsif status[:status] == 'ok' %>
                             <span class="label label-success">ok</span>
                         <% elsif status[:status] == 'problem' %>
+                            <span class="label label-warning">problem</span>
+                        <% elsif status[:status] == 'escalate' %>
                             <span class="label label-danger">problem</span>
                         <% end %>
                       </td>
@@ -89,7 +91,7 @@
                     <a href="#" class="bottom-button btn btn-danger btn-xs" onclick="$(this).parent().parent().parent().slideUp(150); return false;">Close</a>
                   </div>
               <% else %>
-                  Status: <span class="label label-default">undefined</span>
+                  Status: <span class="label label-default">pending</span>
 
                   <div class="bottom-buttons">
                     <a href="#" class="bottom-button btn btn-warning btn-xs" onclick="$(this).parent().parent().parent().find('.editor').show(); $(this).parent().parent().hide(); return false;">Evaluate</a>
@@ -105,7 +107,7 @@
                         Status
                       </td>
                       <td>
-                        <%= select_tag "status_#{lot.id}", options_for_select(%w'undefined ok problem') %>
+                        <%= select_tag "status_#{lot.id}", options_for_select(%w'pending problem ok escalate') %>
                       </td>
                     </tr>
                     <tr>
