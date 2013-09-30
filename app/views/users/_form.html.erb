@@ -6,11 +6,21 @@
                 end_year: Date.today.year - 5, discard_day: true,
                 order: [:month, :year] %>
     <%= f.input :income_cents, as: :currency %>
+
+    <%= f.input :workflow_manager_ids, :as => :select, :collection => User.all,
+                :input_html => { :multiple => true, :style => "height: 150px!important;" },
+                :label => :'Workflow Managers'
+    %>
+
     <%= f.error :base %>
+
     <br><br>
     <%= f.button :submit, :class => "btn-success" %>
 <% end %>
+
+<!--
 <hr>
+
 <h3>Properties in my portfolio:</h3>
 
 <div id="collapseOne" class="panel-collapse collapse in">
@@ -25,15 +35,16 @@
       </tr>
       </thead>
       <tbody>
-      <% for portfolio in @user.portfolios do %>
+      <%# for portfolio in @user.portfolios do %>
           <tr>
-            <td><%= portfolio.lot.property_map_address %></td>
-            <td><%= portfolio.lot_residency %></td>
-            <td><%= portfolio.follow_type %></td>
-            <td><%= link_to "Details", lot_path(portfolio.lot), :class => "btn btn-info btn-xs" %></td>
+            <td><%#= portfolio.lot.property_map_address %></td>
+            <td><%#= portfolio.lot_residency %></td>
+            <td><%#= portfolio.follow_type %></td>
+            <td><%#= link_to "Details", lot_path(portfolio.lot), :class => "btn btn-info btn-xs" %></td>
           </tr>
-      <% end %>
+      <%# end %>
       </tbody>
     </table>
   </div>
 </div>
+-->

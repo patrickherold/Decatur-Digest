@@ -36,12 +36,78 @@
 }
 
 .workflows-column {
-  width: 200px;
+  width: 250px;
   float: left;
   margin-bottom: 10px;
   label {
     font-weight: normal;
     margin: 0px 0px;
     cursor: pointer;
+  }
+  .new-workflow {
+    margin: 5px 0px;
+    font-size: 12px;
+    width: 220px;
+    padding: 3px 7px;
+    background: #eee;
+    input, select {
+      width: 205px;
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+  }
+}
+
+.workflow-status {
+  position: relative;
+  .status-label {
+    cursor: pointer;
+  }
+
+  .status-popover {
+    position: absolute;
+    width: 300px;
+    //height: 150px;
+    right: 0px;
+    top: 30px;
+    background: white;
+    border-radius: 5px 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 5px 10px;
+    font-size: 12px;
+
+    h3 {
+      margin: 10px 0px;
+      padding: 0px 0px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .bottom-buttons {
+      margin-top: 7px;
+      border-top: 1px solid #ccc;
+      padding-top: 5px;
+    }
+
+    table {
+      width: 100%;
+      td {
+        font-size: 12px;
+        vertical-align: middle;
+        select, textarea {
+          width: 200px;
+        }
+        textarea {
+          height: 75px!important;
+        }
+      }
+      .key {
+        width: 50px;
+        font-weight: bold;
+      }
+    }
   }
 }

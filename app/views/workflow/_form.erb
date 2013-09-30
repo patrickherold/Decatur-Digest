@@ -16,12 +16,6 @@
           <%= f.text_area :description, :rows => 5 %>
         </td>
       </tr>
-      <tr>
-        <td class="key">Managers</td>
-        <td class="value">
-          <%= f.select :manager_ids, options_from_collection_for_select(User.all.reject {|u| u == current_user }, :id, :name, @workflow.manager_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
-        </td>
-      </tr>
       <!--
       <tr>
         <td class="key">Properties</td>

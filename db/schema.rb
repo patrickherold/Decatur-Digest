@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130926112348) do
+ActiveRecord::Schema.define(:version => 20130930111317) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -177,12 +177,18 @@ ActiveRecord::Schema.define(:version => 20130926112348) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
+  create_table "workflow_managers_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "manager_id"
+  end
+
   create_table "workflows", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.integer  "user_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.text     "status"
   end
 
 end

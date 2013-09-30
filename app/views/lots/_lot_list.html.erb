@@ -43,12 +43,13 @@
                 <% else %>
                     <%= link_to "Details", lot_path(lot.id), :redirect_to => "/lot/#{lot.id}", :class => "btn btn-info btn-xs" %>
                 <% end %>
-                <%= link_to "Workflows", workflows_lot_path(lot), :class => "btn btn-primary btn-xs", :target => '_blank' %>
+                <%= link_to "Workflows", add_lots_to_workflow_path(lot), :class => "btn btn-primary btn-xs", :target => '_blank' %>
               </td>
             </tr>
         <% end %>
         </tbody>
       </table>
+      <a href="<%= add_lots_to_workflow_path(@properties.map(&:id).join(',')) %>" class="add-to-workflow btn btn-success" target="_blank">Add to Workflow</a>
     </div>
   </div>
 </div>

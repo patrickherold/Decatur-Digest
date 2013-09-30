@@ -43,6 +43,27 @@ class WorkflowController < ApplicationController
       redirect_to my_workflows_path
       return
     end
+    if request.post?
+      # status update
+      @workflow.lots.each { |l|
+        status = nil
+        statuses = @workflow.status
+        unless params["status_#{l.id}"].blank?
+          status = {
+              :lot_id => l.id,
+              :status => params["status_#{l.id}"],
+              :message => params["message_#{l.id}"],
+              :user => current_user.id,
+              :timestamp => DateTime.now
+          }
+          statuses.reject! { |s| s[:lot] == l }
+          statuses << status
+        end
+        @workflow.status = statuses
+      }
+      @workflow.save!
+      flash.now[:notice] = 'Status successfully updated'
+    end
   end
 
   def delete
@@ -77,17 +98,33 @@ class WorkflowController < ApplicationController
     end
   end
 
-  def lot
+  def add_lots
     @title = "Property Workflows"
-    @lot = Lot.find(params[:id])
+    lots = (params[:lots] || '').split(',')
+    @lots = lots.map { |id| Lot.find(id) }
+
     if request.post?
       workflows = current_user.workflows + current_user.managed_workflows
-      active_workflows = params[:workflows].map {|w| Workflow.find_by_id(w) }.compact
-      workflows.each {|workflow|
-        workflow.lots.delete(@lot)
-        workflow.lots << @lot if active_workflows.include?(workflow)
+      active_workflows = params[:workflows].map { |w| Workflow.find_by_id(w) }.compact
+      workflows.each { |workflow|
+        @lots.each { |lot|
+          workflow.lots.delete(lot)
+          workflow.lots << lot if active_workflows.include?(workflow)
+        }
         workflow.save!(:validate => false)
       }
+      unless params[:my_new_list].blank?
+        wf = Workflow.new({:user => current_user, :name => params[:my_new_list]})
+        wf.lots = @lots
+        wf.save!
+      end
+      unless params[:managed_new_list].blank? || params[:managed_new_list_user].blank?
+        wf = Workflow.new({:user => User.find_by_id(params[:managed_new_list_user]), :name => params[:managed_new_list]})
+        wf.lots = @lots
+        wf.save!
+      end
+      flash[:notice] = 'Workflows updated'
+      redirect_to my_workflows_path
     end
   end
 end

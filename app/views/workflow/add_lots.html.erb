@@ -1,0 +1,55 @@
+<h1>Add Properties to Workflows</h1>
+
+<p>
+  Add there properties:
+</p>
+<% @lots.each { |lot| %>
+    <div>
+      <u><%= link_to lot.property_street.strip, lot_path(lot) %></u>
+    </div>
+<% } %>
+<br/>
+<p>
+  to the following workflows:
+</p>
+
+<%= form_tag do %>
+    <div class="workflows-column">
+      <div><b>My Workflows</b></div>
+      <% current_user.workflows.each { |workflow| %>
+          <div>
+            <label>
+              <%= check_box_tag 'workflows[]', workflow.id %>
+              <%= workflow.name %>
+            </label>
+          </div>
+      <% } %>
+      <div class="new-workflow">
+        <div>or add to new:</div>
+        <%= text_field_tag 'my_new_list', '', :placeholder => 'Workflow Name' %>
+      </div>
+    </div>
+    <div class="workflows-column" style="width: 450px">
+      <div><b>Managed Workflows</b></div>
+      <% current_user.managed_workflows.each { |workflow| %>
+          <div>
+            <label>
+              <%= check_box_tag 'workflows[]', workflow.id %>
+              <%= workflow.name %> (<%= workflow.user.name %>)
+            </label>
+          </div>
+      <% } %>
+      <div class="new-workflow">
+        <div>or add to new:</div>
+        <%= text_field_tag 'managed_new_list', '', :placeholder => 'Workflow Name' %>
+        <%= select_tag 'managed_new_list_user', options_from_collection_for_select(current_user.managed_users, :id, :name), :prompt => 'Choose User...' %>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <%= submit_tag 'Save Changes', :class => 'btn btn-success' %>
+<% end %>
+
+<script>
+
+</script>

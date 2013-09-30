@@ -11,12 +11,13 @@
     <th>Appraised</th>
     <th>Appeal Value</th>
     <th>Zoning</th>
-    <th>Homestead</th>
+    <th>Status</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <% @workflow.lots.each { |lot| %>
+      <% status = @workflow.status_by_lot(lot) %>
       <tr>
         <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
         <td><%= lot.owners_name if lot.owner.present? %></td>
@@ -30,7 +31,103 @@
             <td><%= number_to_currency(lot.full_appeal, :unit => "$", :precision => 0) %></td>
         <% end %>
         <td><%= lot.zoning %></td>
-        <td><%= lot.homestead %></td>
+        <td class="workflow-status">
+          <% if !status || status[:status] == 'undefined' %>
+              <span class="status-label label label-default">undefined</span>
+          <% elsif status[:status] == 'ok' %>
+              <span class="status-label label label-success">ok</span>
+          <% elsif status[:status] == 'problem' %>
+              <span class="status-label label label-danger">problem</span>
+          <% end %>
+          <div class="status-popover" style="display: none">
+            <h3>Property Inspection Status</h3>
+
+            <div class="viewer">
+              <% if status %>
+                  <table>
+                    <tr>
+                      <td class="key">
+                        Status
+                      </td>
+                      <td>
+                        <% if status[:status] == 'undefined' %>
+                            <span class="label label-default">undefined</span>
+                        <% elsif status[:status] == 'ok' %>
+                            <span class="label label-success">ok</span>
+                        <% elsif status[:status] == 'problem' %>
+                            <span class="label label-danger">problem</span>
+                        <% end %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="key">
+                        Message
+                      </td>
+                      <td>
+                        <%= status ? status[:message] : '' %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="key">
+                        By
+                      </td>
+                      <td>
+                        <%= status[:user].name %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="key">
+                        Timestamp
+                      </td>
+                      <td>
+                        <%= l status[:timestamp], :format => :login_date %>
+                      </td>
+                    </tr>
+                  </table>
+                  <div class="bottom-buttons">
+                    <a href="#" class="bottom-button btn btn-warning btn-xs" onclick="$(this).parent().parent().parent().find('.editor').show(); $(this).parent().parent().hide(); return false;">Re-evaluate</a>
+                    <a href="#" class="bottom-button btn btn-danger btn-xs" onclick="$(this).parent().parent().parent().slideUp(150); return false;">Close</a>
+                  </div>
+              <% else %>
+                  Status: <span class="label label-default">undefined</span>
+
+                  <div class="bottom-buttons">
+                    <a href="#" class="bottom-button btn btn-warning btn-xs" onclick="$(this).parent().parent().parent().find('.editor').show(); $(this).parent().parent().hide(); return false;">Evaluate</a>
+                    <a href="#" class="bottom-button btn btn-danger btn-xs" onclick="$(this).parent().parent().parent().slideUp(150); return false;">Close</a>
+                  </div>
+              <% end %>
+            </div>
+            <div class="editor" style="display: none">
+              <%= form_tag do %>
+                  <table>
+                    <tr>
+                      <td class="key">
+                        Status
+                      </td>
+                      <td>
+                        <%= select_tag "status_#{lot.id}", options_for_select(%w'undefined ok problem') %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="key">
+                        Message
+                      </td>
+                      <td>
+                        <%= text_area_tag "message_#{lot.id}" %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <%= submit_tag 'Save', :class => 'btn btn-success btn-xs' %>
+                        <a href="#" onclick="$(this).parents().find('.editor').parent().find('.viewer').show(); $(this).parents().find('.editor').hide(); return false;" class="btn btn-warning btn-xs">Cancel</a>
+                      </td>
+                    </tr>
+                  </table>
+              <% end %>
+            </div>
+          </div>
+        </td>
         <td>
           <%= link_to 'View', lot_path(lot), :class => 'btn btn-info btn-xs' %>
           <%= link_to 'Remove from workflow', remove_from_workflow_path(@workflow, lot), :confirm => 'Are you sure?', :class => 'btn btn-danger btn-xs' %>
@@ -45,3 +142,12 @@
     &nbsp;
     <%= link_to 'Delete', delete_workflow_path(@workflow), :class => 'btn btn-danger' %>
 <% end %>
+
+<script>
+    $('.status-label').click(function (event) {
+        var was_visible = $(event.currentTarget).parent().find('.status-popover').is(':visible');
+        $('.status-popover').hide();
+        if (!was_visible)
+            $(event.currentTarget).parent().find('.status-popover').slideDown(200);
+    });
+</script>
