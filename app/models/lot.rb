@@ -460,7 +460,7 @@ class Lot < ActiveRecord::Base
   end
 
   def gmaps4rails_infowindow
-    "<h4>#{self.owner}</h4>" << "#{property_map_address}"
+    "<h4><a href='/lots/#{self.id}'>#{self.owner}</a></h4>" << "#{ActionController::Base.helpers.number_to_currency(self.appraised_value, :unit => "$", :precision => 0)} - appraised value <br>" << "#{property_map_address}"
   end
 
   def gmaps4rails_address

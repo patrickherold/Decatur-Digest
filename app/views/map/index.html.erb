@@ -1,0 +1,24 @@
+<style>
+.gmaps4rails_map {
+  height: 803px;
+}
+</style>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="btn btn-xs btn-success"><a href="/lots/">show small map</a></div><br><br>
+    <%= gmaps(
+    :markers => { :data => @json },
+    :map_options => { :auto_adjust => true, # :auto_adjust map to center on location
+    :auto_zoom => false, # :auto_zoom defaults to full zoom in, set to false to utilize :zoom
+    :zoom => 15 }	# :zoom 0 is fully zoomed out (world view), 21 is fully zoomed in (street view)
+    ) %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <%= render :partial => "/map/lot_list" %>
+  </div>
+</div>
+
+
