@@ -12,8 +12,8 @@
   <tbody>
   <% @workflows.each { |workflow| %>
       <tr>
-        <td><%= workflow.name %></td>
-        <td><%= workflow.description %></td>
+        <td><b><%= workflow.name %></b></td>
+        <td><i><%= workflow.description %></i></td>
         <td>
           <% workflow.lots.first(3).each { |lot| %>
               <div><%= link_to lot.property_street, lot_path(lot) %></div>

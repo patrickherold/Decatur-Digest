@@ -50,7 +50,9 @@
           <% elsif status[:status] == 'problem' %>
               <span class="label label-warning">problem</span>
           <% elsif status[:status] == 'escalate' %>
-              <span class="label label-danger">problem</span>
+              <span class="label label-danger">escalate</span>
+          <% elsif status[:status] == 'appeal' %>
+              <span class="label label-danger">appeal</span>
           <% end %>
           <div class="status-popover" style="display: none">
             <h3>Property Inspection Status</h3>
@@ -70,7 +72,9 @@
                         <% elsif status[:status] == 'problem' %>
                             <span class="label label-warning">problem</span>
                         <% elsif status[:status] == 'escalate' %>
-                            <span class="label label-danger">problem</span>
+                            <span class="label label-danger">escalate</span>
+                        <% elsif status[:status] == 'appeal' %>
+                            <span class="label label-danger">appeal</span>
                         <% end %>
                       </td>
                     </tr>
@@ -120,7 +124,7 @@
                         Status
                       </td>
                       <td>
-                        <%= select_tag "status_#{lot.id}", options_for_select(%w'pending problem ok escalate') %>
+                        <%= select_tag "status_#{lot.id}", options_for_select(%w'pending problem ok escalate appeal') %>
                       </td>
                     </tr>
                     <tr>
