@@ -13,7 +13,8 @@
   to the following workflows:
 </p>
 
-<%= form_tag do %>
+<%= form_tag '?submit=1' do %>
+    <%= hidden_field_tag 'lots', @lots.collect(&:id).join(',') %>
     <div class="workflows-column">
       <div><b>My Workflows</b></div>
       <% current_user.workflows.each { |workflow| %>

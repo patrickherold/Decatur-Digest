@@ -46,16 +46,19 @@
 
             </tr>
         <% end %>
-          <tr>
-            <td colspan="7">
-              <% if user_signed_in? %>
+        <tr>
+          <td colspan="7">
+            <% if user_signed_in? %>
                 <hr>
                 <div class="textright">
-                  <a href="<%= add_lots_to_workflow_path(@properties.map(&:id).join(',')) %>" class="add-to-workflow btn btn-success" target="_blank">Add list to Workflow</a>
+                  <%= form_tag add_lots_to_workflow_path, :target => '_blank' do %>
+                      <%= hidden_field_tag :lots, (@all_properties || @properties).collect(&:id).join(',') %>
+                      <%= submit_tag 'Add list to Workflow', :class => "add-to-workflow btn btn-success" %>
+                  <% end %>
                 </div>
-              <% end %>
-            </td>
-          </tr>
+            <% end %>
+          </td>
+        </tr>
         </tbody>
       </table>
 

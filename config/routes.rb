@@ -6,7 +6,7 @@ DecaturDigest::Application.routes.draw do
   match "/workflow/edit/:id" => "workflow#edit", :as => :edit_workflow
   match "/workflow/view/:id" => "workflow#view", :as => :workflow
   delete "/workflow/delete/:id" => "workflow#delete", :as => :delete_workflow
-  match "/workflow/lots/:lots" => "workflow#add_lots", :as => :add_lots_to_workflow
+  match "/workflow/lots" => "workflow#add_lots", :as => :add_lots_to_workflow
   get 'workflow/add/:workflow/:lot' => "workflow#add", :as => :add_to_workflow
   get 'workflow/remove/:workflow/:lot' => "workflow#remove", :as => :remove_from_workflow
 
@@ -16,7 +16,7 @@ DecaturDigest::Application.routes.draw do
                      controllers: {omniauth_callbacks: "omniauth_callbacks"}
 
   resources :lots do
-    collection { post :search, to: 'lots#index' }
+    collection { match :search, to: 'lots#index' }
     member { post :vote }
   end
   resources :users

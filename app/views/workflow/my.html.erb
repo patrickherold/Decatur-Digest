@@ -18,7 +18,7 @@
           <% workflow.lots.first(3).each { |lot| %>
               <div><%= link_to lot.property_street, lot_path(lot) %></div>
           <% } %>
-          <%= link_to '...more', workflow_path(workflow) %>
+          <%= link_to "...#{workflow.lots.length - 3} more", workflow_path(workflow) if workflow.lots.length > 3 %>
         </td>
         <td>
           <%= link_to 'Work now', workflow_path(workflow), :class => 'btn btn-info btn-xs' %>

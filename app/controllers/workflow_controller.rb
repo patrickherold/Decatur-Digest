@@ -103,23 +103,23 @@ class WorkflowController < ApplicationController
     lots = (params[:lots] || '').split(',')
     @lots = lots.map { |id| Lot.find(id) }
 
-    if request.post?
+    if request.post? && params[:submit]
       workflows = current_user.workflows + current_user.managed_workflows
-      active_workflows = params[:workflows].map { |w| Workflow.find_by_id(w) }.compact
+      active_workflows = (params[:workflows] || []).map { |w| Workflow.find_by_id(w) }.compact
       workflows.each { |workflow|
         @lots.each { |lot|
-          workflow.lots.delete(lot)
+          #workflow.lots.delete(lot)
           workflow.lots << lot if active_workflows.include?(workflow)
         }
         workflow.save!(:validate => false)
       }
       unless params[:my_new_list].blank?
-        wf = Workflow.new({:user => current_user, :name => params[:my_new_list]})
+        wf = Workflow.new({ :user => current_user, :name => params[:my_new_list] })
         wf.lots = @lots
         wf.save!
       end
       unless params[:managed_new_list].blank? || params[:managed_new_list_user].blank?
-        wf = Workflow.new({:user => User.find_by_id(params[:managed_new_list_user]), :name => params[:managed_new_list]})
+        wf = Workflow.new({ :user => User.find_by_id(params[:managed_new_list_user]), :name => params[:managed_new_list] })
         wf.lots = @lots
         wf.save!
       end
