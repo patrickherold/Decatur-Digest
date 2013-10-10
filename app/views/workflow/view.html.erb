@@ -156,6 +156,8 @@
 </table>
 
 <% if @workflow.user == current_user %>
+    <%= link_to 'Export Excel', workflow_path(@workflow), :class => 'btn btn-success', :format => "xls" %>
+    &nbsp;
     <%= link_to 'Edit Workflow Details', edit_workflow_path(@workflow), :class => 'btn btn-warning' %>
     &nbsp;
     <%= link_to 'Delete Workflow', delete_workflow_path(@workflow), :class => 'btn btn-danger' %>

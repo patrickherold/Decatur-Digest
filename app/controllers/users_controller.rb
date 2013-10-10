@@ -2,7 +2,22 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :new, :login_dev]
   before_filter { @main_nav = :account }
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w( name email sign_in_count current_sign_in_at current_sign_in_ip ) + _ransackers.keys
+  end
+  
+
   def index
+    @users = User.all
+    if user_signed_in?
+      @search = User.search(params[:q])
+    else
+      @search = User.commercial_property.search(params[:q])
+    end
+    @users = @search.result.page(params[:page]).per(20)
+    @search.build_condition if @search.conditions.empty?
+    @search.build_sort if @search.sorts.empty?
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

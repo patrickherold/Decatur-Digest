@@ -64,6 +64,11 @@ class WorkflowController < ApplicationController
       @workflow.save!
       flash.now[:notice] = 'Status successfully updated'
     end
+    respond_to do |format|
+        format.html
+        format.csv { send_data @workflow.lots.to_csv }
+        format.xls # { send_data @products.to_csv(col_sep: "\t") }
+    end
   end
 
   def delete

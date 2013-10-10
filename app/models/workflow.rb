@@ -44,4 +44,19 @@ class Workflow < ActiveRecord::Base
   def managers
     User.all.select {|u| u.managed_workflows.include?(self) }.uniq.reject {|u| user == u }
   end
+  
+  
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      workflow.lot.each do |lot|
+        csv << lot.attributes.values_at(*column_names)
+      end
+    end
+  end
+
+
+  
+  
 end

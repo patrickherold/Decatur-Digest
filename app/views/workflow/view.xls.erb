@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">tax district</Data></Cell>
+        <Cell><Data ss:Type="String">parcel id</Data></Cell>
+        <Cell><Data ss:Type="String">homestead</Data></Cell>
+        <Cell><Data ss:Type="String">land value</Data></Cell>
+        <Cell><Data ss:Type="String">building value</Data></Cell>
+        <Cell><Data ss:Type="String">appraised value</Data></Cell>
+        <Cell><Data ss:Type="String">appeal value</Data></Cell>
+        <Cell><Data ss:Type="String">taxable</Data></Cell>
+        <Cell><Data ss:Type="String">zoning</Data></Cell>
+        <Cell><Data ss:Type="String">tax year</Data></Cell>
+        <Cell><Data ss:Type="String">property street sub number</Data></Cell>
+        <Cell><Data ss:Type="String">property street number</Data></Cell>
+        <Cell><Data ss:Type="String">property street name prefix</Data></Cell>
+        <Cell><Data ss:Type="String">property street name</Data></Cell>
+        <Cell><Data ss:Type="String">property street type</Data></Cell>
+        <Cell><Data ss:Type="String">property street type postfix</Data></Cell>
+        <Cell><Data ss:Type="String">property street suite</Data></Cell>
+        <Cell><Data ss:Type="String">property city</Data></Cell>
+        <Cell><Data ss:Type="String">property state</Data></Cell>
+        <Cell><Data ss:Type="String">property zip</Data></Cell>
+        <Cell><Data ss:Type="String">property zip plus four</Data></Cell>
+        <Cell><Data ss:Type="String">owner</Data></Cell>
+        <Cell><Data ss:Type="String">co owner</Data></Cell>
+        <Cell><Data ss:Type="String">in care of</Data></Cell>
+        <Cell><Data ss:Type="String">mailing street number</Data></Cell>
+        <Cell><Data ss:Type="String">mailing street name prefix</Data></Cell>
+        <Cell><Data ss:Type="String">mailing street name</Data></Cell>
+        <Cell><Data ss:Type="String">mailing street type</Data></Cell>
+        <Cell><Data ss:Type="String">mailing street type postfix</Data></Cell>
+        <Cell><Data ss:Type="String">mailing street suite</Data></Cell>
+        <Cell><Data ss:Type="String">mailing city</Data></Cell>
+        <Cell><Data ss:Type="String">mailing state</Data></Cell>
+        <Cell><Data ss:Type="String">mailing zip</Data></Cell>
+        <Cell><Data ss:Type="String">mailing zip plus four</Data></Cell>
+      </Row>
+    <% @workflow.lots.each do |lot| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= lot.tax_district %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.parcel_id %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.homestead %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.land_value %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.building_value %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.appraised_value %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.appeal_value %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.taxable %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.zoning %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.tax_year %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_sub_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_name_prefix %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_type %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_type_postfix %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_street_suite %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_city %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_state %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_zip %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.property_zip_plus_four %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.owner %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.co_owner %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.in_care_of %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_street_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_street_name_prefix %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_street_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_street_type %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_street_type_postfix %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_street_suite %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_city %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_state %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_zip %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= lot.mailing_zip_plus_four %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
+
+
