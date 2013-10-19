@@ -12,25 +12,14 @@ class Workflow < ActiveRecord::Base
     managers.include?(u) || user == u
   end
 
-  def lots_with_status
-    lots.map {|lot|
-      st = status_by_lot(lot)
-      {
-          :lot => lot,
-          :status => st ? st[:status] : nil,
-          :message => st ? st[:message] : nil
-      }
-    }
-  end
-
   def status_by_lot(lot)
-    status.select {|s|
+    status.select { |s|
       s[:lot_id].to_i == lot.id
-    }.first
+    }.sort_by { |s| s[:timestamp] }.reverse
   end
 
   def status
-    (self[:status] || []).map {|s|
+    (self[:status] || []).map { |s|
       s[:user] = User.find_by_id(s[:user])
       s[:lot] = Lot.find_by_id(s[:lot_id])
       s
@@ -42,10 +31,8 @@ class Workflow < ActiveRecord::Base
   end
 
   def managers
-    User.all.select {|u| u.managed_workflows.include?(self) }.uniq.reject {|u| user == u }
+    User.all.select { |u| u.managed_workflows.include?(self) }.uniq.reject { |u| user == u }
   end
-  
-  
 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
@@ -55,8 +42,4 @@ class Workflow < ActiveRecord::Base
       end
     end
   end
-
-
-  
-  
 end

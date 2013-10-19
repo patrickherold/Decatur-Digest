@@ -86,6 +86,16 @@
       text-align: center;
     }
 
+    .revision-history {
+      max-height: 200px;
+      overflow-y: auto;
+      background: #f5f5f5;
+      color: #777;
+      tr.first td {
+        border-top: 1px solid #777;
+      }
+    }
+
     .bottom-buttons {
       margin-top: 7px;
       border-top: 1px solid #ccc;

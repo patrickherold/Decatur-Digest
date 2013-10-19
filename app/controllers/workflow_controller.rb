@@ -56,7 +56,6 @@ class WorkflowController < ApplicationController
               :user => current_user.id,
               :timestamp => DateTime.now
           }
-          statuses.reject! { |s| s[:lot] == l }
           statuses << status
         end
         @workflow.status = statuses
