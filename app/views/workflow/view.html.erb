@@ -106,56 +106,58 @@
                   </tr>
                 </table>
 
-                <h3>Revision History</h3>
+                <% unless status_history.empty? %>
+                    <h3>Revision History</h3>
 
-                <div class="revision-history">
-                  <% status_history.each { |s| %>
-                      <table>
-                        <tr class="first">
-                          <td class="key">
-                            Status
-                          </td>
-                          <td>
-                            <% if s[:status] == 'pending' %>
-                                <span class="label label-default">undefined</span>
-                            <% elsif s[:status] == 'ok' %>
-                                <span class="label label-success">ok</span>
-                            <% elsif s[:status] == 'problem' %>
-                                <span class="label label-warning">problem</span>
-                            <% elsif s[:status] == 'escalate' %>
-                                <span class="label label-danger">escalate</span>
-                            <% elsif s[:status] == 'appeal' %>
-                                <span class="label label-danger">appeal</span>
-                            <% end %>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="key">
-                            Message
-                          </td>
-                          <td>
-                            <%= s[:message] %>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="key">
-                            By
-                          </td>
-                          <td>
-                            <%= s[:user].name %>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="key">
-                            Timestamp
-                          </td>
-                          <td>
-                            <%= l s[:timestamp], :format => :login_date %>
-                          </td>
-                        </tr>
-                      </table>
-                  <% } %>
-                </div>
+                    <div class="revision-history">
+                      <% status_history.each { |s| %>
+                          <table>
+                            <tr class="first">
+                              <td class="key">
+                                Status
+                              </td>
+                              <td>
+                                <% if s[:status] == 'pending' %>
+                                    <span class="label label-default">undefined</span>
+                                <% elsif s[:status] == 'ok' %>
+                                    <span class="label label-success">ok</span>
+                                <% elsif s[:status] == 'problem' %>
+                                    <span class="label label-warning">problem</span>
+                                <% elsif s[:status] == 'escalate' %>
+                                    <span class="label label-danger">escalate</span>
+                                <% elsif s[:status] == 'appeal' %>
+                                    <span class="label label-danger">appeal</span>
+                                <% end %>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="key">
+                                Message
+                              </td>
+                              <td>
+                                <%= s[:message] %>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="key">
+                                By
+                              </td>
+                              <td>
+                                <%= s[:user].name %>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="key">
+                                Timestamp
+                              </td>
+                              <td>
+                                <%= l s[:timestamp], :format => :login_date %>
+                              </td>
+                            </tr>
+                          </table>
+                      <% } %>
+                    </div>
+                <% end %>
 
                 <div class="bottom-buttons">
                   <a href="#" class="bottom-button btn btn-warning btn-xs" onclick="$(this).parent().parent().parent().find('.editor').show(); $(this).parent().parent().hide(); return false;">Re-evaluate</a>

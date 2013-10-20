@@ -7,13 +7,25 @@
       <tr>
         <td class="key important">Name</td>
         <td class="value">
-            <%= f.text_field :name %>
+          <%= f.text_field :name %>
         </td>
       </tr>
       <tr>
         <td class="key">Description</td>
         <td class="value">
           <%= f.text_area :description, :rows => 5 %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Managers</td>
+        <td class="value">
+          <%= f.select :manager_ids, options_from_collection_for_select(User.all.reject { |u| u == current_user }, :id, :name, @workflow.manager_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
+          <div>
+            <i>
+              This defaults to your workflow managers defined in your Account.<br/>
+              You may override manager permissions above
+            </i>
+          </div>
         </td>
       </tr>
       <!--

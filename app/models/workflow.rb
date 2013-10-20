@@ -1,8 +1,18 @@
 class Workflow < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :lots
+  has_and_belongs_to_many :managers,
+                          :join_table => 'managers_workflows',
+                          :foreign_key => 'user_id',
+                          :association_foreign_key => 'workflow_id',
+                          :class_name => 'User'
+  has_and_belongs_to_many :global_managers,
+                          :join_table => 'workflow_managers_users',
+                          :foreign_key => 'manager_id',
+                          :association_foreign_key => 'user_id',
+                          :class_name => 'User'
 
-  attr_accessible :description, :name, :user_id, :user, :lots, :lot_ids
+  attr_accessible :description, :name, :user_id, :user, :lots, :lot_ids, :manager_ids
 
   serialize :status
 
@@ -31,7 +41,15 @@ class Workflow < ActiveRecord::Base
   end
 
   def managers
-    User.all.select { |u| u.managed_workflows.include?(self) }.uniq.reject { |u| user == u }
+    super.empty? ?
+        user.workflow_managers :
+        super
+  end
+
+  def manager_ids
+    super.empty? ?
+        user.workflow_managers.collect(&:id) :
+        super
   end
 
   def self.to_csv(options = {})

@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran,
                   :name, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_username, :fb_gener, :fb_picture,
                   :fb_locale, :fb_timezone, :fb_link, :fb_bio, :fb_cover, :fb_users_hometown, :workflow_manager_ids
-  
+
   has_many :evaluations, class_name: "RSEvaluation", as: :source
   has_many :workflows
   has_and_belongs_to_many :workflow_managers,
@@ -27,10 +27,10 @@ class User < ActiveRecord::Base
                           :class_name => 'User'
 
   #accepts_nested_attributes_for :lots, :reject_if => lambda { |a| a[:lot].blank? }, :allow_destroy => true
-  
+
   validates_presence_of :username
   validates_uniqueness_of :username
-  
+
   monetize :income_cents
 
   def self.from_omniauth(auth)
@@ -71,18 +71,18 @@ class User < ActiveRecord::Base
       super
     end
   end
-  
+
   def voted_for?(lot)
     evaluations.where(target_type: lot.class, target_id: lot.id).present?
   end
 
   def total_votes
-    LotVote.joins(:lot).where(lots: {user_id: self.id}).sum('value')
+    LotVote.joins(:lot).where(lots: { user_id: self.id }).sum('value')
   end
 
   def managed_workflows
-    User.all.select {|u| u.workflow_managers.include?(self) }.map(&:workflows).flatten.uniq.reject{|w|
-      workflows.include?(w)
+    Workflow.all.select { |w|
+      !self.workflows.include?(w) && w.accessible_by(self)
     }
   end
 end
