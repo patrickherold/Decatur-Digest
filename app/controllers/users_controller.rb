@@ -14,6 +14,8 @@ class UsersController < ApplicationController
     else
       @search = User.commercial_property.search(params[:q])
     end
+    
+    
     @users = @search.result.page(params[:page]).per(20)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?

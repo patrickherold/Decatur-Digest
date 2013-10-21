@@ -5,8 +5,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  geocoded_by :current_sign_in_ip # can also be an IP address
   after_validation :geocode
+
+  geocoded_by :current_sign_in_ip # can also be an IP address
+
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran,
