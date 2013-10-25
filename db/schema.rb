@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130930111317) do
+ActiveRecord::Schema.define(:version => 20131025151205) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20130930111317) do
     t.integer  "customer_id"
     t.integer  "municipal_id"
     t.boolean  "gmaps"
+    t.integer  "organization_id"
   end
 
   create_table "lots_workflows", :id => false, :force => true do |t|
@@ -74,6 +75,18 @@ ActiveRecord::Schema.define(:version => 20130930111317) do
   create_table "managers_workflows", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "workflow_id"
+  end
+
+  create_table "organizations", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "parent_organization_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "portfolio", :force => true do |t|
@@ -172,6 +185,8 @@ ActiveRecord::Schema.define(:version => 20130930111317) do
     t.string   "fb_email"
     t.string   "fb_users_hometown"
     t.string   "fb_picture"
+    t.string   "role"
+    t.integer  "organization_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

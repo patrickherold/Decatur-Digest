@@ -1,0 +1,19 @@
+// Place all the styles related to the organizations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.organization-card {
+  tr {
+    vertical-align: top;
+  }
+  td {
+    padding: 0px 10px;
+  }
+  .caption {
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  .image {
+    margin-bottom: 10px;
+  }
+}

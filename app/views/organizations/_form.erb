@@ -1,0 +1,58 @@
+<%= form_for :organization do |f| %>
+    <table class="data-form">
+      <tr>
+        <td class="key important">Name</td>
+        <td class="value">
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Address</td>
+        <td class="value">
+          <%= f.text_field :address %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Parent Organization</td>
+        <td class="value">
+          <% if current_user.super_admin? %>
+              <%= f.select :parent_organization_id, options_from_collection_for_select(Organization.all.reject { |o| o == @organization }, :id, :name, @organization.parent_organization_id), {:prompt => "Choose if any"} %>
+          <% else %>
+              <%= @organization.parent_organization.try(:name) || 'none' %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Image</td>
+        <td class="value">
+          <%= image_tag @organization.image.url, :width => 150 if @organization.image.exists? %>
+          <div><%= f.file_field :image %></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Users</td>
+        <td class="value">
+          <%= f.select :user_ids, options_from_collection_for_select(User.unassigned + @organization.users, :id, :name, @organization.user_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Admins</td>
+        <td class="value">
+          <%= f.select :admin_ids, options_from_collection_for_select(@organization.users, :id, :name, @organization.admins.collect(&:id)), {}, { :multiple => true, :style => "height: 150px!important" } %>
+          <div>This box will be populated with the chosen users list once you save</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="key">Properties</td>
+        <td class="value">
+          <%= f.select :lot_ids, options_from_collection_for_select((Lot.unassigned + @organization.lots).sort_by(&:property_street), :id, :property_street, @organization.lot_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <%= f.submit 'Save Organization', :class => 'btn btn-success' %>
+        </td>
+      </tr>
+    </table>
+<% end %>

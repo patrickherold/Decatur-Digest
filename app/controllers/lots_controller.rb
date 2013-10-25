@@ -28,7 +28,7 @@ class LotsController < ApplicationController
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
     @properties = @lots.order('appraised_value desc')
-    @all_properties = @search.result
+    @all_properties = @search.result.select{|l| l.organization && l.organization_id == current_user.organization_id }
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"
@@ -122,7 +122,7 @@ class LotsController < ApplicationController
     @properties = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
-    @all_properties = @search.result
+    @all_properties = @search.result.select{|l| l.organization && l.organization_id == current_user.organization_id }
 
     @taxes_by_type = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph3')

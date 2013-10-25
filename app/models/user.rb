@@ -5,18 +5,19 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  after_validation :geocode
+  # after_validation :geocode
 
   geocoded_by :current_sign_in_ip # can also be an IP address
-
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :birthdate, :income_cents, :disabled_veteran,
                   :name, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_username, :fb_gener, :fb_picture,
-                  :fb_locale, :fb_timezone, :fb_link, :fb_bio, :fb_cover, :fb_users_hometown, :workflow_manager_ids
+                  :fb_locale, :fb_timezone, :fb_link, :fb_bio, :fb_cover, :fb_users_hometown, :workflow_manager_ids,
+                  :organization_id, :role
 
   has_many :evaluations, class_name: "RSEvaluation", as: :source
   has_many :workflows
+  belongs_to :organization
   has_and_belongs_to_many :workflow_managers,
                           :join_table => 'workflow_managers_users',
                           :foreign_key => 'manager_id',
@@ -86,5 +87,37 @@ class User < ActiveRecord::Base
     Workflow.all.select { |w|
       !self.workflows.include?(w) && w.accessible_by(self)
     }
+  end
+
+  def role
+    self[:role].try(:to_sym) || :user
+  end
+
+  def super_admin?
+    role == :super_admin
+  end
+
+  def admin?
+    organization && (role == :admin || super_admin?)
+  end
+
+  def user?
+    organization && !(admin? || super_admin?)
+  end
+
+  def restricted?
+    !organization
+  end
+
+  def assign(organization)
+    update_attribute(:organization_id, organization.id)
+  end
+
+  def unassign!
+    update_attributes({ :organization_id => nil, :role => super_admin? ? role : 'user' })
+  end
+
+  def self.unassigned
+    User.all.reject(&:organization)
   end
 end

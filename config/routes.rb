@@ -1,5 +1,11 @@
 DecaturDigest::Application.routes.draw do
   
+  get "/organizations" => "organizations#index", :as => :organizations
+  get "/organization/:id" => "organizations#show", :as => :organization
+  match "/organization/new" => "organizations#new", :as => :new_organization
+  match "/organization/edit/:id" => "organizations#edit", :as => :edit_organization
+  delete "/organization/delete/:id" => "organizations#delete", :as => :delete_organization
+
   get "workflow/my", :as => :my_workflows
   get "workflow/managed", :as => :managed_workflows
   match "workflow/new", :as => :new_workflow

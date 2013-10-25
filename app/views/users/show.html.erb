@@ -1,80 +1,89 @@
-<% if user_signed_in? && (@user.id == current_user.id ) %>
+<% if user_signed_in? && (@user.id == current_user.id) %>
 
-<div class="page-header">
-  
-  <h2><img src="<%= @user.fb_picture %>">  <%= @user.name %> <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_user_path(@user), :class => 'btn btn-warning btn-xs' %></h2>
-</div>
+    <div class="page-header">
 
-<div class="container">
-  <div class="col-lg-2">
-    Email Address:
-  </div>
-  
-  <div class="col-lg-9">
-    <%= @user.email %>
-  </div>
-  <div class="col-lg-2">
-    Username:
-  </div>
-  <div class="col-lg-9">
-    <%= @user.username %>
-  </div>
-  <div class="col-lg-2">
-    Birthdate:
-  </div>
-  <div class="col-lg-9">
-    <% if  @user.birthdate? %>
-    <%= I18n.l(@user.birthdate, :format=>:birthdate) %>
-    <% else %>
-    n/a
-    <% end %>
-  </div>
+      <h2>
+        <img src="<%= @user.fb_picture %>">  <%= @user.name %> <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                                                                           edit_user_path(@user), :class => 'btn btn-warning btn-xs' %>
+      </h2>
+    </div>
 
-  <div class="col-lg-2">
-    Last Sign In:
-  </div>
-  <div class="col-lg-9">
-    <%= I18n.l(@user.last_sign_in_at, :format=>:login_date) %>
-  </div>
-  <div class="col-lg-11">
-    You've signed in: <b><%= @user.sign_in_count %></b> time(s)
-  </div>
-</div>
-
-
-<hr>
-<h3>Properties I've voted on:</h3>
-
-  <div id="collapseOne" class="panel-collapse collapse in">
-  <div class="panel-body panel-primary searchpadding">
-    <table class="table table-striped table-hover table-condensed">
-      <thead>
-        <tr>
-          <th>Property Address</th>
-          <th>Property Value</th>
-          <th>Property Votes</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for vote in @my_lot_votes do %>
-         <tr>
-          <td><%= vote.property_map_address %></td>
-          <td><%= number_to_currency vote.taxable, :unit => "$", :precision => 0 %></td>
-          <td><%= number_with_precision vote.reputation_for(:votes), :precision => 0 %></td>
-          <td><%= link_to "Details", lot_path(vote), :class => "btn btn-info btn-xs" %></td>
-         </tr>
+    <div class="container">
+      <div class="col-lg-2">
+        Email Address:
+      </div>
+      <div class="col-lg-9">
+        <%= @user.email %>
+      </div>
+      <div class="col-lg-2">
+        Username:
+      </div>
+      <div class="col-lg-9">
+        <%= @user.username %>
+      </div>
+      <% if @user.organization %>
+          <div class="col-lg-2">
+            Organization:
+          </div>
+          <div class="col-lg-9">
+            <%= @user.organization.name %>
+          </div>
+      <% end %>
+      <div class="col-lg-2">
+        Birthdate:
+      </div>
+      <div class="col-lg-9">
+        <% if  @user.birthdate? %>
+            <%= I18n.l(@user.birthdate, :format => :birthdate) %>
+        <% else %>
+            n/a
         <% end %>
-        <tr>
-          <td colspan="4">
-            ... MORE
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
+      </div>
+
+      <div class="col-lg-2">
+        Last Sign In:
+      </div>
+      <div class="col-lg-9">
+        <%= I18n.l(@user.last_sign_in_at, :format => :login_date) %>
+      </div>
+      <div class="col-lg-11">
+        You've signed in: <b><%= @user.sign_in_count %></b> time(s)
+      </div>
+    </div>
+
+
+    <hr>
+    <h3>Properties I've voted on:</h3>
+
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body panel-primary searchpadding">
+        <table class="table table-striped table-hover table-condensed">
+          <thead>
+          <tr>
+            <th>Property Address</th>
+            <th>Property Value</th>
+            <th>Property Votes</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% for vote in @my_lot_votes do %>
+              <tr>
+                <td><%= vote.property_map_address %></td>
+                <td><%= number_to_currency vote.taxable, :unit => "$", :precision => 0 %></td>
+                <td><%= number_with_precision vote.reputation_for(:votes), :precision => 0 %></td>
+                <td><%= link_to "Details", lot_path(vote), :class => "btn btn-info btn-xs" %></td>
+              </tr>
+          <% end %>
+          <tr>
+            <td colspan="4">
+              ... MORE
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 <% else %>
-<img src="/assets/Road-Closed.jpg" class="img-responsive">
+    <img src="/assets/Road-Closed.jpg" class="img-responsive">
 <% end %>

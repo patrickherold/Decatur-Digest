@@ -8,6 +8,8 @@ class Lot < ActiveRecord::Base
 
   has_and_belongs_to_many :workflows
 
+  belongs_to :organization
+
   UNRANSACKABLE_ATTRIBUTES = ["id", "tax_district", "created_at", "modified_at", "updated_at", "tax_year", "customer_id", "municipal_id", "tax_paid", "tax_dispute"]
 
   def self.ransackable_attributes(auth_object = nil)
@@ -526,6 +528,10 @@ class Lot < ActiveRecord::Base
 
   def self.building_average_value_from_similar_land_values
     self.same_zoning_lots_with_similar_land_value(self.land_value * 0.15).average(:building_value)
+  end
+
+  def self.unassigned
+    Lot.all.reject(&:organization)
   end
 
 end

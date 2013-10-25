@@ -15,13 +15,12 @@
           <th class="visible-lg"><%= sort_link @search, :zoning, "Zoning" %></th>
           <th class="visible-lg"><%= sort_link @search, :homestead, "Homestead" %></th>
           <th class="hidden-xs">Lot Details</th>
-
         </tr>
         </thead>
         <tbody>
         <% @properties.each do |lot| %>
             <tr>
-              <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
+              <td class="<%= current_user.organization == lot.organization ? 'organization-property' : (current_user.organization.recursive_lots.include?(lot) ? 'child-property' : 'foreign-property') %>"><%= lot.property_street if lot.property_street_and_number.present? %></td>
               <td class="hidden-sm hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
               <td class="visible"><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
               <% if lot.appeal_value.to_i > 10 %>
@@ -48,7 +47,7 @@
         <% end %>
         <tr>
           <td colspan="7">
-            <% if user_signed_in? %>
+            <% if user_signed_in? && !current_user.restricted? && (@all_properties && !@all_properties.empty?) %>
                 <hr>
                 <div class="textright">
                   <%= form_tag add_lots_to_workflow_path, :target => '_blank' do %>
