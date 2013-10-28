@@ -29,6 +29,7 @@ environments:
   SmallService: {}
 defaults:
   migrate: false
+  precompile_assets: true  # precompile assets
 
 predicates:
     cont: "contains"
@@ -37,3 +38,4 @@ predicates:
     end: "ends with"
     gt: "greater than"
     lt: "less than"
+    
