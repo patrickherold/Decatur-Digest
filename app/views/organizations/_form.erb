@@ -38,7 +38,7 @@
               <th class="check">Admin?</th>
               <th>Name</th>
             </tr>
-            <% (@organization.users + User.unassigned).each { |user| %>
+            <% (@organization.users + User.unassigned).uniq.each { |user| %>
                 <tr>
                   <td class="check"><%= check_box_tag 'organization[user_ids][]', user.id, @organization.users.include?(user) %></td>
                   <td class="check"><%= check_box_tag 'organization[admin_ids][]', user.id, @organization.admins.include?(user) %></td>
@@ -48,26 +48,6 @@
           </table>
           <%= hidden_field_tag 'organization[admin_ids][]', '' %>
           <%= hidden_field_tag 'organization[user_ids][]', '' %>
-        </td>
-      </tr>
-      <tr>
-        <td class="key">Properties</td>
-        <td class="value">
-          <table class="items-list">
-            <tr>
-              <th class="check">Assigned?</th>
-              <th>Property Street</th>
-              <th>Property Owner</th>
-            </tr>
-            <% (@organization.lots + Lot.unassigned).each { |lot| %>
-                <tr>
-                  <td class="check"><%= check_box_tag 'organization[lot_ids][]', lot.id, @organization.lots.include?(lot) %></td>
-                  <td><%= lot.property_street %></td>
-                  <td><%= lot.owner %></td>
-                </tr>
-            <% } %>
-          </table>
-          <%= hidden_field_tag 'organization[lot_ids][]', '' %>
         </td>
       </tr>
       <tr>

@@ -33,8 +33,9 @@ class Organization < ActiveRecord::Base
       u = User.find_by_id(i)
       next unless u
       u.update_attribute(:organization_id, self.id)
+      u.update_attribute(:role, :admin) unless u.super_admin?
     }
-    reload
+    reload unless new_record?
     users.each { |u|
       u.update_attribute(:role, ids.collect(&:to_i).include?(u.id) ? :admin : :user) unless u.super_admin?
     }
