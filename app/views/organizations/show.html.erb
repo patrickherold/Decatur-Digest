@@ -43,7 +43,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @organization.lots.each { |lot| %>
+  <% @organization.lots.first(10).each { |lot| %>
       <tr>
         <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
         <td class="hidden-sm hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
@@ -68,5 +68,10 @@
         </td>
       </tr>
   <% } %>
+  <tr>
+    <td colspan="7">
+          ... more
+    </td>
+  </tr>
   </tbody>
 </table>
