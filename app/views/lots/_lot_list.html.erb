@@ -47,11 +47,11 @@
         <% end %>
         <tr>
           <td colspan="7">
-            <% if user_signed_in? && !current_user.restricted? && (@all_properties && !@all_properties.empty?) %>
+            <% if user_signed_in? && !current_user.restricted? && (@properties_for_workflow && !@properties_for_workflow.empty?) %>
                 <hr>
                 <div class="textright">
                   <%= form_tag add_lots_to_workflow_path, :target => '_blank' do %>
-                      <%= hidden_field_tag :lots, (@all_properties || @properties).collect(&:id).join(',') %>
+                      <%= hidden_field_tag :lots, (@properties_for_workflow || @properties).collect(&:id).join(',') %>
                       <%= submit_tag 'Add list to Workflow', :class => "add-to-workflow btn btn-success" %>
                   <% end %>
                 </div>

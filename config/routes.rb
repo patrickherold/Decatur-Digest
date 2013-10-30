@@ -1,8 +1,8 @@
 DecaturDigest::Application.routes.draw do
   
   get "/organizations" => "organizations#index", :as => :organizations
-  get "/organization/:id" => "organizations#show", :as => :organization
   match "/organization/new" => "organizations#new", :as => :new_organization
+  get "/organization/:id" => "organizations#show", :as => :organization
   match "/organization/edit/:id" => "organizations#edit", :as => :edit_organization
   delete "/organization/delete/:id" => "organizations#delete", :as => :delete_organization
 

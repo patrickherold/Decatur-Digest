@@ -27,7 +27,7 @@ class MapController < ApplicationController
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
     @properties = @lots.order('appraised_value desc')
-    @all_properties = @search.result
+    @properties_for_workflow = @search.result
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"

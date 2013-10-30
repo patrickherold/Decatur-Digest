@@ -16,7 +16,7 @@
         <td class="key">Parent Organization</td>
         <td class="value">
           <% if current_user.super_admin? %>
-              <%= f.select :parent_organization_id, options_from_collection_for_select(Organization.all.reject { |o| o == @organization }, :id, :name, @organization.parent_organization_id), {:prompt => "Choose if any"} %>
+              <%= f.select :parent_organization_id, options_from_collection_for_select(Organization.all.reject { |o| o == @organization }, :id, :name, @organization.parent_organization_id), { :prompt => "Choose if any" } %>
           <% else %>
               <%= @organization.parent_organization.try(:name) || 'none' %>
           <% end %>
@@ -32,20 +32,42 @@
       <tr>
         <td class="key">Users</td>
         <td class="value">
-          <%= f.select :user_ids, options_from_collection_for_select(User.unassigned + @organization.users, :id, :name, @organization.user_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
-        </td>
-      </tr>
-      <tr>
-        <td class="key">Admins</td>
-        <td class="value">
-          <%= f.select :admin_ids, options_from_collection_for_select(@organization.users, :id, :name, @organization.admins.collect(&:id)), {}, { :multiple => true, :style => "height: 150px!important" } %>
-          <div>This box will be populated with the chosen users list once you save</div>
+          <table class="items-list">
+            <tr>
+              <th class="check">User?</th>
+              <th class="check">Admin?</th>
+              <th>Name</th>
+            </tr>
+            <% (@organization.users + User.unassigned).each { |user| %>
+                <tr>
+                  <td class="check"><%= check_box_tag 'organization[user_ids][]', user.id, @organization.users.include?(user) %></td>
+                  <td class="check"><%= check_box_tag 'organization[admin_ids][]', user.id, @organization.admins.include?(user) %></td>
+                  <td><%= user.name %></td>
+                </tr>
+            <% } %>
+          </table>
+          <%= hidden_field_tag 'organization[admin_ids][]', '' %>
+          <%= hidden_field_tag 'organization[user_ids][]', '' %>
         </td>
       </tr>
       <tr>
         <td class="key">Properties</td>
         <td class="value">
-          <%= f.select :lot_ids, options_from_collection_for_select((Lot.unassigned + @organization.lots).sort_by(&:property_street), :id, :property_street, @organization.lot_ids), {}, { :multiple => true, :style => "height: 150px!important" } %>
+          <table class="items-list">
+            <tr>
+              <th class="check">Assigned?</th>
+              <th>Property Street</th>
+              <th>Property Owner</th>
+            </tr>
+            <% (@organization.lots + Lot.unassigned).each { |lot| %>
+                <tr>
+                  <td class="check"><%= check_box_tag 'organization[lot_ids][]', lot.id, @organization.lots.include?(lot) %></td>
+                  <td><%= lot.property_street %></td>
+                  <td><%= lot.owner %></td>
+                </tr>
+            <% } %>
+          </table>
+          <%= hidden_field_tag 'organization[lot_ids][]', '' %>
         </td>
       </tr>
       <tr>

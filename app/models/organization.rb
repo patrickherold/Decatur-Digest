@@ -28,8 +28,15 @@ class Organization < ActiveRecord::Base
   end
 
   def admin_ids=(ids)
+    ids.reject!(&:blank?)
+    ids.each { |i|
+      u = User.find_by_id(i)
+      next unless u
+      u.update_attribute(:organization_id, self.id)
+    }
+    reload
     users.each { |u|
-      u.update_attribute(:role, ids.collect(&:to_i).include?(u.id) ? :admin : :user)
+      u.update_attribute(:role, ids.collect(&:to_i).include?(u.id) ? :admin : :user) unless u.super_admin?
     }
   end
 

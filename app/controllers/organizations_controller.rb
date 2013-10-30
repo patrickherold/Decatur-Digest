@@ -38,7 +38,13 @@ class OrganizationsController < ApplicationController
     end unless current_user.super_admin?
 
     if request.post?
-      redirect_to current_user.super_admin? ? organizations_path : organization_path(@organization) if @organization.update_attributes(params[:organization])
+      if @organization.update_attributes(params[:organization])
+        if current_user.super_admin? && !current_user.organization == @organization
+          redirect_to organizations_path
+        else
+          redirect_to organization_path(@organization)
+        end
+      end
     end
   end
 
