@@ -20,9 +20,9 @@ class LotsController < ApplicationController
     @school_commericial_tax_lost_to_appeal = (@commericial_lost_to_appeal * 0.0209)
     @total_commericial_tax_lost_to_appeal = (@city_commericial_tax_lost_to_appeal + @school_commericial_tax_lost_to_appeal)
     if user_signed_in?
-      @search = Lot.search(params[:q])
+      @search = Lot.current_year.search(params[:q])
     else
-      @search = Lot.commercial_property.search(params[:q])
+      @search = Lot.current_year.commercial_property.search(params[:q])
     end
     @lots = @search.result.page(params[:page]).per(20)
     @search.build_condition if @search.conditions.empty?
@@ -122,20 +122,15 @@ class LotsController < ApplicationController
     @search.build_sort if @search.sorts.empty?
     @properties_for_workflow = @search.result.select{|l| l.organization && l.organization_id == current_user.organization_id }
 
-    @taxes_by_type = Highcharts.new do |chart|
-      chart.chart(renderTo: 'graph3')
-      chart.title('')
-      chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['City Taxes', @lot_city_taxes_collected], ['School Taxes', @lot_school_taxes_collected]])
-      chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
-      chart.credits(0)
-    end
 
-    @taxes_lost_chart = Highcharts.new do |chart|
+    @property_value_trend = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph')
       chart.title('')
-      chart.xAxis(categories: ['City Taxes lost on appeal', 'School Taxes lost on appeal', 'Total Taxes lost on appeal'])
+      chart.xAxis(categories: ['2011', '2012', '2013'])
       chart.yAxis(title: 'Dollars', min: 0)
-      chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_lot_tax_lost_to_appeal, @school_lot_tax_lost_to_appeal, @total_lot_tax_lost_to_appeal])
+      chart.series(name: 'Land Value', type: 'line', data: [Lot.year(2011).land_value, Lot.year(2012).land_value, Lot.year(2013).land_value])
+      chart.series(name: 'Building Value', type: 'line', data: [Lot.year(2011).building_value, Lot.year(2012).building_value, Lot.year(2013).building_value])
+      chart.series(name: 'Appraised Value', type: 'line', data: [Lot.year(2011).appraised_value, Lot.year(2012).appraised_value, Lot.year(2013).appraised_value])
       chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
       chart.credits(0)
     end
