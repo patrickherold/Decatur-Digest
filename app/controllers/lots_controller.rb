@@ -29,9 +29,9 @@ class LotsController < ApplicationController
     @search.build_sort if @search.sorts.empty?
     @properties = @lots.order('appraised_value desc')
     organizations = Organization.all # preload cache
-    @properties_for_workflow = @search.result.select { |l|
+    @properties_for_workflow = current_user ? @search.result.select { |l|
       organizations.include?(l.organization_id) && l.organization_id == current_user.organization_id
-    }
+    } : []
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"

@@ -20,7 +20,7 @@
         <tbody>
         <% @properties.each do |lot| %>
             <tr>
-              <td class="<%= current_user.organization == lot.organization ? 'organization-property' : (current_user.organization.recursive_lots.include?(lot) ? 'child-property' : 'foreign-property') %>"><%= lot.property_street if lot.property_street_and_number.present? %></td>
+              <td class="<%= (current_user && current_user.organization == lot.organization) ? 'organization-property' : ((current_user && current_user.organization.recursive_lots.include?(lot)) ? 'child-property' : 'foreign-property') %>"><%= lot.property_street if lot.property_street_and_number.present? %></td>
               <td class="hidden-sm hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
               <td class="visible"><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
               <% if lot.appeal_value.to_i > 10 %>
