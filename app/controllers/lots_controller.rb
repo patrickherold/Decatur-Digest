@@ -28,7 +28,7 @@ class LotsController < ApplicationController
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
     @properties = @lots.order('appraised_value desc')
-    organizations = Organization.all # preload cache
+    organizations = Organization.all.map(&:id) # preload cache
     @properties_for_workflow = current_user ? @search.result.select { |l|
       organizations.include?(l.organization_id) && l.organization_id == current_user.organization_id
     } : []
