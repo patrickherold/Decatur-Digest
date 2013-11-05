@@ -5,6 +5,16 @@
         <%= t '.title', :default => @lot.property_map_address, :class => "blue" %>
       </span>
     </h1>
+    
+      <span class="label label-primary">
+      Other Data Sources
+      </span>
+        <a href="http://www.zillow.com/homes/<%=@lot.property_street_number%>-<%=@lot.property_street_name%>-<%=@lot.property_street_type%>-<%=@lot.property_city%>-<%=@lot.property_state%>-<%=@lot.property_zip%>_rb" target="_blank">
+          <img src="/assets/zillow_icon.jpg" class="img-responsive" width="30px">
+        </a>
+
+    
+
   </div>
   <div class="col-lg-4">
     <div class="textright">

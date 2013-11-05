@@ -47,7 +47,7 @@
         <% end %>
         <tr>
           <td colspan="7">
-            <% if user_signed_in? && !current_user.restricted? && (@properties_for_workflow && !@properties_for_workflow.empty?) %>
+            <% if user_signed_in? && !current_user.restricted? %>
                 <hr>
                 <div class="textright">
                   <%= form_tag add_lots_to_workflow_path, :target => '_blank' do %>

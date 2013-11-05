@@ -470,11 +470,11 @@ class Lot < ActiveRecord::Base
     "<h4><a href='/lots/#{self.id}'>#{self.owner}</a></h4>" << "#{ActionController::Base.helpers.number_to_currency(self.appraised_value, :unit => "$", :precision => 0)} - appraised value <br>" << "#{property_map_address}"
   end
 
+  
   def gmaps4rails_address
-    "#{self.property_map_address}"
+    "#{property_street}, #{property_city}, #{property_state}, #{property_zip}"
   end
-
-
+  
   def property_street_and_number
     [property_street_number, property_street_name_prefix, property_street_name, property_street_type].join(" ")
   end

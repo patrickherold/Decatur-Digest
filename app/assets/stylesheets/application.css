@@ -15,13 +15,6 @@ body {
     margin-top: 80px;
 }
 
-section#content {
-    padding: 16px !important;
-}
-
-html.js body section.hbox aside#nav.bg-primary section.vbox header.dker a.nav-brand {
-    color: white;
-}
 
 .smallemail {
     font-size: .6em;

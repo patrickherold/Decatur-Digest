@@ -7,10 +7,10 @@ class LotsController < ApplicationController
   # GET /lots.json
   def index
     # @lot_votes = Lot.find_with_reputation(:votes, :all, order: "votes desc")
-    @all_lots = Lot.sum('appraised_value') #all.sum(&:appraised_value)
-    @commericial_appeal = Lot.all_commericial_appeal.sum(&:full_appeal)
-    @commericial_appraised = Lot.all_commericial_appraised.sum(&:appraised_value)
-    @commericial_digest = Lot.commercial_property.sum(&:appraised_value)
+    @all_lots = Lot.latest.sum('appraised_value') #all.sum(&:appraised_value)
+    @commericial_appeal = Lot.latest.all_commericial_appeal.sum(&:full_appeal)
+    @commericial_appraised = Lot.latest.all_commericial_appraised.sum(&:appraised_value)
+    @commericial_digest = Lot.latest.commercial_property.sum(&:appraised_value)
     @commericial_taxable = (@commericial_appeal + @commericial_appraised)
     @residential_taxable = (@all_lots - @commericial_taxable)
     @commericial_city_taxes_collected = (@commericial_taxable * 0.01642)
@@ -45,6 +45,7 @@ class LotsController < ApplicationController
       chart.yAxis(title: 'Dollars', min: 0)
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @school_commericial_tax_lost_to_appeal, @total_commericial_tax_lost_to_appeal])
       chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+      chart.credits(0)
     end
 
     @taxes_by_zoning = Highcharts.new do |chart|
@@ -72,9 +73,9 @@ class LotsController < ApplicationController
       stats = {}
       Lot.select('DISTINCT tax_year').map(&:tax_year).each { |year|
         stats[year] = {
-            :land_value => Lot.year(year).mean(:land_value),
-            :building_value => Lot.year(year).mean(:building_value),
-            :appraised_value => Lot.year(year).mean(:appraised_value)
+            :land_value => Lot.year(year).sum(:land_value),
+            :building_value => Lot.year(year).sum(:building_value),
+            :appraised_value => Lot.year(year).sum(:appraised_value)
         }
       }
       chart.xAxis(categories: stats.keys)
@@ -136,6 +137,7 @@ class LotsController < ApplicationController
       marker.title "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
+    
     if user_signed_in?
       @search = Lot.latest.search(params[:q])
     else
