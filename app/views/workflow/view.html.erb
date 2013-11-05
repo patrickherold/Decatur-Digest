@@ -7,6 +7,7 @@
 <tr>
   <th>Property Address</th>
   <th class="hidden-sm hidden-xs">Owner Name</th>
+  <th class="visible">Tax Year</th>
   <th class="visible">Appraised</th>
   <th class="visible-md visible-lg">Appeal Value</th>
   <th class="visible-lg">Zoning</th>
@@ -24,6 +25,7 @@
     <tr>
       <td><%= lot.property_street if lot.property_street_and_number.present? %></td>
       <td class="hidden-sm hidden-xs"><%= lot.owners_name if lot.owner.present? %></td>
+      <td class="visible"><%= lot.tax_year %></td>
       <td class="visible"><%= number_to_currency(lot.appraised_appraised, :unit => "$", :precision => 0) %></td>
       <% if lot.appeal_value.to_i > 10 %>
           <td class="visible-md visible-lg">

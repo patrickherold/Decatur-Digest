@@ -11,14 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131025151205) do
+ActiveRecord::Schema.define(:version => 20131104235751) do
 
   create_table "comments", :force => true do |t|
-    t.string   "content"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "commentable_id",   :default => 0
+    t.string   "commentable_type", :default => ""
+    t.string   "title",            :default => ""
+    t.text     "body"
+    t.string   "subject",          :default => ""
+    t.integer  "user_id",          :default => 0,  :null => false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "lots", :force => true do |t|
     t.string   "tax_district"
@@ -64,8 +74,13 @@ ActiveRecord::Schema.define(:version => 20131025151205) do
     t.integer  "customer_id"
     t.integer  "municipal_id"
     t.boolean  "gmaps"
+    t.string   "state"
+    t.datetime "timestamps"
     t.integer  "organization_id"
   end
+
+  add_index "lots", ["parcel_id"], :name => "index_lots_on_parcel_id", :length => {"parcel_id"=>255}
+  add_index "lots", ["tax_year"], :name => "index_lots_on_tax_year"
 
   create_table "lots_workflows", :id => false, :force => true do |t|
     t.integer "lot_id"
@@ -89,19 +104,13 @@ ActiveRecord::Schema.define(:version => 20131025151205) do
     t.datetime "image_updated_at"
   end
 
-  create_table "portfolio", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "lot_id"
-    t.string   "follow_type"
-    t.string   "lot_relationship"
-    t.string   "lot_residency"
+  create_table "portfolios", :force => true do |t|
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-  end
-
-  create_table "portfolios", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+    t.text     "follow_type"
+    t.text     "lot_relationship"
+    t.text     "lot_residency"
   end
 
   create_table "rs_evaluations", :force => true do |t|

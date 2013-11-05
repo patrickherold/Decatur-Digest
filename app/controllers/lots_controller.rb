@@ -20,15 +20,18 @@ class LotsController < ApplicationController
     @school_commericial_tax_lost_to_appeal = (@commericial_lost_to_appeal * 0.0209)
     @total_commericial_tax_lost_to_appeal = (@city_commericial_tax_lost_to_appeal + @school_commericial_tax_lost_to_appeal)
     if user_signed_in?
-      @search = Lot.current_year.search(params[:q])
+      @search = Lot.latest.search(params[:q])
     else
-      @search = Lot.current_year.commercial_property.search(params[:q])
+      @search = Lot.latest.commercial_property.search(params[:q])
     end
     @lots = @search.result.page(params[:page]).per(20)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
     @properties = @lots.order('appraised_value desc')
-    @properties_for_workflow = @search.result.select{|l| l.organization && l.organization_id == current_user.organization_id }
+    organizations = Organization.all # preload cache
+    @properties_for_workflow = @search.result.select { |l|
+      organizations.include?(l.organization_id) && l.organization_id == current_user.organization_id
+    }
 
     @json = @lots.all.to_gmaps4rails do |lot, marker|
       marker.title "#{lot.owner}"
@@ -51,6 +54,7 @@ class LotsController < ApplicationController
       chart.yAxis(title: 'Dollars', min: 0)
       chart.series(name: 'Dollars', yAxis: 0, type: 'bar', data: [@city_commericial_tax_lost_to_appeal, @commericial_school_taxes_collected])
       chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+      chart.credits(0)
     end
 
     @taxes_by_type = Highcharts.new do |chart|
@@ -58,6 +62,26 @@ class LotsController < ApplicationController
       chart.title('Taxes by property type')
       chart.series(name: 'Dollars', yAxis: 0, type: 'pie', data: [['Commercial', @commericial_taxable], ['Residential', @residential_taxable]])
       chart.legend(enabled: false, verticalAlign: 'top', x: -10, y: 100, borderWidth: 0, format: '<b>{chart.name}</b>: {chart.percentage:.1f} %')
+      chart.credits(0)
+    end
+
+    @properties_value_trend = Highcharts.new do |chart|
+      chart.chart(renderTo: 'graph31')
+      chart.title('Properties Value Trend')
+      chart.yAxis(title: 'Dollars', min: 0)
+      stats = {}
+      Lot.select('DISTINCT tax_year').map(&:tax_year).each { |year|
+        stats[year] = {
+            :land_value => Lot.year(year).mean(:land_value),
+            :building_value => Lot.year(year).mean(:building_value),
+            :appraised_value => Lot.year(year).mean(:appraised_value)
+        }
+      }
+      chart.xAxis(categories: stats.keys)
+      chart.series([{ name: 'Land Value', type: 'line', data: stats.values.map { |s| s[:land_value] } },
+                    { name: 'Building Value', type: 'line', data: stats.values.map { |s| s[:building_value] } },
+                    { name: 'Appraised Value', type: 'line', data: stats.values.map { |s| s[:appraised_value] } }])
+      chart.credits(0)
     end
 
     respond_to do |format|
@@ -101,10 +125,10 @@ class LotsController < ApplicationController
       @school_lot_tax_lost_to_appeal = 0
       @total_lot_tax_lost_to_appeal = 0
     end
-    
+
     if @lot.reputation_for(:votes) < 0
       @lot_vote = @lot.reputation_for(:votes) * -1
-    else 
+    else
       @lot_vote = @lot.reputation_for(:votes)
     end
 
@@ -113,28 +137,34 @@ class LotsController < ApplicationController
       marker.json({ :id => lot.id })
     end
     if user_signed_in?
-      @search = Lot.search(params[:q])
+      @search = Lot.latest.search(params[:q])
     else
-      @search = Lot.commercial_property.search(params[:q])
+      @search = Lot.latest.commercial_property.search(params[:q])
     end
     @properties = @search.result.page(params[:page]).per(15).near(@lot.property_map_address, 10, order: :distance)
     @search.build_condition if @search.conditions.empty?
     @search.build_sort if @search.sorts.empty?
-    @properties_for_workflow = @search.result.select{|l| l.organization && l.organization_id == current_user.organization_id }
-
+    @properties_for_workflow = []
 
     @property_value_trend = Highcharts.new do |chart|
       chart.chart(renderTo: 'graph')
       chart.title('')
-      chart.xAxis(categories: ['2011', '2012', '2013'])
       chart.yAxis(title: 'Dollars', min: 0)
-      chart.series(name: 'Land Value', type: 'line', data: [Lot.year(2011).land_value, Lot.year(2012).land_value, Lot.year(2013).land_value])
-      chart.series(name: 'Building Value', type: 'line', data: [Lot.year(2011).building_value, Lot.year(2012).building_value, Lot.year(2013).building_value])
-      chart.series(name: 'Appraised Value', type: 'line', data: [Lot.year(2011).appraised_value, Lot.year(2012).appraised_value, Lot.year(2013).appraised_value])
-      chart.legend(enabled: false, align: 'left', verticalAlign: 'top', x: -10, y: 100, borderWidth: 0)
+      stats = {}
+      @lot.versions.each { |version|
+        stats[version.tax_year] = {
+            :land_value => version.land_value,
+            :building_value => version.building_value,
+            :appraised_value => version.appraised_value
+        }
+      }
+      chart.xAxis(categories: stats.keys)
+      chart.series([{ name: 'Land Value', type: 'line', data: stats.values.map { |s| s[:land_value] } },
+                    { name: 'Building Value', type: 'line', data: stats.values.map { |s| s[:building_value] } },
+                    { name: 'Appraised Value', type: 'line', data: stats.values.map { |s| s[:appraised_value] } }])
       chart.credits(0)
     end
-    
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @lot }

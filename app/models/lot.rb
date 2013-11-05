@@ -24,6 +24,8 @@ class Lot < ActiveRecord::Base
         order('votes desc')
   end
 
+  include ModelStats
+
   scope :commercial_property, where("zoning = ?", 'C3')
 
   scope :same_zoning, lambda { |z| where("zoning = ?", z) }
@@ -35,6 +37,10 @@ class Lot < ActiveRecord::Base
   scope :all_commericial_appeal, commercial_property.appeal_property
 
   scope :all_commericial_appraised, commercial_property.appraised_property
+
+  scope :year, lambda { |year| where('tax_year  = ?', year) }
+
+  scope :latest, where('lots.tax_year = (SELECT l2.tax_year FROM lots l2 WHERE l2.parcel_id = lots.parcel_id ORDER BY l2.tax_year DESC LIMIT 1)')
 
   scope :simlar_land_value, lambda { |base, amount|
     where(:land_value => (base - (amount))..(base + (amount)))
@@ -204,7 +210,6 @@ class Lot < ActiveRecord::Base
     end
     appraised_appraised * 0.0038 * 0.5
   end
-
 
   def city_tax_rate
     0.0102
@@ -524,6 +529,10 @@ class Lot < ActiveRecord::Base
 
   def building_land_value_ratio
     building_value / land_value
+  end
+
+  def versions
+    Lot.where('parcel_id = ?', parcel_id).order(:tax_year)
   end
 
   def self.building_average_value_from_similar_land_values
