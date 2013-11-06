@@ -15,6 +15,9 @@ body {
     margin-top: 80px;
 }
 
+section#content {
+    padding: 16px !important;
+}
 
 .smallemail {
     font-size: .6em;
