@@ -424,7 +424,7 @@ input[type="file"] {
 }
 
 select {
-    width: 220px;
+    width: 200px;
     background-color: #ffffff;
     border: 1px solid #cccccc;
 }
@@ -458,6 +458,7 @@ input[type="checkbox"]:focus {
 .floatright1 {
     float: right;
     margin-top: -36px;
+		margin-right: 75px;
 }
 
 .searchfuntion {
