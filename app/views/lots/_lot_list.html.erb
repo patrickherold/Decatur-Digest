@@ -1,7 +1,5 @@
 <div class="panel panel-success" id="accordion">
-  <% unless request.user_agent =~ /Mobile|Blackberry|Android|webOS/ %>
-      <%= render :partial => "/lots/search" %>
-  <% end %>
+  <%= render :partial => "/lots/search" %>
   <div id="collapseOne" class="panel-collapse collapse in">
     <div class="panel-body panel-primary searchpadding">
       <%= paginate @properties %>
@@ -47,7 +45,7 @@
         <% end %>
         <tr>
           <td colspan="7">
-            <% if user_signed_in? && !current_user.restricted? && (@properties_for_workflow && !@properties_for_workflow.empty?) %>
+            <% if user_signed_in? && !current_user.restricted? %>
                 <hr>
                 <div class="textright">
                   <%= form_tag add_lots_to_workflow_path, :target => '_blank' do %>
