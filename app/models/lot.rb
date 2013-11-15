@@ -50,6 +50,10 @@ class Lot < ActiveRecord::Base
     where(:building_value => (base - (amount))..(base + (amount)))
   }
 
+  scope :nearby, lambda {|lat, lng, radius|
+    where("3959 * acos( cos( radians(#{lat}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{lng}) ) + sin( radians(#{lat}) ) * sin( radians( latitude ) ) ) < #{radius}")
+  }
+
   def land_value_deviation(percentage)
     (Lot.simlar_land_value(land_value, percentage).mean(:land_value) - land_value).abs
   end
@@ -470,11 +474,10 @@ class Lot < ActiveRecord::Base
     "<h4><a href='/lots/#{self.id}'>#{self.owner}</a></h4>" << "#{ActionController::Base.helpers.number_to_currency(self.appraised_value, :unit => "$", :precision => 0)} - appraised value <br>" << "#{property_map_address}"
   end
 
-  
   def gmaps4rails_address
     "#{property_street}, #{property_city}, #{property_state}, #{property_zip}"
   end
-  
+
   def property_street_and_number
     [property_street_number, property_street_name_prefix, property_street_name, property_street_type].join(" ")
   end
@@ -517,6 +520,11 @@ class Lot < ActiveRecord::Base
     else
       [mailing_street, mailing_city, mailing_state, mailing_zip].join(", ")
     end
+  end
+
+  def geolocate_by_address
+    res = Geocoder.search(property_full_address).first
+    res.geometry['location'] if res
   end
 
   def same_zoning_lots_with_similar_land_value(similar_land_value)

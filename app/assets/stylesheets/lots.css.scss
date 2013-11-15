@@ -1,3 +1,48 @@
 // Place all the styles related to the Lots controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.appeal-test {
+  .similar-buildings {
+    .building-card {
+      padding: 5px 0px;
+      width: 33%;
+      float: left;
+      min-width: 410px;
+      .image {
+        float: left;
+        height: 200px;
+        width: 200px;
+        img {
+          height: 200px;
+        }
+      }
+      .details {
+        overflow: hidden;
+        padding: 0px 10px;
+
+        .action {
+          margin-bottom: 10px;
+          background: #E6E6E6;
+          padding-left: 8px;
+          padding-top: 2px;
+          label {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  .loading {
+    text-align: center;
+    padding: 10px 0px;
+  }
+  .load-more {
+    text-align: center;
+  }
+  &.refine {
+    .building-card {
+      width: 100%;
+    }
+  }
+}

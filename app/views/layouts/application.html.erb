@@ -39,6 +39,11 @@
                 <span>All Properties</span>
               </a>
             </li>
+            <li class="<%= @main_nav == :appeal ? 'active' : '' %>">
+              <a href="<%= appeal_path %>">
+                <span>Test Appeal</span>
+              </a>
+            </li>
 
             <% if user_signed_in? %>
                 <% if current_user.super_admin? %>

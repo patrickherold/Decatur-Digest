@@ -1,0 +1,17 @@
+<h1><%= @title %></h1>
+
+<div class='appeal-test refine'>
+  <p>
+    <b>Step 3. Now seeing numbers, you can refine similar buildings you chosen on previous step:</b>
+  </p>
+
+  <%= form_tag do %>
+      <%= render :partial => 'similar_lots', :locals => { :properties => @properties, :full => true, :similar_by_land => @similar_by_land, :similar_by_building => @similar_by_building } %>
+      <%= submit_tag 'Refine', :class => 'btn btn-success' %>
+  <% end %>
+
+  <p>
+    <b>NOTE:</b> you may include these properties into your appeal application.
+    Take out properties with building / land values higher than yours. This will strengthen your appeal application.
+  </p>
+</div>

@@ -16,6 +16,10 @@ DecaturDigest::Application.routes.draw do
   get 'workflow/add/:workflow/:lot' => "workflow#add", :as => :add_to_workflow
   get 'workflow/remove/:workflow/:lot' => "workflow#remove", :as => :remove_from_workflow
 
+  match '/appeal' => 'lots#appeal', :as => :appeal
+  match '/refine-appeal' => 'lots#refine_appeal', :as => :refine_appeal
+  get '/similar-lots-ajax' => 'lots#ajax_similar_lots', :as => :ajax_similar_lots
+
   root :to => "application#index"
     
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},

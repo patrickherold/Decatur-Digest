@@ -1,0 +1,43 @@
+<div class="similar-buildings">
+  <% properties.each { |property| %>
+      <% location = property.geolocate_by_address %>
+      <% next unless location %>
+      <div class="building-card">
+        <div class="image">
+          <a href="http://maps.googleapis.com/maps/api/streetview?size=1000x800&location=<%= location['lat'] %>,<%= location['lng'] %>&sensor=true&fov=80" target="_blank">
+            <img src="http://maps.googleapis.com/maps/api/streetview?size=400x400&location=<%= location['lat'] %>,<%= location['lng'] %>&sensor=true&fov=80"/>
+          </a>
+        </div>
+        <div class="details">
+          <div class="action">
+            <%= check_box_tag 'by_building_value[]', property.id, defined?(similar_by_building) && similar_by_building.include?(property), :id => "similar-by-building-#{property.id}", :class => 'similar by-value' %>
+            <%= label_tag "similar-by-building-#{property.id}", 'Similar by building?' %>
+            <br/>
+            <%= check_box_tag 'by_land_value[]', property.id, defined?(similar_by_land) && similar_by_land.include?(property), :id => "similar-by-land-#{property.id}", :class => 'similar by-land' %>
+            <%= label_tag "similar-by-land-#{property.id}", 'Similar by land?' %>
+          </div>
+          <div>
+            <b>Address:</b><br/> <%= property.property_street %>
+          </div>
+          <div>
+            <b>Owner:</b><br/> <%= property.owners_name %>
+          </div>
+          <div>
+            <b>Zoning:</b> <%= property.zoning %>
+          </div>
+          <div>
+            <b>Homestead:</b> <%= property.homestead %>
+          </div>
+          <% if defined?(full) && full %>
+              <div>
+                <b>Building Value:</b> <%= number_to_currency property.building_value %>
+              </div>
+              <div>
+                <b>Land Value:</b> <%= number_to_currency property.land_value %>
+              </div>
+          <% end %>
+        </div>
+      </div>
+  <% } %>
+  <div class="clearfix"></div>
+</div>

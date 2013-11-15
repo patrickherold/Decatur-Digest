@@ -1,0 +1,58 @@
+<h1><%= @title %></h1>
+
+<div class='appeal-test'>
+  <p>
+    Here you can check your property appeal status.
+    Type in your address in the box below and choose at least 10 nearby properties similar by building / land value
+    (in your opinion) Then you will be see their actual values and compare your valuation and if you can apply for
+    appeal
+  </p>
+
+  <p>
+    <b>Step 1. Identify your address:</b>
+  </p>
+
+  <div id="step-1">
+    <%= form_tag '' do %>
+        <%= text_field_tag 'address', @address, :placeholder => 'Input your address', :style => 'width: 400px;' %>
+        <%= submit_tag 'Submit', :class => 'btn btn-success' %>
+    <% end %>
+  </div>
+
+  <br/>
+
+  <% if @location %>
+      <%= form_tag refine_appeal_path, :id => 'refine-appeal-form' do %>
+          <div id="step-2">
+            <p>
+              <b>Step 2. Check at least 10 nearby buildings that are similar to yours by building value and by land
+                value:</b>
+            </p>
+
+            <%= render :partial => 'similar_lots', :locals => { :properties => @properties } %>
+            <a href="#" class="load-more btn btn-warning">Load More</a>
+            <%= submit_tag 'Submit', :class => 'btn btn-success' %>
+          </div>
+      <% end %>
+
+      <script>
+          $('.load-more').click(function (event) {
+              var el = $(event.currentTarget);
+              var container = el.prev();
+              var offset = container.find('.building-card').length;
+              container.append('<div class="loading">Loading...</div>')
+              $.get('<%= ajax_similar_lots_path %>?lat=<%= @location['lat'] %>&lng=<%= @location['lng'] %>&offset=' + offset, function (data) {
+                  container.find('.loading').remove();
+                  container.append(data);
+              });
+          });
+
+          $('#refine-appeal-form').on('submit', function (event) {
+              if ($('.similar.by-land:checked').length < 10 || $('.similar.by-value:checked').length < 10) {
+                  alert('You have to choose at least 10 properties similar by building value and 10 properties similar by land value');
+                  return false;
+              }
+          })
+      </script>
+  <% end %>
+</div>

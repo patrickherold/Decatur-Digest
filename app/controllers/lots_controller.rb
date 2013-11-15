@@ -137,7 +137,7 @@ class LotsController < ApplicationController
       marker.title "#{lot.owner}"
       marker.json({ :id => lot.id })
     end
-    
+
     if user_signed_in?
       @search = Lot.latest.search(params[:q])
     else
@@ -170,6 +170,45 @@ class LotsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @lot }
+    end
+  end
+
+  def appeal
+    @main_nav = :appeal
+    @title = "Check your property appeal"
+    if request.post?
+      @address = params[:address]
+      @location = Geocoder.search(@address).first
+      unless @location
+        flash.now[:alert] = 'Address could not be geo-located. Please double-check and try again'
+        return
+      end
+      @location = @location.geometry['location']
+      @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 5).order('id ASC')[0..20]
+      if @properties.length < 10
+        flash.now[:alert] = 'Address geo-located, but we could not find enough properties around you to test appeal'
+        @location = nil
+      end
+    end
+  end
+
+  def ajax_similar_lots
+    @location = {
+        'lat' => params[:lat],
+        'lng' => params[:lng]
+    }
+    @offset = params[:offset].try(:to_i) || 0
+    @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 5).order('id ASC')[@offset..@offset+20]
+    render :partial => 'similar_lots', :locals => { :properties => @properties }
+  end
+
+  def refine_appeal
+    @main_nav = :appeal
+    @title = "Refine similar properties"
+    if request.post?
+      @similar_by_building = params[:by_building_value].map { |i| Lot.find_by_id(i) }
+      @similar_by_land = params[:by_land_value].map { |i| Lot.find_by_id(i) }
+      @properties = (@similar_by_building + @similar_by_land).uniq
     end
   end
 end
