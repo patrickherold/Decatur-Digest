@@ -175,7 +175,7 @@ class LotsController < ApplicationController
 
   def appeal
     @main_nav = :appeal
-    @title = "Check your property appeal"
+    @title = "Appeal the appraised value of this property"
     if request.post?
       @address = params[:address]
       @location = Geocoder.search(@address).first
@@ -198,7 +198,8 @@ class LotsController < ApplicationController
         'lng' => params[:lng]
     }
     @offset = params[:offset].try(:to_i) || 0
-    @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 5).order('id ASC')[@offset..@offset+20]
+    @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 0.3).order('id ASC')[@offset..@offset+20]
+
     render :partial => 'similar_lots', :locals => { :properties => @properties }
   end
 
