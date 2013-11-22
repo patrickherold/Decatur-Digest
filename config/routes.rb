@@ -17,8 +17,10 @@ DecaturDigest::Application.routes.draw do
   get 'workflow/remove/:workflow/:lot' => "workflow#remove", :as => :remove_from_workflow
 
   match '/appeal' => 'lots#appeal', :as => :appeal
+  get '/appeal-reports' => 'lots#appeal_reports', :as => :appeal_reports
   match '/refine-appeal' => 'lots#refine_appeal', :as => :refine_appeal
   get '/similar-lots-ajax' => 'lots#ajax_similar_lots', :as => :ajax_similar_lots
+  get '/appeal-flagged-properties' => 'lots#appeal_flagged_properties', :as => :appeal_flagged_properties
 
   root :to => "application#index"
     

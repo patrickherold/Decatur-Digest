@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
 
   has_many :evaluations, class_name: "RSEvaluation", as: :source
   has_many :workflows
+  has_many :appeal_reports
   belongs_to :organization
   has_and_belongs_to_many :workflow_managers,
                           :join_table => 'workflow_managers_users',

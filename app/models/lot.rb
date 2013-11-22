@@ -1,6 +1,7 @@
 class Lot < ActiveRecord::Base
 
-  attr_accessible :latitude, :longitude, :mailing_latitude, :mailing_longitude, :customer_id, :municipal_id, :name, :property_map_address, :property_street_name
+  attr_accessible :latitude, :longitude, :mailing_latitude, :mailing_longitude, :customer_id, :municipal_id, :name,
+                  :property_map_address, :property_street_name, :lat_lon_corrected
   geocoded_by :property_map_address # can also be an IP address
   after_validation :geocode # auto-fetch coordinates
   acts_as_gmappable
@@ -50,7 +51,7 @@ class Lot < ActiveRecord::Base
     where(:building_value => (base - (amount))..(base + (amount)))
   }
 
-  scope :nearby, lambda {|lat, lng, radius|
+  scope :nearby, lambda { |lat, lng, radius|
     where("3959 * acos( cos( radians(#{lat}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{lng}) ) + sin( radians(#{lat}) ) * sin( radians( latitude ) ) ) < #{radius}")
   }
 
@@ -523,8 +524,21 @@ class Lot < ActiveRecord::Base
   end
 
   def geolocate_by_address
-    res = Geocoder.search(property_full_address).first
-    res.geometry['location'] if res
+    {
+        'lat' => latitude,
+        'lng' => longitude
+    } if lat_lon_corrected? || !lat_lon_corrected? && geolocate_by_address!
+  end
+
+  def geolocate_by_address!
+    if !lat_lon_corrected? && addr = geolocate_by_address
+      puts "Updating #{id}: #{addr}..."
+      update_attributes!({ :latitude => addr["lat"], :longitude => addr['lng'], :lat_lon_corrected => true })
+    end
+    true
+  rescue Exception => ex
+    puts ex.message
+    false
   end
 
   def same_zoning_lots_with_similar_land_value(similar_land_value)

@@ -1,6 +1,6 @@
 class LotsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index, :appeal]
   before_filter { @main_nav = :lots }
 
   # GET /lots
@@ -179,17 +179,24 @@ class LotsController < ApplicationController
     if request.post?
       @address = params[:address]
       @location = Geocoder.search(@address).first
+      # @location = { 'lat' => 33.7881, 'lng' => -84.2971 } # DEV-only!
       unless @location
         flash.now[:alert] = 'Address could not be geo-located. Please double-check and try again'
         return
       end
       @location = @location.geometry['location']
-      @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 5).order('id ASC')[0..20]
+      @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 2).order('id ASC')[0..20]
       if @properties.length < 10
         flash.now[:alert] = 'Address geo-located, but we could not find enough properties around you to test appeal'
         @location = nil
       end
     end
+  end
+
+  def appeal_reports
+    @main_nav = :appeal
+    @title = "My Appeal Reports"
+    @appeal_reports = current_user.appeal_reports.sort_by(&:created_at).reverse
   end
 
   def ajax_similar_lots
@@ -198,7 +205,7 @@ class LotsController < ApplicationController
         'lng' => params[:lng]
     }
     @offset = params[:offset].try(:to_i) || 0
-    @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 0.3).order('id ASC')[@offset..@offset+20]
+    @properties = Lot.latest.nearby(@location['lat'], @location['lng'], 2).order('id ASC')[@offset..@offset+20]
 
     render :partial => 'similar_lots', :locals => { :properties => @properties }
   end
@@ -206,11 +213,51 @@ class LotsController < ApplicationController
   def refine_appeal
     @main_nav = :appeal
     @title = "Refine similar properties"
+    @appeal_report = AppealReport.find_by_id(params[:id])
     if request.post?
+      @original_address = params[:original_address]
       @similar_by_building = params[:by_building_value].map { |i| Lot.find_by_id(i) }
       @similar_by_land = params[:by_land_value].map { |i| Lot.find_by_id(i) }
       @properties = (@similar_by_building + @similar_by_land).uniq
+      # create or update appeal report entry
+      if @appeal_report && @appeal_report.user == current_user
+        @appeal_report.update_attributes!({
+                                              :original_address => @original_address,
+                                              :similar_by_building => @similar_by_building.collect(&:id),
+                                              :similar_by_land => @similar_by_land.collect(&:id)
+                                          })
+      else
+        @appeal_report = AppealReport.create!({
+                                                  :user => current_user,
+                                                  :original_address => @original_address,
+                                                  :similar_by_building => @similar_by_building.collect(&:id),
+                                                  :similar_by_land => @similar_by_land.collect(&:id)
+                                              })
+      end
+      redirect_to refine_appeal_path(:id => @appeal_report.id)
+    elsif @appeal_report
+      unless @appeal_report.user == current_user
+        flash[:alert] = 'You cannot access this page'
+        redirect_to appeal_path
+        return
+      end
+      @original_address = @appeal_report.original_address
+      @similar_by_building = @appeal_report.similar_by_building
+      @similar_by_land = @appeal_report.similar_by_land
+      @properties = (@similar_by_building + @similar_by_land).uniq
+    else
+      flash[:alert] = 'You cannot access this page'
+      redirect_to appeal_path
     end
+  end
+
+  def appeal_flagged_properties
+    @title = 'Organization Properties Mentioned in Appeal Checks'
+    @main_nav = :appeal
+
+    @lots = AppealReport.all.map { |r| r.similar_by_building + r.similar_by_land }.flatten.uniq.select {|lot|
+      current_user.organization && lot.organization_id == current_user.organization_id
+    }
   end
 end
 

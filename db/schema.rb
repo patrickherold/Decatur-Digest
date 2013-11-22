@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131104235751) do
+ActiveRecord::Schema.define(:version => 20131126223430) do
+
+  create_table "appeal_reports", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "similar_by_building"
+    t.text     "similar_by_land"
+    t.string   "original_address"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -77,9 +86,9 @@ ActiveRecord::Schema.define(:version => 20131104235751) do
     t.string   "state"
     t.datetime "timestamps"
     t.integer  "organization_id"
+    t.boolean  "lat_lon_corrected"
   end
 
-  add_index "lots", ["parcel_id"], :name => "index_lots_on_parcel_id", :length => {"parcel_id"=>255}
   add_index "lots", ["tax_year"], :name => "index_lots_on_tax_year"
 
   create_table "lots_workflows", :id => false, :force => true do |t|

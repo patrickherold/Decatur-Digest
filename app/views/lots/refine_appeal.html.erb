@@ -2,13 +2,16 @@
 
 <div class='appeal-test refine'>
   <p>
-    <b>Step 3. Refine your comparables list:</b>
+    Here you can refine your comparables list:
   </p>
 
   <%= form_tag do %>
+      <%= hidden_field_tag 'original_address', @address %>
       <%= render :partial => 'similar_lots', :locals => { :properties => @properties, :full => true, :similar_by_land => @similar_by_land, :similar_by_building => @similar_by_building } %>
       <%= submit_tag 'Refine', :class => 'btn btn-success' %>
   <% end %>
+
+  <br/>
 
   <p>
     <b>NOTE:</b> you may include these properties with your appeal application.

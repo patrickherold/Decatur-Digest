@@ -1,62 +1,82 @@
 <h1><%= @title %></h1>
 
+<%= link_to 'My Appeal Reports', appeal_reports_path, :class => 'btn btn-info top-right-button' if current_user %>
+
 <div class='appeal-test'>
   <p>
     Please select at least 10 properties that are most similar to yours.
   </p>
-  
+
   <p>
-    You have 45 days from the date of your receipt of the Annual Assessment Notice from the DeKalb County Tax Accessor's office at the end of May to initiate your appeal.
+    You have 45 days from the date of your receipt of the Annual Assessment Notice from the DeKalb County Tax Accessor's
+    office at the end of May to initiate your appeal.
   </p>
 
   <p>
-  Appealing to the Board of Equalization (BOE) is FREE to you. Each BOE is a three-member panel made up of DeKalb County property owners. Each board member has attended at least 40 hours of training in property tax laws and appraisal. If you select this option you will be scheduled for a hearing before the BOE. The BOE will have reviewed your letter of appeal, and will listen to your presentation, and they will listen to the county appraiser. The BOE will then render an independent decision as to the value of the property, and you will be notified of this decision in writing. Either party may appeal to Superior Court within 30 days of the BOE decision. Fees will be required if you appeal to Superior Court.
+    Appealing to the Board of Equalization (BOE) is FREE to you. Each BOE is a three-member panel made up of DeKalb
+    County property owners. Each board member has attended at least 40 hours of training in property tax laws and
+    appraisal. If you select this option you will be scheduled for a hearing before the BOE. The BOE will have reviewed
+    your letter of appeal, and will listen to your presentation, and they will listen to the county appraiser. The BOE
+    will then render an independent decision as to the value of the property, and you will be notified of this decision
+    in writing. Either party may appeal to Superior Court within 30 days of the BOE decision. Fees will be required if
+    you appeal to Superior Court.
   </p>
-  <p>
-    <b>Step 1. Identify your address:</b>
-  </p>
 
-  <div id="step-1">
-    <%= form_tag '' do %>
-        <%= text_field_tag 'address', @address, :placeholder => 'Input your address', :style => 'width: 400px;' %>
-        <%= submit_tag 'Submit', :class => 'btn btn-success' %>
-    <% end %>
-  </div>
+  <% if current_user %>
+      <p>
+        <b>Step 1. Identify your address:</b>
+      </p>
 
-  <br/>
-
-  <% if @location %>
-      <%= form_tag refine_appeal_path, :id => 'refine-appeal-form' do %>
-          <div id="step-2">
-            <p>
-              <b>Step 2. Check at least 10 nearby buildings that are similar.
-                value:</b>
-            </p>
-
-            <%= render :partial => 'similar_lots', :locals => { :properties => @properties } %>
-            <a href="#" class="load-more btn btn-warning">Load More</a>
+      <div id="step-1">
+        <%= form_tag '' do %>
+            <%= text_field_tag 'address', @address, :placeholder => 'Input your address', :style => 'width: 400px;' %>
             <%= submit_tag 'Submit', :class => 'btn btn-success' %>
-          </div>
-      <% end %>
+        <% end %>
+      </div>
 
-      <script>
-          $('.load-more').click(function (event) {
-              var el = $(event.currentTarget);
-              var container = el.prev();
-              var offset = container.find('.building-card').length;
-              container.append('<div class="loading">Loading...</div>')
-              $.get('<%= ajax_similar_lots_path %>?lat=<%= @location['lat'] %>&lng=<%= @location['lng'] %>&offset=' + offset, function (data) {
-                  container.find('.loading').remove();
-                  container.append(data);
+      <br/>
+
+      <% if @location %>
+          <%= form_tag refine_appeal_path, :id => 'refine-appeal-form' do %>
+              <%= hidden_field_tag 'original_address', @address %>
+              <div id="step-2">
+                <p>
+                  <b>Step 2. Check at least 10 nearby buildings that are similar.
+                    value:</b>
+                </p>
+
+                <%= render :partial => 'similar_lots', :locals => { :properties => @properties } %>
+                <a href="#" class="load-more btn btn-warning">Load More</a>
+                <%= submit_tag 'Submit', :class => 'btn btn-success' %>
+              </div>
+          <% end %>
+
+          <script>
+              $('.load-more').click(function (event) {
+                  var el = $(event.currentTarget);
+                  var container = el.prev();
+                  var offset = container.find('.building-card').length;
+                  container.append('<div class="loading">Loading...</div>')
+                  $.get('<%= ajax_similar_lots_path %>?lat=<%= @location['lat'] %>&lng=<%= @location['lng'] %>&offset=' + offset, function (data) {
+                      container.find('.loading').remove();
+                      container.append(data);
+                  });
               });
-          });
 
-          $('#refine-appeal-form').on('submit', function (event) {
-              if ($('.similar.by-land:checked').length < 10 || $('.similar.by-value:checked').length < 10) {
-                  alert('You have to choose at least 10 properties similar by building value and 10 properties similar by land value');
-                  return false;
-              }
-          })
-      </script>
+              $('#refine-appeal-form').on('submit', function (event) {
+                  if ($('.similar.by-land:checked').length < 2 || $('.similar.by-value:checked').length < 2) {
+                      alert('You have to choose at least 10 properties similar by building value and 10 properties similar by land value');
+                      return false;
+                  }
+              })
+          </script>
+      <% else %>
+        <%= link_to 'See your organization properties mentioned in appeal checks', appeal_flagged_properties_path, :class => 'btn btn-info' if current_user.organization %>
+      <% end %>
+  <% else %>
+      <p>
+        <b>Please log in in order to use the appeal feature:</b>
+      </p>
+      <%= link_to image_tag("/assets/LoginWithFacebook.png", :width => "150px"), user_omniauth_authorize_path(:facebook) %>
   <% end %>
 </div>
