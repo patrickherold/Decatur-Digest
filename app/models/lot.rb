@@ -41,7 +41,7 @@ class Lot < ActiveRecord::Base
 
   scope :year, lambda { |year| where('tax_year  = ?', year) }
 
-  scope :latest, where('tax_year = ?', Date.today.year)
+  scope :latest, where('tax_year = (SELECT MAX(tax_year) FROM lots)')
 
   scope :simlar_land_value, lambda { |base, amount|
     where(:land_value => (base - (amount))..(base + (amount)))
